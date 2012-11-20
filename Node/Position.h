@@ -1,3 +1,11 @@
+/*
+ * Fil: Position.h
+ * Programmerare: Emil Karlsson <emika583@student.liu.se>
+ * Datum: 2012-11-20
+ *
+ * En klass för representation av koordinater och vektorer i planet som används av Node.
+ */
+
 #ifndef POSITION_HH
 #define POSITION_HH
 
