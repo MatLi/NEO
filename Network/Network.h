@@ -26,7 +26,7 @@ class Network
  Network()
    : edges_(), nodes_(){}
 
- Network(Set<Edge> in_edges_, Set<Node> in_nodes_)
+ Network(Set<Node> in_nodes_, Set<Edge> in_edges_)
    : edges_(in_edges_), nodes_(in_nodes_){}
 
   Network(Set<Node> in_nodes_)
