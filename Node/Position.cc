@@ -54,6 +54,10 @@ void Position::rotate(Position center, double angle)
   // Uträkning
   xpos_ = xpos_help*cos(angle) - ypos_help*sin(angle);
   ypos_ = xpos_help*sin(angle) + ypos_help*cos(angle);
+  // ---
+  // Är hjälpvariablerna bara bortglömda här?
+  // Fixa eller förklara
+  // ---
 
   // Translaterar tillbaka till ursprungskoordinatsystemet
   this->translate(center);
@@ -78,13 +82,19 @@ void Position::mirror(Position point, Position vect)
   //Translaterar vect och this så att vi gör point till (0,0) i vårt koordinatsystem
   this->translate(Position(- point.xpos_, - point.ypos_));
   vect.translate(Position(- point.xpos_, - point.ypos_));
+  // ---
+  // Ska vect.translate verkligen göras? /Jonas
+  // ---
 
   // Uträkning av det gemensamma projektionen för x- och y-koordinaten i speglingen
   Projection = (vect.xpos_*xpos_+vect.xpos*xpos_)/(vect.xpos_*vect.xpos_+vect.ypos_*vect.ypos_);
+  // ---
+  // vad är Projection för typ?
+  // ---
 
   // Uträkningen för x- och y-koordinaten
-  xpos_ = 2*Projection*vect.xpos_- xpos_;
-  ypos_ = 2*Projection*vect.ypos_- ypos_;
+  xpos_ = 2*Projection*vect.xpos_ - xpos_;
+  ypos_ = 2*Projection*vect.ypos_ - ypos_;
 
   // Translaterar tillbaka till ursprungskoordinatsystemet
   this->translate(point);

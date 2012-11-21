@@ -50,13 +50,12 @@ void Set<T>::add_member(T* new_member)
 template <class T>
 void Set<T>::remove_member(T* old_member)
 {
-  bool removed = false;
-  for(int i = 0; i < members_.size() && !removed; i++)
+  for (unsigned int i = 0; i < members_.size(); i++)
     {
       if (members_[i] == old_member)
 	{
 	  members_.erase(members_.begin() + i);
-	  removed = true;
+	  break;
 	}
     }
   return; 
