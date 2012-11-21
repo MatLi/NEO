@@ -1,7 +1,7 @@
 /*
  * Fil: Position.h
  * Programmerare: Emil Karlsson <emika583@student.liu.se>
- * Datum: 2012-11-20
+ * Datum: 2012-11-21  
  *
  * En klass för representation av koordinater och vektorer i planet som används av Node.
  */
@@ -24,8 +24,8 @@ class Position
   ~Position() = default;
 
   // Medlemsfunktioner
-  int xpos() const;
-  int ypos() const;
+  double xpos() const;
+  double ypos() const;
   Position difference(Position pos) const;
   void rotate(Position center, double angle);
   void move_to(Position pos_new);
