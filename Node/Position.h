@@ -24,8 +24,8 @@ class Position
   ~Position() = default;
 
   // Medlemsfunktioner
-  int xpos() const;
-  int ypos() const;
+  double xpos() const;
+  double ypos() const;
   Position difference(Position pos) const;
   void rotate(Position center, double angle);
   void move_to(Position pos_new);

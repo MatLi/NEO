@@ -13,7 +13,7 @@
  * Position::xpos()
  * Returnerar Positions x-koordinat.
  */
-int Position::xpos() const
+double Position::xpos() const
 {
   return xpos_;
 }
@@ -22,7 +22,7 @@ int Position::xpos() const
  * Position::ypos()
  * Returnerar Positions y-koordinat.
  */
-int Position::ypos() const
+double Position::ypos() const
 {
   return ypos_;
 }
@@ -45,15 +45,18 @@ Position Position::difference(Position pos) const
  */
 void Position::rotate(Position center, double angle)
 {
-  // Hjälpvariabler
-  double xpos_help = xpos_ - center.xpos_;
-  double ypos_help = ypos_ - center.ypos_;
+  // Translaterar så att vi står i "(0,0)"
+  this->translate(Position(- center.xpos_, - center.ypos_));
     
-  angle = angle * (PI/180); // konverterar vinkeln till radianer
+  // Konverterar vinkeln till radianer
+  angle = angle * (PI/180); 
 
-  //Uträkning
+  // Uträkning
   xpos_ = xpos_help*cos(angle) - ypos_help*sin(angle);
   ypos_ = xpos_help*sin(angle) + ypos_help*cos(angle);
+
+  // Translaterar tillbaka till ursprungskoordinatsystemet
+  this->translate(center);
 }
 
 /*
@@ -72,27 +75,19 @@ void Position::move_to(Position pos_new)
  */
 void Position::mirror(Position point, Position vect)
 {
-  // Hjälpvariabler
-  double vect_xpos_help = vect.xpos_ - point.xpos_;
-  double vect_ypos_help = vect.ypos_ - point.ypos_;
+  //Translaterar vect och this så att vi gör point till (0,0) i vårt koordinatsystem
+  this->translate(Position(- point.xpos_, - point.ypos_));
+  vect.translate(Position(- point.xpos_, - point.ypos_));
 
-  double xpos_help = xpos_ - point.xpos_;
-  double ypos_help = ypos_ - point.ypos_;
+  // Uträkning av det gemensamma projektionen för x- och y-koordinaten i speglingen
+  Projection = (vect.xpos_*xpos_+vect.xpos*xpos_)/(vect.xpos_*vect.xpos_+vect.ypos_*vect.ypos_);
 
-  // Uträkning
-  xpos_ = 2*(vect_xpos_help*xpos_help+vect_xpos_help*xpos_help)
-    /(vect_xpos_help*vect_xpos_help+vect_ypos_help*vect_ypos_help)
-    *vect_xpos_help
-    -xpos_help + point.xpos_;
+  // Uträkningen för x- och y-koordinaten
+  xpos_ = 2*Projection*vect.xpos_- xpos_;
+  ypos_ = 2*Projection*vect.ypos_- ypos_;
 
-  ypos_ = 2*(vect_xpos_help*xpos_help+vect_xpos_help*xpos_help)
-    /(vect_xpos_help*vect_xpos_help+vect_ypos_help*vect_ypos_help)
-    *vect_ypos_help
-    -ypos_help + point.ypos_;
-
-  // Skulle kunna skrivas snyggare med delresultat (t.ex. normer) i 
-  // hjälpvariabler och/eller funktioner
-  // /Jonas
+  // Translaterar tillbaka till ursprungskoordinatsystemet
+  this->translate(point);
 }
   
 /*
