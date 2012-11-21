@@ -37,7 +37,6 @@ class Set
 template <class T>
 void Set<T>::add_member(T* new_member)
 {
-  using namespace std;
   members_.push_back(new_member);
   return;
 }
@@ -50,7 +49,6 @@ void Set<T>::add_member(T* new_member)
 template <class T>
 void Set<T>::remove_member(T* old_member)
 {
-  using namespace std;
   for (auto it : members_)
     {
       if ((*it) == old_member)
@@ -68,7 +66,6 @@ void Set<T>::remove_member(T* old_member)
 template <class T>
 void Set<T>::clear()
 {
-  using namespace std;
   members_.clear();
   return;
 }
@@ -76,7 +73,6 @@ void Set<T>::clear()
 template <class T>
 bool Set<T>::empty() const
 {
-  using namespace std;
   return members_.empty();
 }
 
@@ -88,7 +84,6 @@ bool Set<T>::empty() const
 template <class T>
 unsigned int Set<T>::size() const
 {
-  using namespace std;
   return members_.size();
 }
 
@@ -100,7 +95,6 @@ unsigned int Set<T>::size() const
 template <class T>
 const T* Set<T>::operator[](std::size_t n) const
 {
-  using namespace std;
   return members_[n];
 }
 
