@@ -1,3 +1,15 @@
+/* 
+ * FILNAMN:          Network.h
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Li och Linda
+ *
+ * DATUM:            2012-11-21
+ *
+ * BESKRIVNING:
+ * Network representerar ett helt nätverk av noder och bågar. 
+ * Lösningarna till de olika problemen kommer att vara ett Network.  
+*/
+
 #ifndef NETWORK_HH
 #define NETWORK_HH
 
@@ -10,13 +22,22 @@
 class Network
 {
  public:
-  Network() = default;
-  ~Network() = default;
+
+ Network()
+   : edges_(), nodes_(){}
+
+ Network(Set<Edge> in_edges_, Set<Node> in_nodes_)
+   : edges_(in_edges_), nodes_(in_nodes_){}
+
+  Network(Set<Node> in_nodes_)
+    : nodes_(in_nodes_){}
   
-  EdgeSet edge_set() const;
-  NodeSet node_set() const;
-  void add_node(Node);
-  void add_edge(Edge);
+  ~Network() = default; // Inga pekare deafult OK
+  
+  Set<Edge> edge_set() const;
+  Set<Node> node_set() const;
+  void add_node(Node*);
+  void add_edge(Edge*);
   void remove_node(Node*);
   void remove_edge(Edge*);
   void remove_all_edges();
@@ -28,12 +49,13 @@ class Network
   void max_cost_flow();
   void max_flow();
 
-  void fwrite(std::string);
-  void fopen(std::string);
+  // Eventuellt?
+  //void fwrite(std::string);
+  //void fopen(std::string);
   
  private:
-  EdgeSet edges_;
-  NodeSet nodes_;
-}
+  Set<Edge> edges_;
+  Set<Node> nodes_;
+};
 
 #endif
