@@ -17,8 +17,6 @@
 #include "Set.h"
 #include <string>
 
-class Edge;
-
 class Node
 {
   Node() = default;
