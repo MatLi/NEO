@@ -16,14 +16,18 @@
 
 class Edge
 {
- Edge(): to_(nullptr), 
-    from_(nullptr), 
+ public:
+  Edge() = delete;
+  
+ Edge(Node* in_to_, Node* in_from_ ): 
+  to_(in_to_), 
+    from_(in_from_), 
     flow_(0), 
     reduced_cost_(0),
     maxflow_(0), 
     minflow_(0),
     cost_(0){}
-
+  
   // Vill vi ha fler konstruktorer? 
 
  ~Edge() = default; // Vi vill inte ta bort noderna som pekas på, deafult kan användas.
@@ -53,6 +57,6 @@ class Edge
   double maxflow_;
   double minflow_;
   double cost_;
-}
+};
 
 #endif
