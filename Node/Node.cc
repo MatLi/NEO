@@ -15,7 +15,8 @@
 #include <string>
 using namespace std;
 
-Position& Node::position() const
+Position&
+Node::position() const
 {
   return graphic_pos_&;
 }
