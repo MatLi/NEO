@@ -1,7 +1,7 @@
 /*
  * Fil: Position.cc
  * Programmerare: Emil Karlsson <emika583@student.liu.se>
- * Datum: 2012-11-20
+ * Datum: 2012-11-21
  *
  * En klass för representation av koordinater och vektorer i planet som används av Node.
  */
