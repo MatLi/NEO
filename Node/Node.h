@@ -43,6 +43,6 @@ class Node
   Set<Edge> in_edges_;
   Set<Edge> out_edges_;
   std::string name_;
-}
+};
 
 #endif
