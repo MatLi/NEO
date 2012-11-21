@@ -10,15 +10,23 @@
  */
 
 #include "Edge.h"
+#include "Node.h"
 #include "Position.h"
 #include "Set.h"
 #include <string>
 using namespace std;
 
-Position&
+Position
 Node::position() const
 {
-  return graphic_pos_&;
+  return graphic_pos_;
+}
+
+void
+Node::change_position(Position new_pos)
+{
+  graphic_pos_.move_to(new_pos);
+  return;
 }
 
 double
@@ -63,13 +71,13 @@ Node::change_name(string new_name)
 Set<Edge>&
 Node::in_edges()
 {
-  return in_edges_&;
+  return in_edges_;
 }
 
 Set<Edge>&
 Node::out_edges()
 {
-  return out_edges_&;
+  return out_edges_;
 }
 
 void

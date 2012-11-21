@@ -17,12 +17,15 @@
 #include "Set.h"
 #include <string>
 
+class Edge;
+
 class Node
 {
   Node() = default;
   ~Node() = default;
 
-  Position& position() const;
+  Position position() const;
+  void change_position(Position);
   double flow() const;
   void change_flow(double);
   double node_price() const;
