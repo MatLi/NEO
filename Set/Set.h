@@ -11,6 +11,7 @@
 #ifndef SET_HH
 #define SET_HH
 #include <vector>
+#include <iostream>
 
 template <class T>
 class Set
@@ -25,7 +26,7 @@ class Set
   bool empty() const;
   unsigned int size() const;
       
-  const T* operator[](std::size_t n) const;
+  T* operator[](std::size_t n) const;
  private:
   std::vector<T*> members_;
 };
@@ -49,10 +50,16 @@ void Set<T>::add_member(T* new_member)
 template <class T>
 void Set<T>::remove_member(T* old_member)
 {
-  for (auto it : members_)
+  unsigned int i = 0;
+  bool removed = false;
+  while (i < members_.size() && !removed)
     {
-      if ((*it) == old_member)
-	members_.erase(it);
+      if (members_[i] == old_member)
+	{
+	  members_.erase(members_.begin() + i);
+	  removed = true;
+	}
+      i++;
     }
   return; 
 }
@@ -93,7 +100,7 @@ unsigned int Set<T>::size() const
  * Åtkomst till element n i mängden. Används för iteration.
  */
 template <class T>
-const T* Set<T>::operator[](std::size_t n) const
+T* Set<T>::operator[](std::size_t n) const
 {
   return members_[n];
 }
