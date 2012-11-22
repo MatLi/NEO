@@ -68,13 +68,13 @@ Node::change_name(string new_name)
   return;
 }
 
-Set<Edge>&
+Set<Edge*>&
 Node::in_edges()
 {
   return in_edges_;
 }
 
-Set<Edge>&
+Set<Edge*>&
 Node::out_edges()
 {
   return out_edges_;

@@ -33,8 +33,8 @@ class Node
   void change_node_price(double);
   std::string name() const;
   void change_name(std::string);
-  Set<Edge>& in_edges();
-  Set<Edge>& out_edges();
+  Set<Edge*>& in_edges();
+  Set<Edge*>& out_edges();
   void add_in_edge(Edge*);
   void add_out_edge(Edge*);
   void remove_in_edge(Edge*);
@@ -44,8 +44,8 @@ class Node
   Position graphic_pos_;
   double flow_;
   double node_price_;
-  Set<Edge> in_edges_;
-  Set<Edge> out_edges_;
+  Set<Edge*> in_edges_;
+  Set<Edge*> out_edges_;
   std::string name_;
 };
 
