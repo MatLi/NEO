@@ -17,8 +17,11 @@
 #include "Set.h"
 #include <string>
 
+class Edge;
+
 class Node
 {
+ public:
   Node() = default;
   ~Node() = default;
 
