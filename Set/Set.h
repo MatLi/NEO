@@ -26,7 +26,7 @@ class Set
   bool empty() const;
   unsigned int size() const;
       
-  T* operator[](std::size_t n) const;
+  T* operator[](std::size_t n) const; // bör kanske implementeras med iterator istället för index
  private:
   std::vector<T*> members_;
 };
@@ -50,16 +50,13 @@ void Set<T>::add_member(T* new_member)
 template <class T>
 void Set<T>::remove_member(T* old_member)
 {
-  unsigned int i = 0;
-  bool removed = false;
-  while (i < members_.size() && !removed)
+  for (unsigned int i = 0; i < members_.size(); i++)
     {
       if (members_[i] == old_member)
 	{
 	  members_.erase(members_.begin() + i);
-	  removed = true;
+	  break;
 	}
-      i++;
     }
   return; 
 }

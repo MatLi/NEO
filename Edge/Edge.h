@@ -19,8 +19,8 @@ class Edge
  public:
   Edge() = delete;
   
- Edge(Node* in_to_, Node* in_from_ ): 
-  to_(in_to_), 
+ Edge(Node* in_to_, Node* in_from_ )
+   :to_(in_to_), 
     from_(in_from_), 
     flow_(0), 
     reduced_cost_(0),
