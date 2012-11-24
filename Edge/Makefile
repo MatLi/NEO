@@ -12,16 +12,13 @@ SET = ../Set
 CC = g++
 
 # Kompilatorflaggor, lägg till '-g' om kompilering för avlusning ska göras.
-CCFLAGS += -std=c++11 -pedantic -Wall -Wextra
+CCFLAGS += -std=c++11-pedantic -Wall -Wextra
 
 # Preprocessorflaggor, -I lägger till en filkatalog i inkluderingssökvägen.
 CPPFLAGS += -I$(NODE) -I$(SET) -I$(EDGE)
 
 # Länkflaggor - Fix för att lösa lokala problem med C++ länkbibliotek.
 LDFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
-
-# Objektkodsmoduler som ingår i den kompletta kalkylatorn.
-NODE_OBJECTS = Node.o Position.o
 
 Edge.o: Edge.h $(SET)/Set.h $(NODE)/Node.h
 	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Edge.cc
@@ -33,8 +30,8 @@ clean:
 
 # 'make zap' tar även bort det körbara programmet och reservkopior (filer
 # som slutar med tecknet '~').
-zap: clean
-	@ \rm -rf kalkylator *~
+#zap: clean
+#	@ \rm -rf <programnamn> *~
 
 # Se upp vid eventuell ändring, '*' får absolut inte finnas för sig!!!
 #
