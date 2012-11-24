@@ -1,40 +1,40 @@
 /* 
  * FILNAMN:          Path.h
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Li och Linda
+ * PROGRAMMERARE:    Li,  Linda och Emil
  *
- * DATUM:            2012-11-21
+ * DATUM:            2012-11-22
  *
  * BESKRIVNING:
- * Representerar en väg mellan två noder i ett nätverk. Ärver från Set<Edge>.
+ * Representerar en väg mellan två noder i ett nätverk. Använder sig av en dubbellänkad lista för att hålla ordning på bågarna
 */
 
 #ifndef PATH_HH
 #define PATH_HH
 
-#include "Set.h"
 #include "Edge.h"
 #include "Node.h"
+#include <list>
 
-class Path : public Set<Edge>
+class Path
 {
-  Path() 
-    : start_(nullptr), end_(nullptr) {}
+  Path();
+  Path(Edge* new_edge_);
 
-  Path(Node* in_start, Node* in_end)
-    : start_(in_start), end_(in_end) {}
-
-  ~Path() = default; // Vi vill inte ta bort noderna, bara pekarna -> default ok!
+  ~Path() = default; // Vi kommer att ta bort list<Edge*> och pekare -> default ok!
 
   Node* start_node() const;
   Node* end_node() const;
-  void set_start_node(Node*);
-  void set_end_node(Node*);
-  virtual void clear() override final;
+  Edge* start_edge() const;
+  void set_start_edge(Edge*);
+  void set_end_edge(Edge*);
+  
+  void clear();
 
  private:
   Node* start_;
   Node* end_;
-}
+  std::list<Edge*> members_;
+};
 
 #endif
