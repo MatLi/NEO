@@ -52,11 +52,12 @@ void Position::rotate(Position center, double angle)
   angle = angle * (PI/180); 
 
   // Uträkning
-  xpos_ = xpos_help*cos(angle) - ypos_help*sin(angle);
-  ypos_ = xpos_help*sin(angle) + ypos_help*cos(angle);
+  xpos_ = xpos_*cos(angle) - ypos_*sin(angle);
+  ypos_ = xpos_*sin(angle) + ypos_*cos(angle);
   // ---
   // Är hjälpvariablerna bara bortglömda här?
   // Fixa eller förklara
+  // SÃ¥hÃ¤r bÃ¶r det vara. /David
   // ---
 
   // Translaterar tillbaka till ursprungskoordinatsystemet
@@ -77,7 +78,7 @@ void Position::move_to(Position pos_new)
  * Position::mirror(Position point, Position vect)
  * Speglar position genom linjen vect som går igenom punkten point
  */
-void Position::mirror(Position point, Position vect)
+/*void Position::mirror(Position point, Position vect)
 {
   //Translaterar vect och this så att vi gör point till (0,0) i vårt koordinatsystem
   this->translate(Position(- point.xpos_, - point.ypos_));
@@ -98,7 +99,25 @@ void Position::mirror(Position point, Position vect)
 
   // Translaterar tillbaka till ursprungskoordinatsystemet
   this->translate(point);
+  }*/
+
+void
+Position::mirror(Position point, Position vect)
+{
+  double vect_norm_2 = vect.xpos()*vect.xpos() + vect.ypos()*vect.ypos();
+  double scale = (vect.xpos()*xpos_ + vect.ypos()*ypos_)/vect_norm_2;
+  Position projection(scale*vect.xpos(),scale*vect.ypos());
+
+  Position normal_projection(xpos_ - projection.xpos(),
+			     ypos_ - projection.ypos());
+
+  this->translate(Position(-point.xpos(),-point.ypos()));
+  xpos_ = xpos_ - 2*normal_projection.xpos();
+  ypos_ = ypos_ - 2*normal_projection.ypos();
+  this->translate(point);
+  return;
 }
+
   
 /*
  * Position::translate(Position vect)
