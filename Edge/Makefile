@@ -12,7 +12,7 @@ SET = ../Set
 CC = g++
 
 # Kompilatorflaggor, lägg till '-g' om kompilering för avlusning ska göras.
-CCFLAGS += -std=c++11-pedantic -Wall -Wextra
+CCFLAGS += -std=c++11 -pedantic -Wall -Wextra
 
 # Preprocessorflaggor, -I lägger till en filkatalog i inkluderingssökvägen.
 CPPFLAGS += -I$(NODE) -I$(SET) -I$(EDGE)
