@@ -20,15 +20,15 @@ class Set
   Set() = default;
   ~Set() = default;
   
-  void add_member(T*);
-  void remove_member(T*);
+  void add_member(T);
+  void remove_member(T);
   virtual void clear();
   bool empty() const;
   unsigned int size() const;
       
-  T* operator[](std::size_t n) const; // bör kanske implementeras med iterator istället för index
+  T operator[](std::size_t n) const; // bör kanske implementeras med iterator istället för index
  private:
-  std::vector<T*> members_;
+  std::vector<T> members_;
 };
 
 /*
@@ -36,7 +36,7 @@ class Set
  * Lägg till medlemmen new_member i mängden.
  */
 template <class T>
-void Set<T>::add_member(T* new_member)
+void Set<T>::add_member(T new_member)
 {
   members_.push_back(new_member);
   return;
@@ -48,7 +48,7 @@ void Set<T>::add_member(T* new_member)
  * Ta bort medlemmen old_member ur mängden.
  */
 template <class T>
-void Set<T>::remove_member(T* old_member)
+void Set<T>::remove_member(T old_member)
 {
   for (unsigned int i = 0; i < members_.size(); i++)
     {
@@ -97,7 +97,7 @@ unsigned int Set<T>::size() const
  * Åtkomst till element n i mängden. Används för iteration.
  */
 template <class T>
-T* Set<T>::operator[](std::size_t n) const
+T Set<T>::operator[](std::size_t n) const
 {
   return members_[n];
 }
