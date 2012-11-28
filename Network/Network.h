@@ -43,7 +43,7 @@ class Network
   void remove_all_edges();
   void remove_all_nodes();
   
-  void cheapest_tree();
+  //void cheapest_tree();
   void shortest_path(Node*, Node*);
   void min_cost_flow();
   void max_cost_flow();
