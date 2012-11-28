@@ -42,6 +42,7 @@ class Path
   bool empty() const;
   
   std::list<Edge*>::iterator begin();
+  std::list<Edge*>::iterator end();
   
   void clear();
 

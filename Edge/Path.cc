@@ -86,6 +86,12 @@ Path::begin()
   return members_.begin();
 }
 
+list<Edge*>::iterator
+Path::end()
+{
+  return members_.end();
+}
+
 // Tömmer Path 
 void
 Path::clear()
