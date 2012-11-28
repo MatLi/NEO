@@ -2,10 +2,10 @@
 # Makefile för NEO, GNU GCC (g++)
 #
 # Filkataloger där andra delar av programet finns.
-NODE = ./Node
-EDGE = ./Edge
-NETWORK = ./Network
-SET = ./Set
+NODE = ../Node
+EDGE = ../Edge
+NETWORK = ../Network
+SET = ../Set
 
 
 # Kompilator
@@ -33,10 +33,10 @@ ne_test.o: ne_test.cc $(NODE)/Node.h $(EDGE)/Edge.h $(SET)/Set.h
 	$(CC) $(CPPFLAGS) $(CCFLAGS) -c ne_test.cc
 
 node:
-	cd Node; $(MAKE)
+	cd ../Node; make
 
 edge:
-	cd Edge; $(MAKE)
+	cd ../Edge; make
 
 
 # 'make clean' tar bort objektkodsfiler och 'core' (minnesdump).

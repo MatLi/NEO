@@ -22,6 +22,7 @@ int main()
   n4->change_name("Nod 4");
   n5->change_name("Nod 5");
   n6->change_name("Nod 6");
+  nodes_.add_member(n1);
   Edge* e1 = new Edge(n1,n2);
   Edge* e2 = new Edge(n1,n3);
   Edge* e3 = new Edge(n2,n4);
@@ -50,7 +51,10 @@ int main()
 
   cout << "Noder som finns: " << endl;
 
-  
+  for (auto it : nodes_)
+    {
+      cout << (*it).name() << endl;
+    }
 
   return 0;
 }

@@ -27,6 +27,7 @@ class Set
   unsigned int size() const;
       
   typename std::vector<T>::iterator begin();
+  typename std::vector<T>::iterator end();
  private:
   std::vector<T> members_;
 };
@@ -95,6 +96,12 @@ template <class T>
 typename std::vector<T>::iterator Set<T>::begin()
 {
   return members_.begin();
+}
+
+template <class T>
+typename std::vector<T>::iterator Set<T>::end()
+{
+  return members_.end();
 }
 
 #endif
