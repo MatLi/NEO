@@ -26,7 +26,7 @@ class Set
   bool empty() const;
   unsigned int size() const;
       
-  T operator[](std::size_t n) const; // bör kanske implementeras med iterator istället för index
+  std::vector<T>::iterator begin();
  private:
   std::vector<T> members_;
 };
@@ -91,15 +91,10 @@ unsigned int Set<T>::size() const
   return members_.size();
 }
 
-/*
- * Set<T>::operator[]
- *
- * Åtkomst till element n i mängden. Används för iteration.
- */
 template <class T>
-T Set<T>::operator[](std::size_t n) const
+vector<T>::iterator Set<T>::begin()
 {
-  return members_[n];
+  return members_.begin();
 }
 
 #endif
