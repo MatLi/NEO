@@ -94,6 +94,15 @@ int main()
   e3->change_cost(3);
   e4->change_cost(4);
   e5->change_cost(5);
-  
+
+  Set<Node*> new_nodes = nodes_;
+  for (auto it : new_nodes)
+    {
+      cout << (*it).name() << " har utkanter: ";
+      for (auto it2 : (*it).out_edges())
+	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
+      cout << endl;
+    }
+
   return 0;
 }
