@@ -27,6 +27,8 @@ class path_error: public std::logic_error
 
 class Path
 {
+ public:
+  
  Path(): members_() {}
   Path(Edge* new_edge_);
 
@@ -37,6 +39,7 @@ class Path
   Edge* start_edge() const;
   Edge* end_edge() const;
   void insert_edge(Edge*);
+  bool empty() const;
   
   std::list<Edge*>::iterator begin();
   

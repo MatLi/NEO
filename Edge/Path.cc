@@ -52,10 +52,20 @@ Path::end_edge() const
   return members_.back();
 }
 
+bool
+Path::empty() const
+{
+  return members_.empty();
+}
+
 void
 Path::insert_edge(Edge* in_edge)
 {
-  if (in_edge->to_node() == start_node())
+  if (empty())
+    {
+      members_.push_front(in_edge);
+    }
+  else if (in_edge->to_node() == start_node())
     {
       members_.push_front(in_edge);
       return;

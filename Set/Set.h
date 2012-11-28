@@ -26,7 +26,7 @@ class Set
   bool empty() const;
   unsigned int size() const;
       
-  std::vector<T>::iterator begin();
+  typename std::vector<T>::iterator begin();
  private:
   std::vector<T> members_;
 };
@@ -92,7 +92,7 @@ unsigned int Set<T>::size() const
 }
 
 template <class T>
-vector<T>::iterator Set<T>::begin()
+typename std::vector<T>::iterator Set<T>::begin()
 {
   return members_.begin();
 }
