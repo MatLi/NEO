@@ -20,7 +20,7 @@ CPPFLAGS += -I. -I.. -I$(NODE) -I$(SET) -I$(EDGE)
 # Länkflaggor - Fix för att lösa lokala (IDA) problem med C++ länkbibliotek.
 LDFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
 
-Node.o: Node.h Node.cc Position.h $(EDGE)/Edge.h $(SET)/Set.h
+Node.o: Position.o Node.h Node.cc Position.h $(EDGE)/Edge.h $(SET)/Set.h
 	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Node.cc
 
 Position.o: Position.h
