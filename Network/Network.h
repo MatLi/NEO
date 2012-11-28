@@ -15,9 +15,8 @@
 
 #include <string>
 #include "Node.h"
-#include "NodeSet.h"
 #include "Edge.h"
-#include "EdgeSet.h"
+#include "Set.h"
 
 class Network
 {
@@ -26,16 +25,16 @@ class Network
  Network()
    : edges_(), nodes_(){}
 
- Network(Set<Node> in_nodes_, Set<Edge> in_edges_)
+ Network(Set<Node*> in_nodes_, Set<Edge*> in_edges_)
    : edges_(in_edges_), nodes_(in_nodes_){}
 
-  Network(Set<Node> in_nodes_)
+  Network(Set<Node*> in_nodes_)
     : nodes_(in_nodes_){}
   
-  ~Network() = default; // Inga pekare deafult OK
+  ~Network() = default; // Inga pekare default OK
   
-  Set<Edge> edge_set() const;
-  Set<Node> node_set() const;
+  Set<Edge*> edge_set() const;
+  Set<Node*> node_set() const;
   void add_node(Node*);
   void add_edge(Edge*);
   void remove_node(Node*);
@@ -54,8 +53,8 @@ class Network
   //void fopen(std::string);
   
  private:
-  Set<Edge> edges_;
-  Set<Node> nodes_;
+  Set<Edge*> edges_;
+  Set<Node*> nodes_;
 };
 
 #endif

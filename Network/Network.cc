@@ -16,14 +16,14 @@
 using namespace std;
 
 //  Returnerar alla bågar/kanter
-Set<Edge>
+Set<Edge*>
 Network::edge_set() const
 {
   return edges_;
 }
 
 // Returnerar alla noder
-Set<Node>
+Set<Node*>
 Network::node_set() const
 {
   return nodes_;
