@@ -1,7 +1,7 @@
 /* 
  * FILNAMN:          Path.cc
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Li, Linda och Emil
+ * PROGRAMMERARE:    Li, Linda, Emil, David
  *
  * DATUM:            2012-11-22
  *
@@ -9,38 +9,33 @@
  * Representerar en väg mellan två noder i ett nätverk. Använder sig av en dubbellänkad lista för att hålla ordning på bågarna
 */
 
+#include "Edge.h"
+#include "Node.h"
 #include "Path.h"
+#include <list>
+#include <stdexcept>
+#include <iterator>
 
 using namespace std;
-
-// Defaultkonstruktor
-Path::Path()
-{
-  start_ = nullptr;
-  end_   = nullptr;
-}
 
 // Konstruktor med en specifik båge
 Path::Path(Edge* new_edge_)
 {
-  start_ = new_edge_->from;
-  end_   = new_edge_->to;
-  
-  members_.push_front(new_edge);
+  members_.push_front(new_edge_);
 }
 
 // Returnerar startnoden
 Node*
 Path::start_node() const
 {
-  return start_;
+  return members_.front()->from_node();
 }
 
 // Returnerar slutnoden
 Node*
 Path::end_node() const
 {
-  return end_;
+  return members_.back()->to_node();
 }
 
 // Returnerar första bågen
@@ -50,27 +45,40 @@ Path::start_edge() const
   return members_.front();
 }
 
-// Sätter startnoden
-void
-Path::set_start_edge(Edge* new_start)
+// Returnerar sista bågen
+Edge*
+Path::end_edge() const
 {
-  members_.push_front(new_start);
-  start_ = new_start->from;
+  return members_.back();
 }
 
-// Sätter slutnoden
 void
-Path::set_end_edge(Edge* new_end)
+Path::insert_edge(Edge* in_edge)
 {
-  members_.push_back(new_edge);
-  end_   = new_end->to;
+  if (in_edge->to_node() == start_node())
+    {
+      members_.push_front(in_edge);
+      return;
+    }
+  else if (in_edge->from_node() == end_node())
+    {
+      members_.push_back(in_edge);
+    }
+  else
+    {
+      throw path_error("Du försökte sätta in en båge som inte börjar i slutnoden eller slutar i begynnelsenoden.");
+    }
+}
+
+list<Edge*>::iterator
+Path::begin()
+{
+  return members_.begin();
 }
 
 // Tömmer Path 
 void
 Path::clear()
 {
-  start_ = nullptr;
-  end_   = nullptr;
   members_.clear();
- }
+}
