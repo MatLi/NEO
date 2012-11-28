@@ -6,7 +6,7 @@
  * DATUM:            2012-11-21
  *
  * BESKRIVNING:
- * Edge är ett objekt som motsvarar bågar/kanter i ett nätverksproblem.   
+ * Edge ï¿½r ett objekt som motsvarar bï¿½gar/kanter i ett nï¿½tverksproblem.   
 */
 
 #ifndef EDGE_HH
@@ -21,7 +21,7 @@ class Edge
  public:
   Edge() = delete;
   
- Edge(Node* in_to_, Node* in_from_ )
+ Edge(Node* in_from_, Node* in_to_ )
    :to_(in_to_), 
     from_(in_from_), 
     flow_(0), 
@@ -32,7 +32,7 @@ class Edge
   
   // Vill vi ha fler konstruktorer? 
 
- ~Edge() = default; // Vi vill inte ta bort noderna som pekas på, deafult kan användas.
+ ~Edge() = default; // Vi vill inte ta bort noderna som pekas pï¿½, deafult kan anvï¿½ndas.
 
   Node* from_node() const;
   Node* to_node() const;
