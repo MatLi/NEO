@@ -20,9 +20,11 @@ CPPFLAGS += -I$(NODE) -I$(SET) -I$(EDGE)
 # Länkflaggor - Fix för att lösa lokala problem med C++ länkbibliotek.
 LDFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
 
-Edge.o: Edge.h $(SET)/Set.h $(NODE)/Node.h
+Edge.o: Edge.h $(SET)/Set.h $(NODE)/Node.h Path.o
 	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Edge.cc
 
+Path.o: Edge.h $(NODE)/Node.h
+	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Path.cc
 
 # 'make clean' tar bort objektkodsfiler och 'core' (minnesdump).
 clean:
