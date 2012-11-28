@@ -21,14 +21,7 @@ class Edge
  public:
   Edge() = delete;
   
- Edge(Node* in_from_, Node* in_to_ )
-   :to_(in_to_), 
-    from_(in_from_), 
-    flow_(0), 
-    reduced_cost_(0),
-    maxflow_(0), 
-    minflow_(0),
-    cost_(0){}
+  Edge(Node* in_from_, Node* in_to_ ); //Skrivs i cc-filen
   
   // Vill vi ha fler konstruktorer? 
 
