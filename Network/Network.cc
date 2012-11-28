@@ -11,7 +11,6 @@
 */
 
 #include "Network.h"
-#include <iostream>
 
 using namespace std;
 
@@ -87,7 +86,6 @@ Network::remove_all_nodes()
 //   if (nodes_.size()==0)
 //   {
 //     // något slags feluttryck
-//     cout << "Nätverket saknar noder" << endl;
 //   }
   
 //   //Väljer första jobbnoden och justerar nodmängderna
