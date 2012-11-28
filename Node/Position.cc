@@ -5,7 +5,8 @@
  * mirror och mindre fix i rotate)
  * Datum: 2012-11-21
  *
- * En klass för representation av koordinater och vektorer i planet som används av Node.
+ * En klass för representation av koordinater och vektorer i planet som används
+ * av Node.
  */
 
 #include <cmath>
@@ -58,8 +59,11 @@ Position::rotate(Position center, double angle)
   angle = angle * (PI/180); 
 
   // Uträkning
-  xpos_ = xpos_*cos(angle) - ypos_*sin(angle);
-  ypos_ = xpos_*sin(angle) + ypos_*cos(angle);
+  double new_xpos_ = xpos_*cos(angle) - ypos_*sin(angle);
+  double new_ypos_ = xpos_*sin(angle) + ypos_*cos(angle);
+  xpos_ = new_xpos_;
+  ypos_ = new_ypos_;
+  
   // Translaterar tillbaka till ursprungskoordinatsystemet
   this->translate(center);
 }

@@ -2,6 +2,7 @@
 #include "Edge.h"
 #include "Set.h"
 #include "Path.h"
+#include "Network.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -37,23 +38,23 @@ int main()
   Path path_;
   path_.insert_edge(e1);
   try
-    {
-      path_.insert_edge(e2);
-    }
+  {
+    path_.insert_edge(e2);
+  }
   catch (path_error err)
-    {
-      cout << "E2: " << err.what() << endl;
-    }
+  {
+    cout << "E2: " << err.what() << endl;
+  }
   path_.insert_edge(e3);
   path_.insert_edge(e4);
   try
-    {
-      path_.insert_edge(e5);
-    }
+  {
+    path_.insert_edge(e5);
+  }
   catch (path_error err)
-    {
-      cout << "E5: " << err.what() << endl;
-    }
+  {
+    cout << "E5: " << err.what() << endl;
+  }
 
   cout << "Noder som finns: " << endl;
 
@@ -69,5 +70,31 @@ int main()
     cout << "Fel" << endl;
   if (nodes_.exists(n1))
     cout << "RÃ¤tt" << endl;
+
+  //Test av Network
+
+  Network test_Network;
+  test_Network.add_node(n1);
+  test_Network.add_node(n2);
+  test_Network.add_node(n2);
+  test_Network.add_node(n3);
+  test_Network.add_node(n4);
+  test_Network.add_node(n5);
+  test_Network.add_node(n6);
+  
+  test_Network.add_edge(e1);
+  test_Network.add_edge(e2);
+  test_Network.add_edge(e3);
+  test_Network.add_edge(e4);
+  test_Network.add_edge(e5);
+
+  //Förändring av bågkostnad
+  e1->change_cost(1);
+  e2->change_cost(2);
+  e3->change_cost(3);
+  e4->change_cost(4);
+  e5->change_cost(5);
+  
+  Set<Node*> Network_nodes = test_Network.node_set();
   return 0;
 }

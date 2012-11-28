@@ -13,6 +13,20 @@
 
 using namespace std;
 
+//Konstruktor
+Edge::Edge(Node* in_from_, Node* in_to_ )
+  : to_(in_to_), 
+    from_(in_from_), 
+    flow_(0), 
+    reduced_cost_(0),
+    maxflow_(0), 
+    minflow_(0),
+    cost_(0)
+{
+  to_->add_in_edge(this);
+  from_->add_out_edge(this);
+}
+
 // Returnerar från-nod
 Node* 
 Edge::from_node() const
@@ -84,17 +98,21 @@ Edge::change_minflow(double new_minflow_)
 }
 
 // Ändrar från-nod
-void 
+void
 Edge::change_from(Node* new_from)
 {
+  from_->remove_out_edge(this);
   from_ = new_from;
+  from_->add_out_edge(this);
 }
 
 // Ändrar till-nod
-void 
+void
 Edge::change_to(Node* new_to)
 {
+  to_->remove_in_edge(this);
   to_ = new_to;
+  to_->add_in_edge(this);
 }
 
 // Ändrar flödet
