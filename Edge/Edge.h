@@ -3,7 +3,7 @@
  * PROJEKT:          NEO
  * PROGRAMMERARE:    Li och Linda
  *
- * DATUM:            2012-11-21
+ * DATUM:            2012-11-28
  *
  * BESKRIVNING:
  * Edge �r ett objekt som motsvarar b�gar/kanter i ett n�tverksproblem.   
