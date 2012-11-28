@@ -39,6 +39,13 @@ class Set
 template <class T>
 void Set<T>::add_member(T new_member)
 {
+  for (auto it : members_)
+    {
+      if (&(*it) == new_member)
+	{
+	  return;
+	}
+    }
   members_.push_back(new_member);
   return;
 }
@@ -51,13 +58,16 @@ void Set<T>::add_member(T new_member)
 template <class T>
 void Set<T>::remove_member(T old_member)
 {
-  for (unsigned int i = 0; i < members_.size(); i++)
+  typename std::vector<T>::iterator temp = members_.begin();
+  int i_it = 0;
+  for (auto it : members_)
     {
-      if (members_[i] == old_member)
+      if (&(*it) == old_member)
 	{
-	  members_.erase(members_.begin() + i);
-	  break;
+	  members_.erase(temp + i_it);
+	  return;
 	}
+      i_it++;
     }
   return; 
 }

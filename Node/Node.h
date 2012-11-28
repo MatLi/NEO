@@ -23,6 +23,7 @@ class Node
 {
  public:
   Node() = default;
+ Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), name_(in_name) { }
   ~Node() = default;
 
   Position position() const;
