@@ -15,25 +15,38 @@
 #include "Edge.h"
 #include "Node.h"
 #include <list>
+#include <stdexcept>
+#include <iterator>
+
+class path_error: public std::logic_error
+{
+ public:
+  explicit path_error(const std::string &message) noexcept:
+  std::logic_error(message) { }
+};
 
 class Path
 {
-  Path();
+ public:
+  
+ Path(): members_() {}
   Path(Edge* new_edge_);
 
-  ~Path() = default; // Vi kommer att ta bort list<Edge*> och pekare -> default ok!
+  ~Path() = default; // Vi kommer att ta bort list<Edge*> -> default ok!
 
   Node* start_node() const;
   Node* end_node() const;
   Edge* start_edge() const;
-  void set_start_edge(Edge*);
-  void set_end_edge(Edge*);
+  Edge* end_edge() const;
+  void insert_edge(Edge*);
+  bool empty() const;
+  
+  std::list<Edge*>::iterator begin();
+  std::list<Edge*>::iterator end();
   
   void clear();
 
  private:
-  Node* start_;
-  Node* end_;
   std::list<Edge*> members_;
 };
 

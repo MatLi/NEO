@@ -1,11 +1,12 @@
 #
-# Makefile för NEO/Node, GNU GCC (g++)
+# Makefile för NEO, GNU GCC (g++)
 #
 # Filkataloger där andra delar av programet finns.
-EDGE = ../Edge
 NODE = ../Node
+EDGE = ../Edge
 NETWORK = ../Network
 SET = ../Set
+
 
 # Kompilator
 #CCC = g++
@@ -20,11 +21,23 @@ CPPFLAGS += -I$(NODE) -I$(SET) -I$(EDGE)
 # Länkflaggor - Fix för att lösa lokala problem med C++ länkbibliotek.
 LDFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
 
-Edge.o: Edge.h $(SET)/Set.h $(NODE)/Node.h Path.o
-	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Edge.cc
+# Objektkodsmoduler som ingår i den kompletta kalkylatorn.
+OBJECTS = $(EDGE)/Edge.o $(NODE)/Node.o $(NODE)/Position.o $(EDGE)/Path.o ne_test.o
 
-Path.o: Edge.h $(NODE)/Node.h
-	$(CC) $(CPPFLAGS) $(CCFLAGS) -c Path.cc
+# Huvudmål - skapas med kommandot 'make' eller 'make kalkylator'.
+ne_test: $(OBJECTS) node edge Makefile
+	$(CC) $(CPPFLAGS) $(CCFLAGS) $(LDFLAGS) -o ne_test $(OBJECTS)
+
+# Delmål (flaggan -c avbryter innan länkning, objektkodsfil erhålls)
+ne_test.o: ne_test.cc $(NODE)/Node.h $(EDGE)/Edge.h $(SET)/Set.h
+	$(CC) $(CPPFLAGS) $(CCFLAGS) -c ne_test.cc
+
+node:
+	cd ../Node; make
+
+edge:
+	cd ../Edge; make
+
 
 # 'make clean' tar bort objektkodsfiler och 'core' (minnesdump).
 clean:
@@ -32,8 +45,8 @@ clean:
 
 # 'make zap' tar även bort det körbara programmet och reservkopior (filer
 # som slutar med tecknet '~').
-#zap: clean
-#	@ \rm -rf <programnamn> *~
+zap: clean
+	@ \rm -rf kalkylator *~
 
 # Se upp vid eventuell ändring, '*' får absolut inte finnas för sig!!!
 #
