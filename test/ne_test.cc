@@ -61,8 +61,8 @@ int main()
   for (auto it : nodes_)
     {
       cout << (*it).name() << " har utkanter: ";
-      for (auto it : (*it).out_edges())
-	cout << (*it).from_node() << "->" << (*it).to_node();
+      for (auto it2 : (*it).out_edges())
+	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
       cout << endl;
     }
 

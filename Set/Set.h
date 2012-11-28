@@ -37,7 +37,7 @@ class Set
  * Returnerar sant omm elementet T finns i mängden.
  */
 template <class T>
-Set<T>::exists(T search_element)
+bool Set<T>::exists(T search_element) const
 {
   bool exists = false;
   for (auto it : members_)
