@@ -24,6 +24,12 @@ int main()
   n5->change_name("Nod 5");
   n6->change_name("Nod 6");
   nodes_.add_member(n1);
+  nodes_.add_member(n2);
+  nodes_.add_member(n3);
+  nodes_.add_member(n4);
+  nodes_.add_member(n5);
+  nodes_.add_member(n6);
+  nodes_.remove_member(n5);
   Edge* e1 = new Edge(n1,n2);
   Edge* e2 = new Edge(n1,n3);
   Edge* e3 = new Edge(n2,n4);
@@ -53,9 +59,17 @@ int main()
   cout << "Noder som finns: " << endl;
 
   for (auto it : nodes_)
-  {
-    cout << (*it).name() << endl;
-  }
+    {
+      cout << (*it).name() << " har utkanter: ";
+      for (auto it2 : (*it).out_edges())
+	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
+      cout << endl;
+    }
+
+  if (nodes_.exists(n5))
+    cout << "Fel" << endl;
+  if (nodes_.exists(n1))
+    cout << "Rätt" << endl;
 
   //Test av Network
 
@@ -80,7 +94,15 @@ int main()
   e3->change_cost(3);
   e4->change_cost(4);
   e5->change_cost(5);
-  
-  Set<Node*> Network_nodes = test_Network.node_set();
+
+  Set<Node*> new_nodes = nodes_;
+  for (auto it : new_nodes)
+    {
+      cout << (*it).name() << " har utkanter: ";
+      for (auto it2 : (*it).out_edges())
+	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
+      cout << endl;
+    }
+
   return 0;
 }
