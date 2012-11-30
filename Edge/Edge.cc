@@ -17,8 +17,8 @@ using namespace std;
  * bågengår mellan.
  */
 Edge::Edge(Node* in_from_, Node* in_to_ )
-  : to_(in_to_), 
-    from_(in_from_), 
+  : from_(in_from_),
+    to_(in_to_),
     flow_(0), 
     reduced_cost_(0),
     maxflow_(0), 
