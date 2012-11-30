@@ -41,6 +41,7 @@ class Network
   void remove_edge(Edge*);
   void remove_all_edges();
   void remove_all_nodes();
+  void reset_network();
   
   //void cheapest_tree();
   void shortest_path(Node*, Node*);

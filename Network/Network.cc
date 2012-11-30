@@ -71,6 +71,25 @@ Network::remove_all_nodes()
   nodes_.clear();
 }
 
+/* void reset_network()
+ * Återställer algoritmernas genererade data: bågflöden, nodpriser, reducerade
+ * kostnader.
+ */
+void
+Network::reset_network()
+{
+  for (auto it : edges_)
+    {
+      (*it).change_flow(0);
+      (*it).change_reduced_cost(0);
+    }
+  for (auto it : nodes_)
+    {
+      (*it).change_node_price(0);
+    }
+  return;
+}
+
 // // Genererar en billigaste-träd-lösning
 // // Utgår från att nätverket är "nollställt"
 // void
