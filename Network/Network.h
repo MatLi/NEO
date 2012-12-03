@@ -23,13 +23,13 @@ class Network
  public:
 
  Network()
-   : edges_(), nodes_(){}
+   : edges_(), nodes_() {}
 
  Network(Set<Node*> in_nodes_, Set<Edge*> in_edges_)
-   : edges_(in_edges_), nodes_(in_nodes_){}
+   : edges_(in_edges_), nodes_(in_nodes_) {}
 
-  Network(Set<Node*> in_nodes_)
-    : nodes_(in_nodes_){}
+ Network(Set<Node*> in_nodes_)
+   : nodes_(in_nodes_) {}
   
   ~Network() = default; // Inga pekare default OK
   

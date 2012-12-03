@@ -9,100 +9,112 @@ using namespace std;
 
 int main()
 {
-  Set<Node*> nodes_;
-  Set<Edge*> edges_;
-  Node* n1 = new Node();
-  Node* n2 = new Node();
-  Node* n3 = new Node();
-  Node* n4 = new Node();
-  Node* n5 = new Node();
-  Node* n6 = new Node();
-  n1->change_name("Nod 1");
-  n2->change_name("Nod 2");
-  n3->change_name("Nod 3");
-  n4->change_name("Nod 4");
-  n5->change_name("Nod 5");
-  n6->change_name("Nod 6");
-  nodes_.add_member(n1);
-  nodes_.add_member(n2);
-  nodes_.add_member(n3);
-  nodes_.add_member(n4);
-  nodes_.add_member(n5);
-  nodes_.add_member(n6);
-  nodes_.remove_member(n5);
-  Edge* e1 = new Edge(n1,n2);
-  Edge* e2 = new Edge(n1,n3);
-  Edge* e3 = new Edge(n2,n4);
-  Edge* e4 = new Edge(n4,n6);
-  Edge* e5 = new Edge(n5,n6);
-  Path path_;
-  path_.insert_edge(e1);
-  try
-  {
-    path_.insert_edge(e2);
-  }
-  catch (path_error err)
-  {
-    cout << "E2: " << err.what() << endl;
-  }
-  path_.insert_edge(e3);
-  path_.insert_edge(e4);
-  try
-  {
-    path_.insert_edge(e5);
-  }
-  catch (path_error err)
-  {
-    cout << "E5: " << err.what() << endl;
-  }
+  // Testar Network
 
-  cout << "Noder som finns: " << endl;
+  Network net;
+  net.add_node(new Node("Nod 1"));
+  net.add_node(new Node("Nod 2"));
+  net.add_node(new Node("Nod 3"));
+  net.add_node(new Node("Nod 4"));
+  net.add_node(new Node("Nod 5"));
+  net.add_node(new Node("Nod 6"));
 
-  for (auto it : nodes_)
+  cout << "Dessa noder finns i nätverket (med utkanter):" << endl;
+  for (auto it : net.node_set())
     {
-      cout << (*it).name() << " har utkanter: ";
+      cout << (*it).name() << ": ";
       for (auto it2 : (*it).out_edges())
-	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
+	{
+	  cout << &(*it2) << " ";
+	}
       cout << endl;
     }
 
-  if (nodes_.exists(n5))
-    cout << "Fel" << endl;
-  if (nodes_.exists(n1))
-    cout << "RÃ¤tt" << endl;
+  cout << "Lägg till två kanter." << endl;
+  for (auto it : net.node_set())
+    {
+      if ((*it).name() == "Nod 1")
+	{
+	  for (auto it2 : net.node_set())
+	    {
+	      if ((*it2).name() == "Nod 2")
+		{
+		  net.add_edge(new Edge(&(*it),&(*it2)));
+		}
+	      else if ((*it2).name() == "Nod 3")
+		{
+		  net.add_edge(new Edge(&(*it),&(*it2)));
+		}
+	    }
+	}
+    }
 
-  //Test av Network
+  cout << "Dessa noder finns i nätverket (med utkanter):" << endl;
+  for (auto it : net.node_set())
+    {
+      cout << (*it).name() << ": ";
+      for (auto it2 : (*it).out_edges())
+	{
+	  cout << &(*it2) << " ";
+	}
+      cout << endl;
+    }
 
-  Network test_Network;
-  test_Network.add_node(n1);
-  test_Network.add_node(n2);
-  test_Network.add_node(n2);
-  test_Network.add_node(n3);
-  test_Network.add_node(n4);
-  test_Network.add_node(n5);
-  test_Network.add_node(n6);
+  cout << "Dessa bågar finns i nätverket:" << endl;
+  for (auto it : net.edge_set())
+    {
+      cout << &(*it) << endl;
+    }
+
+  cout << "Ta bort Nod 1->Nod 2-kanten" << endl;
+  for (auto it : net.edge_set())
+    {
+      if ((*it).to_node()->name() == "Nod 2")
+	{
+	  net.remove_edge(&(*it));
+	}
+    }
+  cout << "Dessa noder finns i nätverket (med utkanter):" << endl;
+  for (auto it : net.node_set())
+    {
+      cout << (*it).name() << ": ";
+      for (auto it2 : (*it).out_edges())
+	{
+	  cout << &(*it2) << " ";
+	}
+      cout << endl;
+    }
+  cout << "Dessa bågar finns i nätverket:" << endl;
+  for (auto it : net.edge_set())
+    {
+      cout << &(*it) << endl;
+    }
+
+  cout << "Ta bort alla kanter." << endl;
+  net.remove_all_edges();
+  cout << "Dessa noder finns i nätverket (med utkanter):" << endl;
+  for (auto it : net.node_set())
+    {
+      cout << (*it).name() << ": ";
+      for (auto it2 : (*it).out_edges())
+	{
+	  cout << &(*it2) << " ";
+	}
+      cout << endl;
+    }
+  cout << "Dessa bågar finns i nätverket:" << endl;
+  for (auto it : net.edge_set())
+    {
+      cout << (*it).from_node()->name() << "->"
+	   << (*it).to_node()->name() << endl;
+    }
+
+  net.remove_all_nodes();
+  cout << "Dessa noder finns i nätverket:" << endl;
+  for (auto it : net.node_set())
+    {
+      cout << (*it).name() << endl;
+    }
   
-  test_Network.add_edge(e1);
-  test_Network.add_edge(e2);
-  test_Network.add_edge(e3);
-  test_Network.add_edge(e4);
-  test_Network.add_edge(e5);
-
-  //Förändring av bågkostnad
-  e1->change_cost(1);
-  e2->change_cost(2);
-  e3->change_cost(3);
-  e4->change_cost(4);
-  e5->change_cost(5);
-
-  Set<Node*> new_nodes = nodes_;
-  for (auto it : new_nodes)
-    {
-      cout << (*it).name() << " har utkanter: ";
-      for (auto it2 : (*it).out_edges())
-	cout << (*it2).from_node()->name() << "->" << (*it2).to_node()->name();
-      cout << endl;
-    }
-
   return 0;
 }

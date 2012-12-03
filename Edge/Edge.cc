@@ -29,6 +29,12 @@ Edge::Edge(Node* in_from_, Node* in_to_ )
   from_->add_out_edge(this);
 }
 
+Edge::~Edge()
+{
+  to_->remove_in_edge(this);
+  from_->remove_out_edge(this);
+}
+
 /* Node* from_node()
  * Returnerar från-nod
  */
