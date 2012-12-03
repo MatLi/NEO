@@ -57,8 +57,8 @@ class Network
   void max_flow();
 
   // Eventuellt?
-  //void fwrite(std::string);
-  //void fopen(std::string);
+  void fwrite(const std::string);
+  void fopen(const std::string);
   
  private:
   Set<Edge*> edges_;

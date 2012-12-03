@@ -12,6 +12,7 @@
 
 #include "Network.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -180,3 +181,57 @@ Network::max_flow()
   //Din kod här
 }
 
+void
+Network::fwrite(const string filename)
+{
+  ofstream xmlwrite;
+  xmlwrite.open(filename);
+
+  xmlwrite << "<network>" << endl;
+  xmlwrite << "  <nodes>" << endl;
+  for (auto it : nodes_)
+    {
+      xmlwrite << "    <node "
+	       << "id=\"" << it << "\" "
+	       << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
+	       << "xpos=\"" << (*it).position().xpos() << "\" "
+	       << "ypos=\"" << (*it).position().ypos() << "\" "
+	       << "flow=\"" << (*it).flow() << "\" "
+	       << "node_price=\"" << (*it).node_price() << "\" "
+	       << "/>" << endl;
+    }
+  xmlwrite << "  </nodes>" << endl;
+  xmlwrite << "  <edges>" << endl;
+  for (auto it : edges_)
+    {
+      xmlwrite << "    <edge "
+	       << "flow=\"" << (*it).flow() << "\" "
+	       << "reduced_cost=\"" << (*it).reduced_cost() << "\" "
+	       << "cost=\"" << (*it).cost() << "\" "
+	       << "maxflow=\"" << (*it).maxflow() << "\" "
+	       << "minflow=\"" << (*it).minflow() << "\" "
+	       << "from_node=\"" << (*it).from_node() << "\" "
+	       << "to_node=\"" << (*it).to_node() << "\" "
+	       << "/>" << endl;
+    }
+  xmlwrite << "  </edges>" << endl;
+  xmlwrite << "</network>";
+ 
+  xmlwrite.close();
+}
+
+void
+Network::fopen(const string filename)
+{
+  ifstream xmlread;
+  xmlread.open(filename);
+  
+  string line;
+  while (xmlread.good())
+    {
+      getline (xmlread,line);
+      cout << line << endl;
+    }
+  
+  xmlread.close();
+}
