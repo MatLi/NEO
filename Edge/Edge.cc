@@ -63,12 +63,21 @@ Edge::flow() const
 } 
 
 /* double reduced_cost()
- * Returnerar bÃgens reducerade kostnaden
+ * Returnerar bÃgens reducerade kostnad
  */
 double 
 Edge::reduced_cost() const
 {
   return reduced_cost_;
+}
+
+/* double cost()
+ * Returnerar bÃgens kostnad
+ */
+double 
+Edge::cost() const
+{
+  return cost_;
 }
 
 /* double maxflow()

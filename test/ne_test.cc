@@ -40,29 +40,29 @@ int main()
   Edge* e15 = new Edge(n4,n5);
   Edge* e16 = new Edge(n5,n4);
 
-  e1.change_cost(6);
-  e2.change_cost(6);
+  // e1.change_cost(6);
+  // e2.change_cost(6);
   
-  e3.change_cost(5);
-  e4.change_cost(5);
+  // e3.change_cost(5);
+  // e4.change_cost(5);
 
-  e5.change_cost(6);
-  e6.change_cost(6);
+  // e5.change_cost(6);
+  // e6.change_cost(6);
 
-  e7.change_cost(2);
-  e8.change_cost(2);
+  // e7.change_cost(2);
+  // e8.change_cost(2);
   
-  e9.change_cost(4);
-  e10.change_cost(4);
+  // e9.change_cost(4);
+  // e10.change_cost(4);
 
-  e11.change_cost(3);
-  e12.change_cost(3);
+  // e11.change_cost(3);
+  // e12.change_cost(3);
 
-  e13.change_cost(3);
-  e14.change_cost(3);
+  // e13.change_cost(3);
+  // e14.change_cost(3);
   
-  e15.change_cost(1);
-  e16.change_cost(1);
+  // e15.change_cost(1);
+  // e16.change_cost(1);
 
   net.add_edge(e1);
   net.add_edge(e2);
@@ -81,17 +81,20 @@ int main()
   net.add_edge(e15);
   net.add_edge(e16);
 
-  net.cheapest_tree();
+  // net.cheapest_tree();
 
-  cout << "Bågar i trädet." << endl;
-  for (auto it : net.edge_set())
-    {
-      if ((*it).flow() == 1)
-	{
-	  cout << (*it).from_node()->name() << "->"
-	       << (*it).to_node()->name() << endl;
-	}
-    }
+  // cout << "Bågar i trädet." << endl;
+  // for (auto it : net.edge_set())
+  //   {
+  //     if ((*it).flow() == 1)
+  // 	{
+  // 	  cout << (*it).from_node()->name() << "->"
+  // 	       << (*it).to_node()->name() << endl;
+  // 	}
+  //   }
+
+  net.fwrite("testfil.txt");
+  net.fopen("testfil.txt");
   
   return 0;
 }
