@@ -48,6 +48,7 @@ void
 Network::remove_node(Node* del_node)
 {
   nodes_.remove_member(del_node);
+  delete del_node;
 }
 
 // Tar bort en båge/kant
@@ -55,6 +56,7 @@ void
 Network::remove_edge(Edge* del_edge)
 {
   edges_.remove_member(del_edge);
+  delete del_edge;
 }
 
 // Tar bort alla bågar/kanter
