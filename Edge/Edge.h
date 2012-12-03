@@ -25,7 +25,7 @@ class Edge
   
   // Vill vi ha fler konstruktorer? 
 
- ~Edge() = default; // Vi vill inte ta bort noderna som pekas p�, deafult kan anv�ndas.
+  ~Edge();
 
   Node* from_node() const;
   Node* to_node() const;
