@@ -18,6 +18,13 @@
 #include "Edge.h"
 #include "Set.h"
 
+class network_error: public std::logic_error
+{
+ public:
+  explicit network_error(const std::string &message) noexcept:
+  std::logic_error(message) { }
+}
+
 class Network
 {
  public:
@@ -43,7 +50,7 @@ class Network
   void remove_all_nodes();
   void reset_network();
   
-  //void cheapest_tree();
+  void cheapest_tree();
   void shortest_path(Node*, Node*);
   void min_cost_flow();
   void max_cost_flow();

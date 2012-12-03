@@ -92,88 +92,63 @@ Network::reset_network()
   return;
 }
 
-// // Genererar en billigaste-träd-lösning
-// // Utgår från att nätverket är "nollställt"
-// void
-// Network::cheapest_tree()
-// {
-//   //Temporära variabler
-//   Node* working_node = nullptr;
-//   Edge* Cheapest_current_edge = nullptr;
-//   Set<Node*> Searched;
-//   Set<Node*> Not_Searched(nodes_);
-//   double Cheapest_cost = 1.7*10^308; //Maxvärde för double i C++
-//   bool from_in_edges = false;
+// Genererar en billigaste-träd-lösning
+// Utgår från att nätverket är "nollställt"
+void
+Network::cheapest_tree()
+{
+  //Temporära variabler
+  Node* working_node = nullptr;
+  Set<Node*> Searched;
+  Set<Node*> Not_Searched(nodes_);
+  Set<Edge*> Spanning_Edges;
+  const unsigned int num_nodes = nodes_.size();
 
-//   if (nodes_.size()==0)
-//   {
-//     // något slags feluttryck
-//     cout << "Nätverket saknar noder" << endl;
-//   }
-  
-//   //Väljer första jobbnoden och justerar nodmängderna
-//   working_node = Not_searched[0];
-//   Searched.add_member(working_node);
-//   Not_searched.remove_member(working_node);
+  if (nodes_.empty())
+    {
+      throw network_error("Nätverket saknar noder");
+    }
 
-//   //Loopar över alla bågar som ska väljas
-//   for (unsigned int edges_in_tree = 1; edges_in_tree <= nodes_.size()-1; edges_in_tree++)
-//   {
-    
-//     //Loopar över alla noder i Searched
-//     for (unsigned int j=0;j<Searched.size();j++)
-//     {
-//       //Sätter working_node till iteratornumrets nod
-//       working_node = Searched[j];
+  // Initialisera algoritmen.
+  working_node = Not_searched[0];
+  Searched.add_member(working_node);
+  Not_searched.remove_member(working_node);
 
-//       //Söker igenom working_node:s inbågar efter billigaste båge
-//       for(unsigned int i=0; i<working_node->in_edges.size() ; i++)
-//       {
-// 	// Kollar om bågen är möjligt alternativ
-// 	if (working_node->in_edges(i).cost() < Cheapest_cost // Kollar om bågpriset är billigast
-// 	    && working_node->in_edges(i).flow()==0  // Kollar om bågen används
-// 	    && Searched.search_element(working_node->in_edges(i)).from_node()==false) // Kollar om från-noden redan finns i mängden
-// 	{
-// 	  Cheapest_cost = working_node->in_edges(i).cost();
-// 	  Cheapest_current_edge = working_node->in_edges(i);
-// 	  from_in_edges = true;
-// 	}
-//       }
-//       // Söker igenom working_node:s utbågar efter billigaste båge
-//       for(unsigned int i=0; i<working_node->out_edges.size() ; i++)
-//       {
-// 	// Kollar om bågen är möjligt alternativ
-// 	if (working_node->out_edges(i).cost() < Cheapest_cost // Kollar om bågpriset är billigast
-// 	    && working_node->out_edges(i).flow()==0  // Kollar om bågen används
-// 	    && Searched.search_element(working_node->out_edges(i)).to_node()==false) // Kollar om till-noden redan finns i mängden
-// 	{
-// 	  Cheapest_cost = working_node->out_edges(i).cost();
-// 	  Cheapest_current_edge = working_node->out_edges(i);
-// 	  from_in_edges = false;
-// 	}
-//       }
-//     }
-  
-//     //Uppdaterar nätverket med ny båge i trädet 
-//     Cheapest_current_edge->change_flow() = 1; //bågen används i trädet
-  
-//     //Uppdaterar nodmängder
-//     if (from_in_edges == true)
-//     {
-//       Searched.add_member(Cheapest_current_edge->from_node());
-//       Not_Searched.remove_member(Cheapest_current_edge->from_node());
-//     }
-//     else
-//     {
-//       Searched.add_member(Cheapest_current_edge->to_node());
-//       Not_Searched.remove_member(Cheapest_current_edge->to_node());
-//     }
+  //Väljer första jobbnoden och justerar nodmängderna
+  do
+    {
+      double min_cost = 1.7*10^308; //Maxvärde för double i C++
+      Edge* cheapest_current_edge = nullptr;
+      for (auto it : edges_)
+	{
+	  if (Searched.exists((*it).from_node()) &&
+	      Not_Searched.exists((*it).to_node()))
+	    {
+	      if ((*it).cost() < min_cost)
+		{
+		  cheapest_current_edge = &(*it);
+		  min_cost = (*it).cost();
+		}
+	    }
+	}
+      Spanning_Edges.add_member(cheapest_current_edge);
+      Searched.add_member(cheapest_current_edge->to_node());
+      Not_Searched.remove_member(cheapest_current_edge->to_node());
+    } while(Spanning_Edges.size() < num_nodes - 1);
 
-//     //Nollställer cheapest:s värden
-//     Cheapest_cost = 1.7*10^308; //Maxvärde för double i C++
-//     Cheapest_current_edge = nullptr;
-//   }
-// }
+  for (auto it : Spanning_Edges)
+    {
+      if (&(*it) == nullptr)
+	{
+	  throw network_error("Kan ej generera billigaste uppspännande träd, det finns inte kanter till alla noder.");
+	}
+      else
+	{
+	  (*it).change_flow(1); // Tolkas som att kanten är med i BUT.
+	}
+    }
+  return;
+}
 
 // Genererar en kortaste-väg-lösning
 void
