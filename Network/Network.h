@@ -51,8 +51,8 @@ class Network
   void remove_all_nodes();
   void reset_network();
   
-  // void cheapest_tree();
-  void shortest_path(Node*, Node*);
+  void cheapest_tree();
+  void cheapest_path(Node*, Node*);
   void min_cost_flow();
   void max_cost_flow();
   void max_flow();
@@ -64,6 +64,9 @@ class Network
  private:
   Set<Edge*> edges_;
   Set<Node*> nodes_;
+  
+  double min_cost_flow_help();
+  void update_node_prices(Node*, Set<Edge*>);
 };
 
 #endif

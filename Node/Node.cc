@@ -16,6 +16,26 @@
 #include <string>
 using namespace std;
 
+bool
+Node::connected() const
+{
+  return connected_;
+}
+
+void
+Node::flip_connected()
+{
+  connected_ = !connected_;
+  return;
+}
+
+void
+Node::set_connected(bool new_c)
+{
+  connected_ = new_c;
+  return;
+}
+
 Position
 Node::position() const
 {

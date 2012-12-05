@@ -23,7 +23,7 @@ class Node
 {
  public:
   Node() = default;
- Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), name_(in_name) { }
+ Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), name_(in_name), connected_(false) { }
   ~Node() = default;
 
   Position position() const;
@@ -40,6 +40,10 @@ class Node
   void add_out_edge(Edge*);
   void remove_in_edge(Edge*);
   void remove_out_edge(Edge*);
+  
+  bool connected() const;
+  void flip_connected();
+  void set_connected(bool);
 
  private:
   Position graphic_pos_;
@@ -48,6 +52,7 @@ class Node
   Set<Edge*> in_edges_;
   Set<Edge*> out_edges_;
   std::string name_;
+  bool connected_;
 };
 
 #endif
