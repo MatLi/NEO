@@ -278,7 +278,9 @@ Network::min_cost_flow_help()
 {
   Set<Edge*> base_edges;
   Set<Edge*> non_base_edges;
-
+  
+  // Lägg till de bågar som måste vara basbågar. Sätt alla andra till
+  // icke-basbågar.
   for (auto it : edges_)
     {
       if ((*it).flow() > (*it).minflow() && (*it).flow() < (*it).maxflow())
@@ -291,6 +293,8 @@ Network::min_cost_flow_help()
 	}
     }
   
+  // Se till att alla noder är kopplade som ett träd med basbågar.
+  // Om de är kopplade, markeras dessa som connected.
   for (auto it : nodes_)
     {
       (*it).set_connected(false);
@@ -304,6 +308,9 @@ Network::min_cost_flow_help()
 	}
     }
 
+  // Om det finns icke-kopplade noder, så läggs så många
+  // icke-basbågar som behövs över i mängden av basbågar.
+  // Samtidigt bibehålls trädstrukturen.
   Set<Edge*>::iterator itE = non_base_edges.begin();
   while (base_edges.size() < nodes_.size() - 1)
     {
@@ -326,13 +333,16 @@ Network::min_cost_flow_help()
 	}
     }
   
+  // Sätt alla noder till icke-kopplade.
   for (auto it : nodes_)
     {
       (*it).set_connected(false);
     }
+  // Uppdatera alla nodpriser. start_node har nodpris 0.
   Node* start_node = (*nodes_.begin());
   update_node_prices(start_node);
   
+  // Beräkna de reducerade kostnaderna för icke-basbågar.
   for (auto it : non_base_edges)
     {
       (*it).change_reduced_cost((*it).cost() +
@@ -340,7 +350,10 @@ Network::min_cost_flow_help()
 				(*it).to_node()->node_price());
     }
 
+  // Kontrollera avbrottskriterium och se till att de som inte
+  // uppfyller kriterierna sparas i en mängd.
   bool optimal = true;
+  Set<Edge*> unfulfilling_edges;
   for (auto it : edges_)
     {
       if ((*it).reduced_cost() == 0 &&
@@ -359,15 +372,42 @@ Network::min_cost_flow_help()
 	{
 	  optimal = optimal && true;
 	}
+      else if (non_base_edges.exists(&(*it)))
+	{
+	  unfulfilling_edges.add_member(&(*it));
+	  optimal = false;
+	}
       else
 	{
 	  optimal = false;
 	}
     }
 
+  // Om flödet är optimalt, upphör med rekursionen.
   if (optimal)
     {
       return;
+    }
+  
+  // Flödet är icke-optimalt. Bestäm en inkommande basbåge.
+  double max_reduced_cost = 0;
+  Edge* incoming_edge = nullptr;
+  for (auto it : unfulfilling_edges)
+    {
+      if (abs((*it).reduced_cost()) > max_reduced_cost())
+	{
+	  incoming_edge = &(*it);
+	  max_reduced_cost = abs((*it).reduced_cost());
+	}
+    }
+  
+  // Bestäm sökriktning.
+  if (incoming_edge->reduced_cost() > 0)
+    {
+
+    }
+  else if (incoming_edge->reduced_cost() < 0)
+    {
     }
 }
 
