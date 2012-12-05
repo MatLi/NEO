@@ -1,7 +1,7 @@
 /* 
  * FILNAMN:          Network.cc
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Li och Linda
+ * PROGRAMMERARE:    Li, Linda och Jonas
  *
  * DATUM:            2012-11-21
  *
@@ -13,6 +13,7 @@
 #include "Network.h"
 #include <iostream>
 #include <fstream>
+#include <cctype>
 
 using namespace std;
 
@@ -226,11 +227,158 @@ Network::fopen(const string filename)
   ifstream xmlread;
   xmlread.open(filename);
   
-  string line;
+  string word;
+  string tagname;
+  string label;
+  bool in_tag = false;
+  bool in_word = false;
+  bool in_arg = false;
+  bool end_expected = false;
+  bool arg_expected = false;
+  bool making_tagname = false;
+  char next_char = ' ';
   while (xmlread.good())
     {
-      getline (xmlread,line);
-      cout << line << endl;
+      xmlread >> next_char;
+
+      if (isspace(next_char)) // Space - klar
+	{
+	  if ((making_tagname and !in_word) or
+	      (in_word and !making_tagname and !in_arg))
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad space" << endl;
+	    }
+	  else if (making_tagname)
+	    {
+	      tagname = word;
+	      word = "";
+	      in_word = false;
+	      making_tagname = false;
+	      // Kolla om bra tagname
+	    }
+	  else if (in_arg)
+	    {
+	      word.push_back(next_char);
+	    }
+	  else
+	    {
+	      continue;
+	    }
+	}
+      else if (next_char == '<') // Start tag - klar
+	{
+	  if (in_tag)
+	    {
+	      // ERROR
+	      cout << "Inläsningsfel - felplacerad <" << endl;
+	    }
+	  else
+	    {
+	      in_tag = true;
+	      making_tagname = true;
+	    }
+	}
+      else if (next_char == '/') // Endtag - klar
+	{
+	  if (!in_tag or
+	      (in_word and !making_tagname) or
+	      arg_expected or
+	      in_arg or
+	      end_expected)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad /" << endl;
+	    }
+	  else
+	    {
+	      end_expected = true;
+	      in_word = false;
+	      // det blir inge bra om typ <tagname/> - inte bra
+	    }
+	}
+      else if (isalnum(next_char) or
+	       next_char == '_') // Alph or Num - klar
+	{
+	  if (!in_tag or
+	      arg_expected or
+	      (end_expected and !making_tagname))
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerat tecken" << endl;
+	    }
+	  else if (in_word)
+	    {
+	      word.push_back(next_char);
+	    }
+	  else
+	    {
+	      in_word = true;
+	      word = next_char;
+	    }
+	}
+      else if (next_char == '=') // Equal
+	{
+	  if (!in_word or
+	      making_tagname or
+	      in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad =" << endl;
+	    }
+	  else
+	    {
+	      in_word = false;
+	      label = word;
+	      word = "";
+	      arg_expected = true;
+	      // Kolla redan här om bra label
+	    }
+	}
+      else if (next_char == '\"') // Quote
+	{
+	  if (!arg_expected and !in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad \"" << endl;
+	    }
+	  else
+	    {
+	      if (arg_expected)
+		{
+		  in_arg = true;
+		  arg_expected = false;
+		}
+	      else
+		{
+		  in_arg = false;
+		  in_word = false;
+		  // fixa grejer
+		}
+	    }
+	}
+      else if (next_char == '>') // end of tag
+	{
+	  if (!in_tag or
+	      (!in_word and making_tagname) or
+	      (in_word and !making_tagname) or
+	      arg_expected or
+	      in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad >" << endl;
+	    }
+	  else
+	    {
+	      in_tag = false;
+	      // gör det som ska göras, iaf om endtag
+	    }
+	}
+      else // Unknown character - klar
+	{
+	  // Error eller bara skippa
+	  cout << "Kanske inläsningsfel - okänt tecken: " << next_char << endl;
+	}
     }
   
   xmlread.close();
