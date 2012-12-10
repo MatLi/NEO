@@ -93,7 +93,7 @@ int main()
   // 	}
   //   }
 
-  //net.fwrite("testfil.txt");
+  net.fwrite("testfil.txt");
   //net.fopen("testfil.txt");
   
   return 0;

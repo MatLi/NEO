@@ -222,6 +222,13 @@ Network::fwrite(const string filename)
 }
 
 void
+Felutskrift(const char next_char, const string word)
+{
+  cout << "Fel - " << next_char << " - " << word << endl << endl;
+  return;
+}
+
+void
 Network::fopen(const string filename)
 {
   ifstream xmlread;
@@ -236,10 +243,21 @@ Network::fopen(const string filename)
   bool end_expected = false;
   bool arg_expected = false;
   bool making_tagname = false;
+  bool in_network = false;
+  bool in_nodes = false;
+  bool in_edges = false;
+  bool making_node = false;
+  bool making_edge = false;
+  bool after_nodes = false;
+  bool after_edges = false;
   char next_char = ' ';
   while (xmlread.good())
     {
-      xmlread >> next_char;
+      xmlread.get(next_char);
+      if (!xmlread.good())
+	{
+	  break;
+	}
 
       if (isspace(next_char)) // Space - klar
 	{
@@ -247,7 +265,8 @@ Network::fopen(const string filename)
 	      (in_word and !making_tagname and !in_arg))
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerad space" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else if (making_tagname)
 	    {
@@ -255,11 +274,91 @@ Network::fopen(const string filename)
 	      word = "";
 	      in_word = false;
 	      making_tagname = false;
-	      // Kolla om bra tagname
+	      if (tagname == "network")
+		{
+		  if (in_network)
+		    {
+		      // Error
+		      Felutskrift('*', "network in network");
+		      break;
+		    }
+		  else
+		    {
+		      in_network = true;
+		    }
+		}
+	      else if (tagname == "nodes")
+		{
+		  if (!in_network or
+		      in_nodes or
+		      after_nodes)
+		    {
+		      
+		      // Error
+		      Felutskrift('*', "nodes in wrong place");
+		      break;
+		    }
+		  else
+		    {
+		      in_nodes = true;
+		    }
+		}
+	      else if (tagname == "node")
+		{
+		  if (!in_nodes)
+		    {
+		      
+		      // Error
+		      Felutskrift('*', "node in wrong place");
+		      break;
+		    }
+		  else
+		    {
+		      making_node = true;
+		    }
+		}
+	      else if (tagname == "edges")
+		{
+		  if (!in_network or
+		      !after_nodes or
+		      in_edges or 
+		      after_edges)
+		    {
+		      
+		      // Error
+		      Felutskrift('*', "edges in wrong place");
+		      break;
+		    }
+		  else
+		    {
+		      in_edges = true;
+		    }
+		}
+	      else if (tagname == "edge")
+		{
+		  if (!in_edges)
+		    {
+		      // Error
+		      Felutskrift('*', "edge in wrong place");
+		      break;
+		    }
+		  else
+		    {
+		      making_edge = true;
+		    }
+		}
+	      else
+		{
+		  // Error
+		  Felutskrift('*', tagname);
+		  break;
+		  // tillåt okända tags, inte fel?
+		  //    flagga in_unknown_tag?
+		}
 	    }
 	  else if (in_arg)
 	    {
-	      word.push_back(next_char);
+	      word.push_back(next_char); // ska alla spaces tillåtas?
 	    }
 	  else
 	    {
@@ -271,7 +370,8 @@ Network::fopen(const string filename)
 	  if (in_tag)
 	    {
 	      // ERROR
-	      cout << "Inläsningsfel - felplacerad <" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else
 	    {
@@ -279,7 +379,7 @@ Network::fopen(const string filename)
 	      making_tagname = true;
 	    }
 	}
-      else if (next_char == '/') // Endtag - klar
+      else if (next_char == '/') // Endtag
 	{
 	  if (!in_tag or
 	      (in_word and !making_tagname) or
@@ -288,7 +388,8 @@ Network::fopen(const string filename)
 	      end_expected)
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerad /" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else
 	    {
@@ -305,7 +406,8 @@ Network::fopen(const string filename)
 	      (end_expected and !making_tagname))
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerat tecken" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else if (in_word)
 	    {
@@ -324,7 +426,8 @@ Network::fopen(const string filename)
 	      in_arg)
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerad =" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else
 	    {
@@ -340,7 +443,8 @@ Network::fopen(const string filename)
 	  if (!arg_expected and !in_arg)
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerad \"" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else
 	    {
@@ -366,18 +470,27 @@ Network::fopen(const string filename)
 	      in_arg)
 	    {
 	      // Error
-	      cout << "Inläsningsfel - felplacerad >" << endl;
+	      Felutskrift(next_char,word);
+	      break;
 	    }
 	  else
 	    {
 	      in_tag = false;
+	      word = "";
+	      in_word = false;
+	      end_expected = false;
+	      making_tagname = false;
 	      // gör det som ska göras, iaf om endtag
+	      // om making_tagname - starta in_nånting
+	      //     samma koll som space isf
+	      // om end_expected - avsluta in_nånting
 	    }
 	}
       else // Unknown character - klar
 	{
 	  // Error eller bara skippa
-	  cout << "Kanske inläsningsfel - okänt tecken: " << next_char << endl;
+	  Felutskrift(next_char,word);
+	  break;
 	}
     }
   
