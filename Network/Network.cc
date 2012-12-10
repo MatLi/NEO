@@ -165,7 +165,7 @@ void
 Network::min_cost_flow()
 {
   // Fas 1
-  Node* artificial = new Node;
+  Node* artificial = new Node("A");
   Set<Edge*> artificial_edges;
 
   deque<double> original_cost;
@@ -184,9 +184,9 @@ Network::min_cost_flow()
       original_ub.push_back((*it).maxflow());
       if ((*it).minflow() > 0)
 	{
-	  (*it).from_node()->change_flow((*it).from_node()->flow() -
+	  (*it).from_node()->change_flow((*it).from_node()->flow() +
 					 (*it).minflow());
-	  (*it).to_node()->change_flow((*it).to_node()->flow() +
+	  (*it).to_node()->change_flow((*it).to_node()->flow() -
 				       (*it).minflow());
 	  (*it).change_maxflow((*it).maxflow() - (*it).minflow());
 	  (*it).change_minflow(0);
@@ -214,9 +214,9 @@ Network::min_cost_flow()
 	  artificial_edges.add_member(new_edge);
 	  new_edge->change_flow(abs((*it).flow()));
 	}
-      else
+      else if (&(*it) != artificial)
 	{
-	  // Lägg till bågar från den artificiella noden till alla
+	  // Lägg till bågar från den artificiella noden till alla andra
 	  // mellannoder.
 	  Edge* new_edge = new Edge(artificial, &(*it));
 	  add_edge(new_edge);
@@ -232,26 +232,25 @@ Network::min_cost_flow()
     {
       (*it).change_cost(1);
     }
+  
 
   // Bestäm ursprungliga basbågar och icke-basbågar för fas 1.
   Set<Edge*> base_edges;
   Set<Edge*> non_base_edges;
-  
+
   find_base_and_non_base_edges(base_edges, non_base_edges);
- 
+  
   double phase1_target_val = min_cost_flow_phase2(base_edges,
 						  non_base_edges);
 
-  // Återställ allt till det normala och kör fas 2 på den funna
-  // tillåtna lösningen.
   if (phase1_target_val != 0)
     {
       throw network_error("Det finns ingen tillåten lösning.");
     }
 
-  base_edges.clear();
-  non_base_edges.clear();
-  
+  // Återställ allt till det normala och kör fas 2 på den funna
+  // tillåtna lösningen.
+
   for (auto it : artificial_edges)
     {
       remove_edge(&(*it));
@@ -287,7 +286,9 @@ void
 Network::find_base_and_non_base_edges(Set<Edge*>& base_edges,
 				      Set<Edge*>& non_base_edges)
 {
- // Lägg till de bågar som måste vara basbågar. Sätt alla andra till
+  base_edges.clear();
+  non_base_edges.clear();
+  // Lägg till de bågar som måste vara basbågar. Sätt alla andra till
   // icke-basbågar.
   for (auto it : edges_)
     {
@@ -301,43 +302,45 @@ Network::find_base_and_non_base_edges(Set<Edge*>& base_edges,
 	}
     }
   
-  // Se till att alla noder är kopplade som ett träd med basbågar.
-  // Om de är kopplade, markeras dessa som connected.
   for (auto it : nodes_)
     {
       (*it).set_connected(false);
-      for (auto it2 : base_edges)
-	{
-	  if ((*it2).from_node() == &(*it) ||
-	      (*it2).to_node() == &(*it))
-	    {
-	      (*it).set_connected(true);
-	    }
-	}
     }
-
+ 
+  for (auto it : base_edges)
+    {
+      (*it).from_node()->set_connected(true);
+      (*it).to_node()->set_connected(true);
+    }
+  
   // Om det finns icke-kopplade noder, så läggs så många
   // icke-basbågar som behövs över i mängden av basbågar.
-  // Samtidigt bibehålls trädstrukturen.
-  vector<Edge*>::iterator itE = non_base_edges.begin();
+  // Samtidigt bibehålls trädstrukturen. KOLLA UPP!
+  vector<Node*>::iterator itN = nodes_.begin();
   while (base_edges.size() < nodes_.size() - 1)
     {
-      if (!(*itE)->from_node()->connected() &&
-	  (*itE)->to_node()->connected())
+      if (!(*itN)->connected())
 	{
-	  base_edges.add_member(*itE);
-	  non_base_edges.remove_member(*itE);
-	}
-      else if ((*itE)->from_node()->connected() &&
-	       !(*itE)->to_node()->connected())
-	{
-	  base_edges.add_member(*itE);
-	  non_base_edges.remove_member(*itE);
+	  for (auto it : (*itN)->all_edges())
+	    {
+	      if ((*it).to_node()->connected() ||
+		  (*it).from_node()->connected())
+		{
+		  base_edges.add_member(&(*it));
+		  non_base_edges.remove_member(&(*it));
+		  (*itN)->set_connected(true);
+		  break;
+		}
+	    }
 	}
       
-      if (itE == non_base_edges.end())
+      if (itN == nodes_.end())
 	{
-	  itE = non_base_edges.begin();
+	  itN = nodes_.begin();
+	}
+      else
+	{
+	  itN++;
 	}
     }
 
@@ -345,23 +348,26 @@ Network::find_base_and_non_base_edges(Set<Edge*>& base_edges,
 }
 
 /* min_cost_flow_phase2(): Löser fas 2-problem och förutsätter att nätverket har
- * ett tillåtet flöde.
+ * ett tillåtet flöde och kräver att tillhandahåller bas- och icke-basbågar i
+ * utgångsläget.
  */
 double
 Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 			      Set<Edge*> non_base_edges)
 {
-
-  
   // Sätt alla noder till icke-kopplade.
   for (auto it : nodes_)
     {
       (*it).set_connected(false);
     }
   // Uppdatera alla nodpriser. start_node har nodpris 0.
+  for (auto it : nodes_)
+    {
+      (*it).change_node_price(0);
+    }
   Node* start_node = (*nodes_.begin());
   update_node_prices(start_node, base_edges);
-  
+
   // Beräkna de reducerade kostnaderna för icke-basbågar.
   for (auto it : non_base_edges)
     {
@@ -374,7 +380,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
   // uppfyller kriterierna sparas i en mängd.
   bool optimal = true;
   Set<Edge*> unfulfilling_edges;
-  for (auto it : edges_)
+  for (auto it : non_base_edges)
     {
       if ((*it).reduced_cost() == 0 &&
 	  (*it).flow() <= (*it).maxflow() &&
@@ -392,17 +398,12 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 	{
 	  optimal = optimal && true;
 	}
-      else if (non_base_edges.exists(&(*it)))
+      else
 	{
 	  unfulfilling_edges.add_member(&(*it));
 	  optimal = false;
 	}
-      else
-	{
-	  optimal = false;
-	}
     }
-
   // Om flödet är optimalt, upphör med rekursionen.
   if (optimal)
     {
@@ -413,7 +414,6 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 	}
       return target_value;
     }
-  
   // Flödet är icke-optimalt. Bestäm en inkommande basbåge.
   double max_reduced_cost = 0;
   Edge* incoming_edge = nullptr;
@@ -425,7 +425,6 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 	  max_reduced_cost = abs((*it).reduced_cost());
 	}
     }
-
   // Bestäm sökriktning och den cykel som uppkommer.
   deque<Edge*> cycle;
   Node* x_node;
@@ -438,7 +437,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
       cycle = find_cycle(cycle,
 			 base_edges,
 			 x_node,
-			 true);
+			 incoming_edge->to_node());
     }
   // Om flödet ligger på övre gränsen ska flödet minskas längs den inkommande
   // bågen.
@@ -448,7 +447,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
       cycle = find_cycle(cycle,
 			 base_edges,
 			 x_node,
-			 false);
+			 incoming_edge->from_node());
     }
   if (cycle.empty())
     {
@@ -456,7 +455,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
     }
 
   double theta = pow(10,380);
-  Edge* outgoing_edge;
+  Edge* outgoing_edge = nullptr;
   // Bestäm den utgående basbågen i cykeln.
   for (auto it : cycle)
     {
@@ -479,9 +478,18 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 	  x_node = (*it).from_node();
 	}
     }
+
+  // Se till att x_node ställs rätt igen.
+  if (incoming_edge->reduced_cost() < 0)
+    {
+      x_node = incoming_edge->from_node();
+    }
+  else if (incoming_edge->reduced_cost() > 0)
+    {
+      x_node = incoming_edge->to_node();
+    }
   
-  // Eftersom vi itererat över en cykel kommer x_node åter att vara
-  // startnoden.
+  // Ändra flödena i cykeln.
   for (auto it : cycle)
     {
       if ((*it).from_node() == x_node)
@@ -496,6 +504,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
 	}
     }
 
+  // Byt plats på inkommande och utgående båge.
   non_base_edges.remove_member(incoming_edge);
   base_edges.add_member(incoming_edge);
   base_edges.remove_member(outgoing_edge);
@@ -521,20 +530,8 @@ deque<Edge*>
 Network::find_cycle(deque<Edge*> cycle,
 		    Set<Edge*> base_edges,
 		    Node* search_node,
-		    bool increase_flow)
+		    Node* present_node)
 {
-  Node* present_node;
-  bool increase_next_out;
-  if (increase_flow)
-    {
-      present_node = cycle.back()->to_node();
-      increase_next_out = true;
-    }
-  else
-    {
-      present_node = cycle.back()->from_node();
-      increase_next_out = false;
-    }
   // Om vi hittat tillbaka så har vi en cykel.
   if (present_node == search_node)
     {
@@ -553,13 +550,12 @@ Network::find_cycle(deque<Edge*> cycle,
 	  retval = find_cycle(retval,
 			      base_edges,
 			      search_node,
-			      increase_next_out);
+			      (*it).to_node());
+	  if (!retval.empty())
+	    {
+	      return retval;
+	    }
 	}
-      if (!retval.empty())
-	{
-	  return retval;
-	}
-
     }
   for (auto it : present_node->in_edges())
     {
@@ -571,11 +567,11 @@ Network::find_cycle(deque<Edge*> cycle,
 	  retval = find_cycle(retval,
 			      base_edges,
 			      search_node,
-			      !increase_next_out);
-	}
-      if (!retval.empty())
-	{
-	  return retval;
+			      (*it).from_node());
+	  if (!retval.empty())
+	    {
+	      return retval;
+	    }
 	}
     }
   // Om vi inte hittat något så returnerar vi en tom deque.
