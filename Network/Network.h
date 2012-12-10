@@ -65,7 +65,7 @@ class Network
   Set<Edge*> edges_;
   Set<Node*> nodes_;
   
-  double min_cost_flow_help();
+  double min_cost_flow_phase2();
   void update_node_prices(Node*, Set<Edge*>);
 };
 

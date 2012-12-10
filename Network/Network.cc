@@ -1,7 +1,7 @@
 /* 
  * FILNAMN:          Network.cc
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Li och Linda
+ * PROGRAMMERARE:    Li, David och Linda
  *
  * DATUM:            2012-11-21
  *
@@ -233,7 +233,7 @@ Network::min_cost_flow()
       (*it).change_cost(1);
     }
   
-  double phase1_target_val = min_cost_flow_help();
+  double phase1_target_val = min_cost_flow_phase2();
 
   // Återställ allt till det normala och kör fas 2 på den funna
   // tillåtna lösningen.
@@ -266,15 +266,15 @@ Network::min_cost_flow()
 	}
     }
 
-  min_cost_flow_help();
+  min_cost_flow_phase2();
   return;
 }
 
-/* min_cost_flow_help(): Löser fas 2-problem och förutsätter att nätverket har
+/* min_cost_flow_phase2(): Löser fas 2-problem och förutsätter att nätverket har
  * ett tillåtet flöde.
  */
 double
-Network::min_cost_flow_help()
+Network::min_cost_flow_phase2()
 {
   Set<Edge*> base_edges;
   Set<Edge*> non_base_edges;
