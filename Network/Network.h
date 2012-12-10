@@ -13,6 +13,7 @@
 #ifndef NETWORK_HH
 #define NETWORK_HH
 
+#include <deque>
 #include <string>
 #include <stdexcept>
 #include "Node.h"
@@ -65,8 +66,11 @@ class Network
   Set<Edge*> edges_;
   Set<Node*> nodes_;
   
-  double min_cost_flow_phase2();
+  double min_cost_flow_phase2(Set<Edge*>, Set<Edge*>);
+  void find_base_and_non_base_edges(Set<Edge*>&, Set<Edge*>&);
   void update_node_prices(Node*, Set<Edge*>);
+  std::deque<Edge*> find_cycle(std::deque<Edge*>, Set<Edge*>, Node*, bool);
+  bool exists(std::deque<Edge*>, Edge*);
 };
 
 #endif

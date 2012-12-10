@@ -95,6 +95,30 @@ int main()
 
   //  net.fwrite("testfil.txt");
   //  net.fopen("testfil.txt");
-  
+  Network net2;
+  Node* W = new Node();
+  Node* N = new Node();
+  Node* S = new Node();
+  Node* E = new Node();
+  W->change_flow(-2);
+  E->change_flow(2);
+  net2.add_node(W);
+  net2.add_node(N);
+  net2.add_node(S);
+  net2.add_node(E);
+  Edge* WN = new Edge(W,N);
+  Edge* NE = new Edge(N,E);
+  Edge* WS = new Edge(W,S);
+  Edge* SE = new Edge(S,E);
+  net2.add_edge(WN);
+  net2.add_edge(NE);
+  net2.add_edge(WS);
+  net2.add_edge(SE);
+  WN->change_cost(3);
+  NE->change_cost(1);
+  WS->change_cost(1);
+  SE->change_cost(2);
+
+  net2.min_cost_flow();
   return 0;
 }

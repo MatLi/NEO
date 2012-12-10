@@ -10,6 +10,7 @@
 */
 
 #include "Edge.h"
+#include <cmath>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ Edge::Edge(Node* in_from_, Node* in_to_ )
     to_(in_to_),
     flow_(0), 
     reduced_cost_(0),
-    maxflow_(0), 
+    maxflow_(pow(10,380)), 
     minflow_(0),
     cost_(0)
 {
