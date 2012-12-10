@@ -404,7 +404,7 @@ Network::min_cost_flow_help()
   // Bestäm sökriktning.
   if (incoming_edge->reduced_cost() > 0)
     {
-
+      
     }
   else if (incoming_edge->reduced_cost() < 0)
     {
