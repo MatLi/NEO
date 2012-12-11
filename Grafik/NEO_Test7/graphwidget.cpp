@@ -86,11 +86,37 @@ GraphWidget::GraphWidget(QWidget *parent)
     myTextItem->setPos(100,100);
 
     scene->addItem(myTextItem);
+
+    DataWidget *dwidget = new DataWidget(this);
+    widget_one = dwidget;
 }
 
 QList<GraphicNode *> GraphWidget::return_nodeList()
 {
     return nodeList;
+}
+
+void GraphWidget::addEdge(QString start, QString end)
+{
+    GraphicNode *startn = new GraphicNode(this);;
+    GraphicNode *endn = new GraphicNode(this);;
+    for (int i=0;i<this->nodeList.size();i++)
+    {
+        if(this->nodeList.at(i)->return_name()==start)
+        {
+            startn=this->nodeList.at(i);
+        }
+    }
+
+    for (int j=0;j<this->nodeList.size();j++)
+    {
+        if(this->nodeList.at(j)->return_name()==end)
+        {
+            endn=this->nodeList.at(j);
+        }
+    }
+
+    scene()->addItem(new GraphicEdge(startn,endn));
 }
 
 void GraphWidget::addGraphicNode(GraphicNode *new_node)
