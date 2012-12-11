@@ -13,6 +13,7 @@
 #define EDGE_HH
 
 #include "Node.h"
+#include <stack>
 
 class Node;
 
@@ -56,9 +57,9 @@ class Edge
   double minflow_;
   double cost_;
 
-  double backup_maxflow_;
-  double backup_minflow_;
-  double backup_cost_;
+  std::stack<double> backup_maxflow_;
+  std::stack<double> backup_minflow_;
+  std::stack<double> backup_cost_;
 };
 
 #endif
