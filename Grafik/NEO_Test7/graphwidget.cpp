@@ -57,6 +57,9 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(new GraphicEdge(node8, node7));
     scene->addItem(new GraphicEdge(node9, node8));
 
+    //Lägger till en båge med hjälp av nodeList
+    scene->addItem(new GraphicEdge(this->return_nodeList().at(3), this->return_nodeList().at(8)));
+
     node1->setPos(-50, -50);
     node2->setPos(0, -50);
     node3->setPos(50, -50);
@@ -68,8 +71,29 @@ GraphWidget::GraphWidget(QWidget *parent)
     node9->setPos(50, 50);
     node10->setPos(20, 20);
     node14->setPos(10,10);
+
+    QString textruta="Text111";
+    myTextItem = new QGraphicsSimpleTextItem();
+    myTextItem->setText(textruta);
+    myTextItem->setPos(100,100);
+
+    scene->addItem(myTextItem);
 }
 
+QList<GraphicNode *> GraphWidget::return_nodeList()
+{
+    return nodeList;
+}
+
+void GraphWidget::addGraphicNode(GraphicNode *new_node)
+{
+    nodeList << new_node;
+}
+
+void GraphWidget::changeTextItem(QString new_text)
+{
+    myTextItem->setText(new_text);
+}
 
 void GraphWidget::itemMoved()
 {
