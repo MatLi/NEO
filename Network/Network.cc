@@ -155,10 +155,38 @@ Network::cheapest_tree()
 }
 
 // Genererar en billigaste-väg-lösning
+// Använder sig av mincostflow med specialvillkor,
+// kanter i lösningen markeras med flöde 1.
 void
 Network::cheapest_path(Node* start_node, Node* end_node)
 {
-  
+  for (auto it : nodes_)
+    {
+      (*it).backup_data();
+      (*it).change_flow(0);
+    }
+
+  start_node->change_flow(-1);
+  end_node->change_flow(1);
+
+  for (auto it : edges_)
+    {
+      (*it).backup_data();
+      (*it).change_minflow(0);
+      (*it).change_maxflow(pow(10,380));
+    }
+
+  min_cost_flow();
+
+  for (auto it : nodes_)
+    {
+      (*it).restore_data();
+    }
+  for (auto it : edges_)
+    {
+      (*it).restore_data();
+    }
+  return;
 }
 
 /*********************************************************************************************
