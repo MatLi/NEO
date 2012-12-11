@@ -19,6 +19,7 @@ public:
     void itemMoved();
     QList<GraphicNode *> return_nodeList();
     void addGraphicNode(GraphicNode *new_node);
+    void changeTextItem(QString new_text);
     //void newNode(Node *node);
 
 public slots:
@@ -39,6 +40,8 @@ private:
     int timerId;
     GraphicNode *centerNode;
     GraphicNode *node10;
+    QGraphicsSimpleTextItem *myTextItem;
+
     //Lista med alla noder i interfacet
     QList<GraphicNode *> nodeList;
 };

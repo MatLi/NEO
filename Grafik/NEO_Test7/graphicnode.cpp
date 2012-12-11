@@ -16,7 +16,7 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    name=graph->return_nodeList().size();
+    name.setNum(graph->return_nodeList().size());
     graph->addGraphicNode(this);
 }
 //! [0]
@@ -191,6 +191,10 @@ QVariant GraphicNode::itemChange(GraphicsItemChange change, const QVariant &valu
 void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
+
+    //Ändrar textrutan i Widget
+    graph->changeTextItem(return_name());
+
     QGraphicsItem::mousePressEvent(event);
 }
 void GraphicNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
