@@ -178,10 +178,6 @@ Network::min_cost_flow()
   Node* artificial = new Node("A");
   Set<Edge*> artificial_edges;
 
-  deque<double> original_cost;
-  deque<double> original_lb;
-  deque<double> original_ub;
-
   // Lägg till den artificiella noden i nätverket.
   add_node(artificial);
 
@@ -189,9 +185,7 @@ Network::min_cost_flow()
   // värden.
   for (auto it : edges_)
     {
-      original_cost.push_back((*it).cost());
-      original_lb.push_back((*it).minflow());
-      original_ub.push_back((*it).maxflow());
+      (*it).backup_data();
       if ((*it).minflow() > 0)
 	{
 	  (*it).from_node()->change_flow((*it).from_node()->flow() +
@@ -271,12 +265,7 @@ Network::min_cost_flow()
 
   for (auto it : edges_)
     {
-      (*it).change_minflow(original_lb.front());
-      original_lb.pop_front();
-      (*it).change_maxflow(original_ub.front());
-      original_ub.pop_front();
-      (*it).change_cost(original_cost.front());
-      original_cost.pop_front();
+      (*it).restore_data();
       if ((*it).minflow() > 0)
 	{
 	  (*it).from_node()->change_flow((*it).from_node()->flow() +
