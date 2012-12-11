@@ -43,6 +43,9 @@ class Edge
   void change_to(Node*);
   void change_flow(double);
 
+  void backup_data();
+  void restore_data();
+
  private:
   //Datamedlemmar
   Node* from_;
@@ -52,6 +55,10 @@ class Edge
   double maxflow_;
   double minflow_;
   double cost_;
+
+  double backup_maxflow_;
+  double backup_minflow_;
+  double backup_cost_;
 };
 
 #endif

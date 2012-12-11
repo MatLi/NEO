@@ -165,3 +165,20 @@ Edge::change_flow(double new_flow_)
 {
   flow_ = new_flow_;
 }
+
+void
+Edge::backup_data()
+{
+  backup_maxflow_ = maxflow_;
+  backup_minflow_ = minflow_;
+  backup_cost_ = cost_;
+  return;
+}
+
+void
+Edge::restore_data()
+{
+  maxflow_ = backup_maxflow_;
+  minflow_ = backup_minflow_;
+  cost_ = backup_cost_;
+}
