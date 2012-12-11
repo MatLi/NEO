@@ -124,13 +124,7 @@ int main()
   cout << "S: " << S << endl;
   cout << "E: " << E << endl;
   net2.min_cost_flow();
-
-  double flowcost = 0;
-  for (auto it : net2.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << flowcost << endl;
+  cout << net2.flowcost() << endl;
   cout << "Flow: " << endl;
   cout << "WN: " << WN->flow() << endl;
   cout << "NE: " << NE->flow() << endl;
@@ -208,12 +202,7 @@ int main()
 
   cout << "Solving net3 mincostflow..." << endl;
   net3.min_cost_flow();
-  flowcost = 0;
-  for (auto it : net3.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << "Minimum cost: " << flowcost << endl;
+  cout << "Minimum cost: " << net3.flowcost() << endl;
   cout << "Edge set size: " << net3.edge_set().size() << endl;
 
   cout << "Edge (flow, cost):" << endl;
@@ -303,12 +292,7 @@ int main()
 
   cout << "Solving net4 mincostflow..." << endl;
   net4.min_cost_flow();
-  flowcost = 0;
-  for (auto it : net4.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << "Minimum cost: " << flowcost << endl;
+  cout << "Minimum cost: " << net4.flowcost() << endl;
   cout << "Edge set size: " << net4.edge_set().size() << endl;
 
   cout << "Edge (flow, cost):" << endl;
@@ -331,15 +315,10 @@ int main()
 	       << (*it).to_node()->name() << endl;
 	}
     }
-  cout << "Solving net4 mincostflow..." << endl;
+  cout << "Solving net4 maxcostflow..." << endl;
   net4.reset_network();
-  net4.min_cost_flow();
-  flowcost = 0;
-  for (auto it : net4.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << "Minimum cost: " << flowcost << endl;
+  net4.max_cost_flow();
+  cout << "Maximum cost: " << net4.flowcost() << endl;
   cout << "Edge set size: " << net4.edge_set().size() << endl;
 
   cout << "Edge (flow, cost):" << endl;

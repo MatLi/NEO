@@ -718,14 +718,25 @@ Network::update_node_prices(Node* active_node, Set<Edge*> base_edges)
 void
 Network::max_cost_flow()
 {
-  //Din kod här
+  for (auto it : edges_)
+    {
+      (*it).backup_data();
+      (*it).change_cost(-abs((*it).cost()));
+    }
+
+  min_cost_flow();
+
+  for (auto it : edges_)
+    {
+      (*it).restore_data();
+    }
 }
 
 // Genererar maxflöde
 void
 Network::max_flow()
 {
-  //Din kod här
+  
 }
 
 void
