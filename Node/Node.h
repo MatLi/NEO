@@ -15,6 +15,7 @@
 #include "Edge.h"
 #include "Position.h"
 #include "Set.h"
+#include <stack>
 #include <string>
 
 class Edge;
@@ -23,7 +24,7 @@ class Node
 {
  public:
   Node() = default;
- Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), all_edges_(), name_(in_name), connected_(false) { }
+ Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), all_edges_(), name_(in_name), connected_(false), backup_flow_() { }
   ~Node() = default;
 
   Position position() const;
@@ -45,6 +46,9 @@ class Node
   bool connected() const;
   void flip_connected();
   void set_connected(bool);
+  
+  void backup_data();
+  void restore_data();
 
  private:
   Position graphic_pos_;
@@ -55,6 +59,8 @@ class Node
   Set<Edge*> all_edges_;
   std::string name_;
   bool connected_;
+
+  std::stack<double> backup_flow_;
 };
 
 #endif

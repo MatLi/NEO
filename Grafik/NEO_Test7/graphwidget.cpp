@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          graphwidget.cpp
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicWidget är rutan i MainWindow som innehåller noder och bågar och hanterar alla händelser.
+*/
 #include "graphwidget.h"
 #include "datawidget.h"
 #include "graphicedge.h"
@@ -33,8 +42,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     GraphicNode *node7 = new GraphicNode(this);
     GraphicNode *node8 = new GraphicNode(this);
     GraphicNode *node9 = new GraphicNode(this);
-    node10 = new GraphicNode(this);
-    GraphicNode *node14 = new GraphicNode(this);
+    //GraphicNode *node14 = new GraphicNode(this);
     scene->addItem(node1);
     scene->addItem(node2);
     scene->addItem(node3);
@@ -44,7 +52,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(node7);
     scene->addItem(node8);
     scene->addItem(node9);
-    //scene->addItem(node10);
     scene->addItem(new GraphicEdge(node1, node2));
     scene->addItem(new GraphicEdge(node2, node3));
     scene->addItem(new GraphicEdge(node2, centerNode));
@@ -70,8 +77,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     node7->setPos(-50, 50);
     node8->setPos(0, 50);
     node9->setPos(50, 50);
-    node10->setPos(20, 20);
-    node14->setPos(10,10);
+    //node10->setPos(20, 20);
+    //node14->setPos(10,10);
 
     QString textruta="Text111";
     myTextItem = new QGraphicsSimpleTextItem();
@@ -79,11 +86,37 @@ GraphWidget::GraphWidget(QWidget *parent)
     myTextItem->setPos(100,100);
 
     scene->addItem(myTextItem);
+
+    DataWidget *dwidget = new DataWidget(this);
+    widget_one = dwidget;
 }
 
 QList<GraphicNode *> GraphWidget::return_nodeList()
 {
     return nodeList;
+}
+
+void GraphWidget::addEdge(QString start, QString end)
+{
+    GraphicNode *startn = new GraphicNode(this);;
+    GraphicNode *endn = new GraphicNode(this);;
+    for (int i=0;i<this->nodeList.size();i++)
+    {
+        if(this->nodeList.at(i)->return_name()==start)
+        {
+            startn=this->nodeList.at(i);
+        }
+    }
+
+    for (int j=0;j<this->nodeList.size();j++)
+    {
+        if(this->nodeList.at(j)->return_name()==end)
+        {
+            endn=this->nodeList.at(j);
+        }
+    }
+
+    scene()->addItem(new GraphicEdge(startn,endn));
 }
 
 void GraphWidget::addGraphicNode(GraphicNode *new_node)
@@ -94,6 +127,7 @@ void GraphWidget::addGraphicNode(GraphicNode *new_node)
 void GraphWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
+    //widget_one->changeTextItem(new_text);
 }
 
 void GraphWidget::itemMoved()
@@ -105,28 +139,19 @@ void GraphWidget::itemMoved()
 DataWidget* GraphWidget::makeDataWidget()
 {
     DataWidget *dwidget = new DataWidget(this);
+    widget_one = dwidget;
     return dwidget;
 }
 
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-   // if (!(!scene() || scene()->mouseGrabberItem()))
-    //{
-    //QPoint p = scene()->mapFromGlobal(QCursor::pos());
-    GraphicNode *node234 = new GraphicNode(this);
-
-    //node234->setPos(this->pos());
-
-    node234->setPos((event->x()-400),(event->y()-343));
-    scene()->addItem(node234);
+    GraphicNode *node = new GraphicNode(this);
+    node->setPos((event->x()-400),(event->y()-343));
+    scene()->addItem(node);
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
-    GraphicNode *node = new GraphicNode(this);// node10->newNode();
-   // Node *node = new Node(node10->newNode());
-    node->setPos(30,-99);
-    //Edge *edge = new Edge(node, centerNode);
     QList<GraphicNode *> nodes;
     foreach (QGraphicsItem *item, scene()->items()) {
         if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
@@ -135,30 +160,6 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     DataWidget* dwidget;
 
     switch (event->key()) {
-    /*case Qt::Key_Up:
-        node10->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        scene()->addItem(node10);
-        scene()->addItem(node);
-        scene()->addItem(edge);
-        break;
-    case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
-        break;
-    case Qt::Key_Plus:
-        zoomIn();
-        break;
-    case Qt::Key_Minus:
-        zoomOut();
-        break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        shuffle();
-        break;*/
     case Qt::Key_A:
         {
         dwidget = makeDataWidget();
@@ -184,8 +185,6 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 
 void GraphWidget::timerEvent(QTimerEvent *event)
 {
-    //Q_UNUSED(event);
-
     QList<GraphicNode *> nodes;
     foreach (QGraphicsItem *item, scene()->items()) {
         if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
@@ -193,7 +192,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
     }
 
     foreach (GraphicNode *node, nodes)
-        node->calculateForces(); //Byt namn :)
+        node->moveHelper();
 
     bool itemsMoved = false;
     foreach (GraphicNode *node, nodes) {
@@ -207,16 +206,8 @@ void GraphWidget::timerEvent(QTimerEvent *event)
     }
 }
 
-/*void GraphWidget::wheelEvent(QWheelEvent *event)
-{
-    scaleView(pow((double)2, -event->delta() / 240.0));
-}*/
-
-
 void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    //Q_UNUSED(rect);
-
     // Shadow
     QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
@@ -234,7 +225,6 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sceneRect);
 
-//#if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_MAEMO_5)
     // Text
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
                     sceneRect.width() - 4, sceneRect.height() - 4);
@@ -248,34 +238,4 @@ void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect.translated(2, 2), message);
     painter->setPen(Qt::black);
     painter->drawText(textRect, message);
-//#endif
 }
-
-
-/*void GraphWidget::scaleView(qreal scaleFactor)
-{
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
-        return;
-
-    scale(scaleFactor, scaleFactor);
-}*/
-//! [7]
-
-/*void GraphWidget::shuffle()
-{
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (qgraphicsitem_cast<Node *>(item))
-            item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    }
-}*/
-
-/*void GraphWidget::zoomIn()
-{
-    scaleView(qreal(1.2));
-}
-
-void GraphWidget::zoomOut()
-{
-    scaleView(1 / qreal(1.2));
-}*/

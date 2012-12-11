@@ -24,7 +24,10 @@ Edge::Edge(Node* in_from_, Node* in_to_ )
     reduced_cost_(0),
     maxflow_(pow(10,380)), 
     minflow_(0),
-    cost_(0)
+    cost_(0),
+    backup_maxflow_(),
+    backup_minflow_(),
+    backup_cost_()
 {
   to_->add_in_edge(this);
   from_->add_out_edge(this);
@@ -169,16 +172,20 @@ Edge::change_flow(double new_flow_)
 void
 Edge::backup_data()
 {
-  backup_maxflow_ = maxflow_;
-  backup_minflow_ = minflow_;
-  backup_cost_ = cost_;
+  backup_maxflow_.push(maxflow_);
+  backup_minflow_.push(minflow_);
+  backup_cost_.push(cost_);
   return;
 }
 
 void
 Edge::restore_data()
 {
-  maxflow_ = backup_maxflow_;
-  minflow_ = backup_minflow_;
-  cost_ = backup_cost_;
+  maxflow_ = backup_maxflow_.top();
+  minflow_ = backup_minflow_.top();
+  cost_ = backup_cost_.top();
+  backup_maxflow_.pop();
+  backup_minflow_.pop();
+  backup_cost_.pop();
+  return;
 }

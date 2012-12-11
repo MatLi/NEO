@@ -124,13 +124,7 @@ int main()
   cout << "S: " << S << endl;
   cout << "E: " << E << endl;
   net2.min_cost_flow();
-
-  double flowcost = 0;
-  for (auto it : net2.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << flowcost << endl;
+  cout << net2.flowcost() << endl;
   cout << "Flow: " << endl;
   cout << "WN: " << WN->flow() << endl;
   cout << "NE: " << NE->flow() << endl;
@@ -208,12 +202,7 @@ int main()
 
   cout << "Solving net3 mincostflow..." << endl;
   net3.min_cost_flow();
-  flowcost = 0;
-  for (auto it : net3.edge_set())
-    {
-      flowcost += (*it).flow() * (*it).cost();
-    }
-  cout << "Minimum cost: " << flowcost << endl;
+  cout << "Minimum cost: " << net3.flowcost() << endl;
   cout << "Edge set size: " << net3.edge_set().size() << endl;
 
   cout << "Edge (flow, cost):" << endl;
@@ -303,12 +292,33 @@ int main()
 
   cout << "Solving net4 mincostflow..." << endl;
   net4.min_cost_flow();
-  flowcost = 0;
+  cout << "Minimum cost: " << net4.flowcost() << endl;
+  cout << "Edge set size: " << net4.edge_set().size() << endl;
+
+  cout << "Edge (flow, cost):" << endl;
   for (auto it : net4.edge_set())
     {
-      flowcost += (*it).flow() * (*it).cost();
+      cout << (*it).from_node()->name() << "->"
+	   << (*it).to_node()->name() << " ("
+	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
     }
-  cout << "Minimum cost: " << flowcost << endl;
+  cout << "Solving net4 cheapest_path from " << NN->name() << " to "
+       << NT->name() << "." << endl;
+  net4.reset_network();
+  net4.cheapest_path(NN,NT);
+  cout << "Edges in cheapest path: " << endl;
+  for (auto it : net4.edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  cout << (*it).from_node()->name() << "->"
+	       << (*it).to_node()->name() << endl;
+	}
+    }
+  cout << "Solving net4 maxcostflow..." << endl;
+  net4.reset_network();
+  net4.max_cost_flow();
+  cout << "Maximum cost: " << net4.flowcost() << endl;
   cout << "Edge set size: " << net4.edge_set().size() << endl;
 
   cout << "Edge (flow, cost):" << endl;
@@ -319,5 +329,90 @@ int main()
 	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
     }
 
+  Network net5;
+  Node* Ns = new Node("s");
+  Node* N1 = new Node("1");
+  Node* N2 = new Node("2");
+  Node* N3 = new Node("3");
+  Node* N4 = new Node("4");
+  Node* N5 = new Node("5");
+  Node* N6 = new Node("6");
+  Node* N7 = new Node("7");
+  Node* Nt = new Node("t");
+  net5.add_node(Ns);
+  Ns->change_flow(-1);
+  net5.add_node(N1);
+  net5.add_node(N2);
+  net5.add_node(N3);
+  net5.add_node(N4);
+  net5.add_node(N5);
+  net5.add_node(N6);
+  net5.add_node(N7);
+  net5.add_node(Nt);
+  Nt->change_flow(1);
+
+  Edge* Es1 = new Edge(Ns,N1);
+  Edge* Es2 = new Edge(Ns,N2);
+  Edge* E12 = new Edge(N1,N2);
+  Edge* E21 = new Edge(N2,N1);
+  Edge* E13 = new Edge(N1,N3);
+  Edge* E25 = new Edge(N2,N5);
+  Edge* E34 = new Edge(N3,N4);
+  Edge* E36 = new Edge(N3,N6);
+  Edge* E45 = new Edge(N4,N5);
+  Edge* E46 = new Edge(N4,N6);
+  Edge* E54 = new Edge(N5,N4);
+  Edge* E57 = new Edge(N5,N7);
+  Edge* E64 = new Edge(N6,N4);
+  Edge* E67 = new Edge(N6,N7);
+  Edge* E6t = new Edge(N6,Nt);
+  Edge* E74 = new Edge(N7,N4);
+  Edge* E76 = new Edge(N7,N6);
+  Edge* E7t = new Edge(N7,Nt);
+  net5.add_edge(Es1);
+  net5.add_edge(Es2);
+  net5.add_edge(E12);
+  net5.add_edge(E21);
+  net5.add_edge(E13);
+  net5.add_edge(E25);
+  net5.add_edge(E34);
+  net5.add_edge(E36);
+  net5.add_edge(E45);
+  net5.add_edge(E46);
+  net5.add_edge(E54);
+  net5.add_edge(E57);
+  net5.add_edge(E64);
+  net5.add_edge(E67);
+  net5.add_edge(E6t);
+  net5.add_edge(E74);
+  net5.add_edge(E76);
+  net5.add_edge(E7t);
+
+  Es1->change_maxflow(6);
+  Es2->change_maxflow(5);
+  E12->change_maxflow(6);
+  E21->change_maxflow(6);
+  E13->change_maxflow(3);
+  E25->change_maxflow(6);
+  E34->change_maxflow(5);
+  E36->change_maxflow(4);
+  E45->change_maxflow(3);
+  E46->change_maxflow(4);
+  E54->change_maxflow(3);
+  E57->change_maxflow(8);
+  E64->change_maxflow(4);
+  E67->change_maxflow(3);
+  E6t->change_maxflow(9);
+  E74->change_maxflow(3);
+  E76->change_maxflow(3);
+  E7t->change_maxflow(1);
+  net5.max_flow();
+
+  for (auto it : net5.edge_set())
+    {
+      cout << (*it).from_node()->name() << "->"
+	   << (*it).to_node()->name() << ": "
+	   << (*it).flow() << endl;
+    }
   return 0;
 }

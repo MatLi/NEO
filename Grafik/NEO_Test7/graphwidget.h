@@ -21,6 +21,7 @@ public:
     QList<GraphicNode *> return_nodeList();
     void addGraphicNode(GraphicNode *new_node);
     void changeTextItem(QString new_text);
+    void addEdge(QString start, QString end);
     //void newNode(Node *node);
 
 public slots:
@@ -41,12 +42,13 @@ protected:
 private:
     int timerId;
     GraphicNode *centerNode;
-    GraphicNode *node10;
+    //GraphicNode *node10;
     QGraphicsSimpleTextItem *myTextItem;
 
     //Lista med alla noder i interfacet
     QList<GraphicNode *> nodeList;
+    DataWidget *widget_one;
 };
 //! [0]
 
-#endif
+#endif //GRAPHWIDGET_H

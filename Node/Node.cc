@@ -13,6 +13,7 @@
 #include "Node.h"
 #include "Position.h"
 #include "Set.h"
+#include <stack>
 #include <string>
 using namespace std;
 
@@ -135,5 +136,20 @@ Node::remove_out_edge(Edge* old_out_edge)
 {
   out_edges_.remove_member(old_out_edge);
   all_edges_.add_member(old_out_edge);
+  return;
+}
+
+void
+Node::backup_data()
+{
+  backup_flow_.push(flow_);
+  return;
+}
+
+void
+Node::restore_data()
+{
+  flow_ = backup_flow_.top();
+  backup_flow_.pop();
   return;
 }
