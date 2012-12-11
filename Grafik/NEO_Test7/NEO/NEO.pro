@@ -3,7 +3,8 @@ HEADERS += \
     ../graphwidget.h \
     ../graphicnode.h \
     ../graphicedge.h \
-    ../datawidget.h
+    ../datawidget.h \
+    ../neopushbutton.h
 
 SOURCES += \
     ../mainwindow.cpp \
@@ -11,7 +12,8 @@ SOURCES += \
     ../graphwidget.cpp \
     ../graphicnode.cpp \
     ../graphicedge.cpp \
-    ../datawidget.cpp
+    ../datawidget.cpp \
+    ../neopushbutton.cpp
 
 FORMS += \
     ../mainwindow.ui
