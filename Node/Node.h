@@ -40,6 +40,8 @@ class Node
   void add_out_edge(Edge*);
   void remove_in_edge(Edge*);
   void remove_out_edge(Edge*);
+  unsigned int id() const;
+  void change_id(unsigned int);
 
  private:
   Position graphic_pos_;
@@ -48,6 +50,7 @@ class Node
   Set<Edge*> in_edges_;
   Set<Edge*> out_edges_;
   std::string name_;
+  unsigned int id_=0;
 };
 
 #endif

@@ -107,3 +107,16 @@ Node::remove_out_edge(Edge* old_out_edge)
   out_edges_.remove_member(old_out_edge);
   return;
 }
+
+unsigned int
+Node::id() const
+{
+  return id_;
+}
+
+void
+Node::change_id(unsigned int new_id)
+{
+  id_=new_id;
+  return;
+}
