@@ -46,6 +46,7 @@ private:
 
     //Lista med alla noder i interfacet
     QList<GraphicNode *> nodeList;
+    DataWidget *widget_one;
 };
 //! [0]
 

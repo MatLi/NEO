@@ -94,6 +94,7 @@ void GraphWidget::addGraphicNode(GraphicNode *new_node)
 void GraphWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
+    widget_one->changeTextItem(new_text);
 }
 
 void GraphWidget::itemMoved()
@@ -105,6 +106,7 @@ void GraphWidget::itemMoved()
 DataWidget* GraphWidget::makeDataWidget()
 {
     DataWidget *dwidget = new DataWidget(this);
+    widget_one = dwidget;
     return dwidget;
 }
 
