@@ -31,7 +31,7 @@ public:
     void MovabilityF();
     void MovabilityT();
 
-    void calculateForces();
+    void moveHelper();
     bool advance();
 
     QRectF boundingRect() const;

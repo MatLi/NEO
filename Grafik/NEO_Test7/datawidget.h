@@ -6,9 +6,7 @@
 #include <QList>
 #include "graphwidget.h"
 
-//class GraphicNode;
 
-//! [0]
 class DataWidget : public QGraphicsView
 {
     Q_OBJECT

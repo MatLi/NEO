@@ -193,7 +193,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
     }
 
     foreach (GraphicNode *node, nodes)
-        node->calculateForces(); //Byt namn :)
+        node->moveHelper();
 
     bool itemsMoved = false;
     foreach (GraphicNode *node, nodes) {
