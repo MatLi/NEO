@@ -11,6 +11,7 @@
 #include "datawidget.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
+#include "neopushbutton.h"
 
 #include <QtGui>
 #include <math.h>
@@ -25,38 +26,50 @@ DataWidget::DataWidget(GraphWidget *main_Graph, QWidget *parent)
 
     mainGraph = main_Graph;
 
-    QString textruta="Text111";
-    myTextItem = new QGraphicsSimpleTextItem();
-    myTextItem->setText(textruta);
-    myTextItem->setPos(100,60);
 
-    scene->addItem(myTextItem);
 
     start = new QLineEdit();
     end = new QLineEdit();
 
-    start->setText(textruta);
+    start->setText("Startnod");
     start->setGeometry(100,80,50,30);
     scene->addWidget(start);
 
-    end->setText(textruta);
+    end->setText("Slutnod");
     end->setGeometry(100,120,50,30);
     scene->addWidget(end);
 
-    add_edge = new QPushButton();
-    add_edge->setGeometry(100,160,100,20);
-    add_edge->setText("Lägg till båge");
-    scene->addWidget(add_edge);
+    add_edge_ = new neoPushButton(this);
+    add_edge_->setGeometry(100,160,100,20);
+    add_edge_->setText("Lägg till båge");
+    scene->addWidget(add_edge_);
 
+    //Nodinfo-ruta
+    QString textruta="Nodnamn: ";
+    nodeName_ = new QGraphicsSimpleTextItem();
+    nodeName_->setText(textruta);
+    nodeName_->setPos(100,200);
+    scene->addItem(nodeName_);
+
+    nodePrice_ = new QGraphicsSimpleTextItem();
+    nodePrice_->setText("Nodpris: ");
+    nodePrice_->setPos(100,220);
+    scene->addItem(nodePrice_);
+
+    nodeFlow_ = new QGraphicsSimpleTextItem();
+    nodeFlow_->setText("Nodflöde: ");
+    nodeFlow_->setPos(180,220);
+    scene->addItem(nodeFlow_);
 }
 
 void DataWidget::changeTextItem(QString new_text)
 {
     QString mfirst = "Nodnamn: ";
-    myTextItem->setText(mfirst+=new_text);
+    nodeName_->setText(mfirst+=new_text);
 }
 
-void DataWidget::on_add_edge_clicked()
+
+void DataWidget::add_edge()
 {
     mainGraph->addEdge(start->text(),end->text());
 }

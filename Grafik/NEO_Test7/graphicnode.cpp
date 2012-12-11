@@ -22,7 +22,7 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     : graph(graphWidget)
 {
     setFlag(ItemIsMovable);
-    //setFlag(ItemSendsGeometryChanges);
+    setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     name.setNum(graph->return_nodeList().size());
