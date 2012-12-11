@@ -41,7 +41,7 @@ protected:
 private:
     int timerId;
     GraphicNode *centerNode;
-    GraphicNode *node10;
+    //GraphicNode *node10;
     QGraphicsSimpleTextItem *myTextItem;
 
     //Lista med alla noder i interfacet
@@ -50,4 +50,4 @@ private:
 };
 //! [0]
 
-#endif
+#endif //GRAPHWIDGET_H

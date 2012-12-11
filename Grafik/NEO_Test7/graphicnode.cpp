@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          graphicnode.cpp
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicNode är den grafiska representationen av Node.
+*/
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -40,7 +49,7 @@ QList<GraphicEdge *> GraphicNode::edges() const
 void GraphicNode::moveHelper()
 {
     QRectF sceneRect = scene()->sceneRect();
-    newPos = pos(); //+ QPointF(xvel, yvel);
+    newPos = pos();
     newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
     newPos.setY(qMin(qMax(newPos.y(), sceneRect.top() + 10), sceneRect.bottom() - 10));
 }
@@ -54,7 +63,6 @@ bool GraphicNode::advance()
     return true;
 }
 
-//Cha
 void GraphicNode::MovabilityF()
 {
     setFlag(ItemIsMovable, false);
@@ -64,26 +72,14 @@ void GraphicNode::MovabilityT()
 {
     setFlag(ItemIsMovable, true);
 }
-//! [7]
 
-//! [8]
 QRectF GraphicNode::boundingRect() const
 {
-/*#if defined(Q_OS_SYMBIAN) || defined(Q_WS_MAEMO_5)
-    // Add some extra space around the circle for easier touching with finger
-    qreal adjust = 30;
-    return QRectF( -10 - adjust, -10 - adjust,
-                  20 + adjust * 2, 20 + adjust * 2);
-#else*/
     qreal adjust = 2;
     return QRectF( -10 - adjust, -10 - adjust,
                   23 + adjust, 23 + adjust);
-//#endif
 }
 
-//! [8]
-
-//! [9]
 QPainterPath GraphicNode::shape() const
 {
     QPainterPath path;
@@ -92,9 +88,7 @@ QPainterPath GraphicNode::shape() const
 
     return path;
 }
-//! [9]
 
-//! [10]
 void GraphicNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
 {
     painter->setPen(Qt::NoPen);
@@ -116,9 +110,7 @@ void GraphicNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-10, -10, 20, 20);
 }
-//! [10]
 
-//! [11]
 QVariant GraphicNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     switch (change) {
@@ -133,9 +125,7 @@ QVariant GraphicNode::itemChange(GraphicsItemChange change, const QVariant &valu
 
     return QGraphicsItem::itemChange(change, value);
 }
-//! [11]
 
-//! [12]
 void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
@@ -150,22 +140,3 @@ void GraphicNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }
-
-/*void GraphicNode::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mouseDoubleClickEvent(event);
-    Node *node12 = new Node(graph);
-    node12->setPos(100,100);
-    scene()->addItem(node12);
-    Node *node13 = new Node(graph);
-    node13->setPos(-100,100);
-    scene()->addItem(node13);
-    Edge *edge1 = new Edge(node12,node13);
-    scene()->addItem(edge1);
-
-    scene()->blockSignals(true);
-
-
-}*/
-//! [12]

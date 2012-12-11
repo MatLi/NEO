@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          datawidget.cpp
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * Datawidget är ett fönster som kommer fram vid speciella tillfällen.
+*/
 #include "datawidget.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
@@ -7,7 +16,7 @@
 #include <math.h>
 
 DataWidget::DataWidget(GraphWidget *main_Graph, QWidget *parent)
-    : QGraphicsView(parent)//, timerId(0)
+    : QGraphicsView(parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -29,12 +38,8 @@ void DataWidget::changeTextItem(QString new_text)
     myTextItem->setText(new_text);
 }
 
-
-
 void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    //Q_UNUSED(rect);
-
     // Shadow
     QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
@@ -67,33 +72,3 @@ void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect, message);
 
 }
-
-
-/*void GraphWidget::scaleView(qreal scaleFactor)
-{
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
-        return;
-
-    scale(scaleFactor, scaleFactor);
-}*/
-//! [7]
-
-/*void GraphWidget::shuffle()
-{
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (qgraphicsitem_cast<Node *>(item))
-            item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    }
-}*/
-
-/*void GraphWidget::zoomIn()
-{
-    scaleView(qreal(1.2));
-}
-
-void GraphWidget::zoomOut()
-{
-    scaleView(1 / qreal(1.2));
-}*/
-

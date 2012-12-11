@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          graphicedge.cpp
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicEdge är den grafiska representationen av Edge.
+*/
 #include <QPainter>
 
 #include "graphicedge.h"
