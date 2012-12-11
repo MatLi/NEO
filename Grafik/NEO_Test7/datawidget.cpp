@@ -27,14 +27,37 @@ DataWidget::DataWidget(GraphWidget *main_Graph, QWidget *parent)
     QString textruta="Text111";
     myTextItem = new QGraphicsSimpleTextItem();
     myTextItem->setText(textruta);
-    myTextItem->setPos(100,100);
+    myTextItem->setPos(100,60);
 
     scene->addItem(myTextItem);
+
+    start = new QLineEdit();
+    end = new QLineEdit();
+
+    start->setText(textruta);
+    start->setGeometry(100,80,50,30);
+    scene->addWidget(start);
+
+    end->setText(textruta);
+    end->setGeometry(100,120,50,30);
+    scene->addWidget(end);
+
+    add_edge = new QPushButton();
+    add_edge->setGeometry(100,160,100,20);
+    add_edge->setText("Lägg till båge");
+    scene->addWidget(add_edge);
+
 }
 
 void DataWidget::changeTextItem(QString new_text)
 {
-    myTextItem->setText(new_text);
+    QString mfirst = "Nodnamn: ";
+    myTextItem->setText(mfirst+=new_text);
+}
+
+void DataWidget::on_add_edge_clicked()
+{
+    mainGraph->addEdge(start->text(),end->text());
 }
 
 /*void DataWidget::itemMoved()
