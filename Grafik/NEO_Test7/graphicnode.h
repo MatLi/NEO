@@ -4,7 +4,7 @@
 
 #include <QGraphicsItem>
 #include <QList>
-#include <string>
+#include <QString>
 
 
 class GraphicEdge;
@@ -22,6 +22,8 @@ public:
 
     void addEdge(GraphicEdge *edge);
     QList<GraphicEdge *> edges() const;
+
+    QString return_name() const;
 
     enum { Type = UserType + 1 };
     int type() const { return Type; }
@@ -47,7 +49,7 @@ private:
     QList<GraphicEdge *> edgeList;
     QPointF newPos;
     GraphWidget *graph;
-    //std::string name;
+    QString name;
 };
 
 

@@ -3,7 +3,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
-
+#include <QString>
 
 #include "graphicedge.h"
 #include "graphicnode.h"
@@ -16,7 +16,8 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    //name="";
+    name.setNum(graph->return_nodeList().size());
+    graph->addGraphicNode(this);
 }
 //! [0]
 
@@ -24,6 +25,11 @@ void GraphicNode::addEdge(GraphicEdge *edge)
 {
     edgeList << edge;
     edge->adjust();
+}
+
+QString GraphicNode::return_name() const
+{
+    return name;
 }
 
 QList<GraphicEdge *> GraphicNode::edges() const
@@ -185,6 +191,10 @@ QVariant GraphicNode::itemChange(GraphicsItemChange change, const QVariant &valu
 void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
+
+    //Ändrar textrutan i Widget
+    graph->changeTextItem(return_name());
+
     QGraphicsItem::mousePressEvent(event);
 }
 void GraphicNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
