@@ -16,15 +16,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void paintEvent (QPaintEvent *event);
+    //void paintEvent (QPaintEvent *event);
 
 private:
     Ui::MainWindow *ui;
 
 
 private slots:
-    void on_pushButton_clicked();
-    void on_actionOpen_activated();
+   // void on_pushButton_clicked();
+   // void on_actionOpen_activated();
 };
 
 #endif // MAINWINDOW_H
