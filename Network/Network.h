@@ -69,8 +69,15 @@ class Network
   double min_cost_flow_phase2(Set<Edge*>, Set<Edge*>);
   void find_base_and_non_base_edges(Set<Edge*>&, Set<Edge*>&);
   void update_node_prices(Node*, Set<Edge*>);
-  std::deque<Edge*> find_cycle(std::deque<Edge*>, Set<Edge*>, Node*, Node*);
+  void calculate_reduced_costs(Set<Edge*>);
+  std::deque<Edge*> find_cycle(Set<Edge*>, Edge*, Node*&);
+  std::deque<Edge*> find_cycle_help(std::deque<Edge*>, Set<Edge*>, Node*, Node*);
   bool exists(std::deque<Edge*>, Edge*);
+  bool optimal_mincostflow(Set<Edge*>&, Set<Edge*>);
+  Edge* find_incoming_edge(Set<Edge*>);
+  double find_flow_change_outgoing_edge(std::deque<Edge*>, Node*, Edge*&);
+  void change_flow(std::deque<Edge*>, Node*, double);
+  double flowcost();
 };
 
 #endif
