@@ -13,6 +13,7 @@
 #ifndef NETWORK_HH
 #define NETWORK_HH
 
+#include <deque>
 #include <string>
 #include <stdexcept>
 #include "Node.h"
@@ -51,8 +52,8 @@ class Network
   void remove_all_nodes();
   void reset_network();
   
-  // void cheapest_tree();
-  void shortest_path(Node*, Node*);
+  void cheapest_tree();
+  void cheapest_path(Node*, Node*);
   void min_cost_flow();
   void max_cost_flow();
   void max_flow();
@@ -64,6 +65,12 @@ class Network
  private:
   Set<Edge*> edges_;
   Set<Node*> nodes_;
+  
+  double min_cost_flow_phase2(Set<Edge*>, Set<Edge*>);
+  void find_base_and_non_base_edges(Set<Edge*>&, Set<Edge*>&);
+  void update_node_prices(Node*, Set<Edge*>);
+  std::deque<Edge*> find_cycle(std::deque<Edge*>, Set<Edge*>, Node*, Node*);
+  bool exists(std::deque<Edge*>, Edge*);
 };
 
 #endif
