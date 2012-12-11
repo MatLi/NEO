@@ -146,7 +146,9 @@ DataWidget* GraphWidget::makeDataWidget()
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     GraphicNode *node = new GraphicNode(this);
-    node->setPos((event->x()-400),(event->y()-343));
+    QPoint eventPos = event->pos();
+    QPointF mappedEventPos = mapToScene(eventPos);
+    node->setPos(mappedEventPos);
     scene()->addItem(node);
 }
 
@@ -162,14 +164,13 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_A:
         {
-        dwidget = makeDataWidget();
-        dwidget->show();
+	  dwidget = makeDataWidget();
+	  dwidget->show();
         }
     case Qt::Key_E:
         foreach (GraphicNode *node, nodes)
         {
-            node->MovabilityF();
-
+	  node->MovabilityF();
         }
         break;
     case Qt::Key_N:
