@@ -7,8 +7,9 @@
 #include <QList>
 
 class GraphicNode;
+class DataWidget;
 
-//! [0]
+
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -28,6 +29,7 @@ public slots:
   //  void zoomOut();
 
 protected:
+    DataWidget* makeDataWidget();
     void mouseDoubleClickEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);

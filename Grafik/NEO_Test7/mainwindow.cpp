@@ -15,13 +15,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
+/*void MainWindow::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
     painter.drawEllipse(100, 100, 10, 10);
 
-}
+}*/
 
 /*void MainWindow::on_pushButton_clicked()
 {
@@ -29,7 +29,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 }*/
 
-void MainWindow::on_actionOpen_activated()
+/*void MainWindow::on_actionOpen_activated()
 {
     ui->setupUi(this);
-}
+}*/

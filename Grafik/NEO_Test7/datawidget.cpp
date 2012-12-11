@@ -1,5 +1,4 @@
 //Mari
-#include "graphwidget.h"
 #include "datawidget.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
@@ -7,12 +6,12 @@
 #include <QtGui>
 #include <math.h>
 
-GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), timerId(0)
+DataWidget::DataWidget(GraphWidget *main_Graph, QWidget *parent)
+    : QGraphicsView(parent)//, timerId(0)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-340, -340, 680, 680);
+    scene->setSceneRect(0, 0, 250, 500);
     setScene(scene);
 
     //setCacheMode(CacheBackground);
@@ -23,55 +22,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     //setMinimumSize(400, 400);
     //setWindowTitle(tr("Elastic Nodes"));
 
-
-    GraphicNode *node1 = new GraphicNode(this);
-    GraphicNode *node2 = new GraphicNode(this);
-    GraphicNode *node3 = new GraphicNode(this);
-    GraphicNode *node4 = new GraphicNode(this);
-    centerNode = new GraphicNode(this);
-    GraphicNode *node6 = new GraphicNode(this);
-    GraphicNode *node7 = new GraphicNode(this);
-    GraphicNode *node8 = new GraphicNode(this);
-    GraphicNode *node9 = new GraphicNode(this);
-    node10 = new GraphicNode(this);
-    GraphicNode *node14 = new GraphicNode(this);
-    scene->addItem(node1);
-    scene->addItem(node2);
-    scene->addItem(node3);
-    scene->addItem(node4);
-    scene->addItem(centerNode);
-    scene->addItem(node6);
-    scene->addItem(node7);
-    scene->addItem(node8);
-    scene->addItem(node9);
-    //scene->addItem(node10);
-    scene->addItem(new GraphicEdge(node1, node2));
-    scene->addItem(new GraphicEdge(node2, node3));
-    scene->addItem(new GraphicEdge(node2, centerNode));
-    scene->addItem(new GraphicEdge(node3, node6));
-    scene->addItem(new GraphicEdge(node4, node1));
-    scene->addItem(new GraphicEdge(node4, centerNode));
-    scene->addItem(new GraphicEdge(centerNode, node6));
-    scene->addItem(new GraphicEdge(centerNode, node8));
-    scene->addItem(new GraphicEdge(node6, node9));
-    scene->addItem(new GraphicEdge(node7, node4));
-    scene->addItem(new GraphicEdge(node8, node7));
-    scene->addItem(new GraphicEdge(node9, node8));
-
-    //Lägger till en båge med hjälp av nodeList
-    scene->addItem(new GraphicEdge(this->return_nodeList().at(3), this->return_nodeList().at(8)));
-
-    node1->setPos(-50, -50);
-    node2->setPos(0, -50);
-    node3->setPos(50, -50);
-    node4->setPos(-50, 0);
-    centerNode->setPos(0, 0);
-    node6->setPos(50, 0);
-    node7->setPos(-50, 50);
-    node8->setPos(0, 50);
-    node9->setPos(50, 50);
-    node10->setPos(20, 20);
-    node14->setPos(10,10);
+    mainGraph = main_Graph;
 
     QString textruta="Text111";
     myTextItem = new QGraphicsSimpleTextItem();
@@ -81,60 +32,22 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(myTextItem);
 }
 
-QList<GraphicNode *> GraphWidget::return_nodeList()
-{
-    return nodeList;
-}
-
-void GraphWidget::addGraphicNode(GraphicNode *new_node)
-{
-    nodeList << new_node;
-}
-
-void GraphWidget::changeTextItem(QString new_text)
+void DataWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
 }
 
-void GraphWidget::itemMoved()
+/*void DataWidget::itemMoved()
 {
     if (!timerId)
         timerId = startTimer(1000/25);
 }
+*/
 
-DataWidget* GraphWidget::makeDataWidget()
-{
-    DataWidget *dwidget = new DataWidget(this);
-    return dwidget;
-}
+//void DataWidget::keyPressEvent(QKeyEvent *event)
+//{
 
-void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
-{
-   // if (!(!scene() || scene()->mouseGrabberItem()))
-    //{
-    //QPoint p = scene()->mapFromGlobal(QCursor::pos());
-    GraphicNode *node234 = new GraphicNode(this);
-
-    //node234->setPos(this->pos());
-
-    node234->setPos((event->x()-400),(event->y()-343));
-    scene()->addItem(node234);
-}
-
-void GraphWidget::keyPressEvent(QKeyEvent *event)
-{
-    GraphicNode *node = new GraphicNode(this);// node10->newNode();
-   // Node *node = new Node(node10->newNode());
-    node->setPos(30,-99);
-    //Edge *edge = new Edge(node, centerNode);
-    QList<GraphicNode *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
-            nodes << node;
-    }
-    DataWidget* dwidget;
-
-    switch (event->key()) {
+  //  switch (event->key()) {
     /*case Qt::Key_Up:
         node10->moveBy(0, -20);
         break;
@@ -159,12 +72,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Enter:
         shuffle();
         break;*/
-    case Qt::Key_A:
-        {
-        dwidget = makeDataWidget();
-        dwidget->show();
-        }
-    case Qt::Key_E:
+   /* case Qt::Key_E:
         foreach (GraphicNode *node, nodes)
         {
             node->MovabilityF();
@@ -179,10 +87,10 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         break;
     default:
         QGraphicsView::keyPressEvent(event);
-    }
-}
+    }*/
+//}
 
-void GraphWidget::timerEvent(QTimerEvent *event)
+/*void DataWidget::timerEvent(QTimerEvent *event)
 {
     //Q_UNUSED(event);
 
@@ -213,7 +121,7 @@ void GraphWidget::timerEvent(QTimerEvent *event)
 }*/
 
 
-void GraphWidget::drawBackground(QPainter *painter, const QRectF &rect)
+void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
     //Q_UNUSED(rect);
 
@@ -279,3 +187,4 @@ void GraphWidget::zoomOut()
 {
     scaleView(1 / qreal(1.2));
 }*/
+
