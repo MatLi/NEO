@@ -57,6 +57,7 @@ class Network
   void min_cost_flow();
   void max_cost_flow();
   void max_flow();
+  double flowcost();
 
   // Eventuellt?
   void fwrite(const std::string);
@@ -77,7 +78,6 @@ class Network
   Edge* find_incoming_edge(Set<Edge*>);
   double find_flow_change_outgoing_edge(std::deque<Edge*>, Node*, Edge*&);
   void change_flow(std::deque<Edge*>, Node*, double);
-  double flowcost();
 };
 
 #endif
