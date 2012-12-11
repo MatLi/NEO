@@ -21,6 +21,7 @@ public:
     QList<GraphicNode *> return_nodeList();
     void addGraphicNode(GraphicNode *new_node);
     void changeTextItem(QString new_text);
+    void addEdge(QString start, QString end);
     //void newNode(Node *node);
 
 public slots:
