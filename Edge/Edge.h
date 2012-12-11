@@ -3,7 +3,7 @@
  * PROJEKT:          NEO
  * PROGRAMMERARE:    Li och Linda
  *
- * DATUM:            2012-11-21
+ * DATUM:            2012-11-28
  *
  * BESKRIVNING:
  * Edge �r ett objekt som motsvarar b�gar/kanter i ett n�tverksproblem.   
@@ -21,18 +21,11 @@ class Edge
  public:
   Edge() = delete;
   
- Edge(Node* in_from_, Node* in_to_ )
-   :to_(in_to_), 
-    from_(in_from_), 
-    flow_(0), 
-    reduced_cost_(0),
-    maxflow_(0), 
-    minflow_(0),
-    cost_(0){}
+  Edge(Node* in_from_, Node* in_to_ ); //Skrivs i cc-filen
   
   // Vill vi ha fler konstruktorer? 
 
- ~Edge() = default; // Vi vill inte ta bort noderna som pekas p�, deafult kan anv�ndas.
+  ~Edge();
 
   Node* from_node() const;
   Node* to_node() const;

@@ -1,7 +1,7 @@
 /* 
  * FILNAMN:          Network.cc
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Li och Linda
+ * PROGRAMMERARE:    Li, David, Linda och Jonas
  *
  * DATUM:            2012-11-21
  *
@@ -11,6 +11,11 @@
 */
 
 #include "Network.h"
+#include <cmath>
+#include <deque>
+#include <iostream>
+#include <fstream>
+#include <cctype>
 
 using namespace std;
 
@@ -47,6 +52,7 @@ void
 Network::remove_node(Node* del_node)
 {
   nodes_.remove_member(del_node);
+  delete del_node;
 }
 
 // Tar bort en båge/kant
@@ -54,6 +60,7 @@ void
 Network::remove_edge(Edge* del_edge)
 {
   edges_.remove_member(del_edge);
+  delete del_edge;
 }
 
 // Tar bort alla bågar/kanter
@@ -70,102 +77,573 @@ Network::remove_all_nodes()
   nodes_.clear();
 }
 
-// // Genererar en billigaste-träd-lösning
-// // Utgår från att nätverket är "nollställt"
-// void
-// Network::cheapest_tree()
-// {
-//   //Temporära variabler
-//   Node* working_node = nullptr;
-//   Edge* Cheapest_current_edge = nullptr;
-//   Set<Node*> Searched;
-//   Set<Node*> Not_Searched(nodes_);
-//   double Cheapest_cost = 1.7*10^308; //Maxvärde för double i C++
-//   bool from_in_edges = false;
-
-//   if (nodes_.size()==0)
-//   {
-//     // något slags feluttryck
-//   }
-  
-//   //Väljer första jobbnoden och justerar nodmängderna
-//   working_node = Not_searched[0];
-//   Searched.add_member(working_node);
-//   Not_searched.remove_member(working_node);
-
-//   //Loopar över alla bågar som ska väljas
-//   for (unsigned int edges_in_tree = 1; edges_in_tree <= nodes_.size()-1; edges_in_tree++)
-//   {
-    
-//     //Loopar över alla noder i Searched
-//     for (unsigned int j=0;j<Searched.size();j++)
-//     {
-//       //Sätter working_node till iteratornumrets nod
-//       working_node = Searched[j];
-
-//       //Söker igenom working_node:s inbågar efter billigaste båge
-//       for(unsigned int i=0; i<working_node->in_edges.size() ; i++)
-//       {
-// 	// Kollar om bågen är möjligt alternativ
-// 	if (working_node->in_edges(i).cost() < Cheapest_cost // Kollar om bågpriset är billigast
-// 	    && working_node->in_edges(i).flow()==0  // Kollar om bågen används
-// 	    && Searched.search_element(working_node->in_edges(i)).from_node()==false) // Kollar om från-noden redan finns i mängden
-// 	{
-// 	  Cheapest_cost = working_node->in_edges(i).cost();
-// 	  Cheapest_current_edge = working_node->in_edges(i);
-// 	  from_in_edges = true;
-// 	}
-//       }
-//       // Söker igenom working_node:s utbågar efter billigaste båge
-//       for(unsigned int i=0; i<working_node->out_edges.size() ; i++)
-//       {
-// 	// Kollar om bågen är möjligt alternativ
-// 	if (working_node->out_edges(i).cost() < Cheapest_cost // Kollar om bågpriset är billigast
-// 	    && working_node->out_edges(i).flow()==0  // Kollar om bågen används
-// 	    && Searched.search_element(working_node->out_edges(i)).to_node()==false) // Kollar om till-noden redan finns i mängden
-// 	{
-// 	  Cheapest_cost = working_node->out_edges(i).cost();
-// 	  Cheapest_current_edge = working_node->out_edges(i);
-// 	  from_in_edges = false;
-// 	}
-//       }
-//     }
-  
-//     //Uppdaterar nätverket med ny båge i trädet 
-//     Cheapest_current_edge->change_flow() = 1; //bågen används i trädet
-  
-//     //Uppdaterar nodmängder
-//     if (from_in_edges == true)
-//     {
-//       Searched.add_member(Cheapest_current_edge->from_node());
-//       Not_Searched.remove_member(Cheapest_current_edge->from_node());
-//     }
-//     else
-//     {
-//       Searched.add_member(Cheapest_current_edge->to_node());
-//       Not_Searched.remove_member(Cheapest_current_edge->to_node());
-//     }
-
-//     //Nollställer cheapest:s värden
-//     Cheapest_cost = 1.7*10^308; //Maxvärde för double i C++
-//     Cheapest_current_edge = nullptr;
-//   }
-// }
-
-// Genererar en kortaste-väg-lösning
+/* void reset_network()
+ * Återställer algoritmernas genererade data: bågflöden, nodpriser, reducerade
+ * kostnader.
+ */
 void
-Network::shortest_path(Node* start_node, Node* end_node)
+Network::reset_network()
 {
-  
-
-  //Din kod här
+  for (auto it : edges_)
+    {
+      (*it).change_flow(0);
+      (*it).change_reduced_cost(0);
+    }
+  for (auto it : nodes_)
+    {
+      (*it).change_node_price(0);
+    }
+  return;
 }
 
-// Genererar minkostnadsflöde
+// Genererar en billigaste-träd-lösning
+// Utgår från att nätverket är "nollställt"
+void
+Network::cheapest_tree()
+{
+  //Temporära variabler
+  Node* working_node = nullptr;
+  Set<Node*> Searched;
+  Set<Node*> Unsearched(nodes_);
+  Set<Edge*> Spanning_Edges;
+  const unsigned int num_nodes = nodes_.size();
+
+  if (nodes_.empty())
+    {
+      throw network_error("Nätverket saknar noder");
+    }
+
+  // Initialisera algoritmen.
+  working_node = *Unsearched.begin();
+  Searched.add_member(working_node);
+  Unsearched.remove_member(working_node);
+
+  //Väljer första jobbnoden och justerar nodmängderna
+  do
+    {
+      double min_cost = pow(10,380); //Maxvärde för double i C++
+      Edge* cheapest_current_edge = nullptr;
+      for (auto it : edges_)
+	{
+	  if (Searched.exists((*it).from_node()) &&
+	      Unsearched.exists((*it).to_node()))
+	    {
+	      if ((*it).cost() < min_cost)
+		{
+		  cheapest_current_edge = &(*it);
+		  min_cost = (*it).cost();
+		}
+	    }
+	}
+      Spanning_Edges.add_member(cheapest_current_edge);
+      Searched.add_member(cheapest_current_edge->to_node());
+      Unsearched.remove_member(cheapest_current_edge->to_node());
+    } while(Spanning_Edges.size() < num_nodes - 1);
+
+  for (auto it : Spanning_Edges)
+    {
+      if (&(*it) == nullptr)
+	{
+	  throw network_error("Kan ej generera billigaste uppspännande träd, det finns inte kanter till alla noder.");
+	}
+      else
+	{
+	  (*it).change_flow(1); // Tolkas som att kanten är med i BUT.
+	}
+    }
+  return;
+}
+
+// Genererar en billigaste-väg-lösning
+void
+Network::cheapest_path(Node* start_node, Node* end_node)
+{
+  
+}
+
+/*********************************************************************************************
+ * Genererar minkostnadsflöde med hjälp av nätverkssimplex.
+ * Ställer upp Fas 1-problemet med en artificiell nod och artificiella bågar. Löser detta
+ * problem med fas 2-funktionen för att få ett tillåtet flöde. Därefter återställs nätverket
+ * och fas 2-funktionen körs på nätverket med ett tillåtet flöde.
+ * Kastar undantag om det saknas tillåten lösning, samt om något blivit allvarligt fel (om cykel
+ * inte existerar när den borde göra det).
+ *********************************************************************************************/
 void
 Network::min_cost_flow()
 {
-  //Din kod här
+  /****** 
+   *Fas 1
+   ******/
+  Node* artificial = new Node("A");
+  Set<Edge*> artificial_edges;
+
+  deque<double> original_cost;
+  deque<double> original_lb;
+  deque<double> original_ub;
+
+  // Lägg till den artificiella noden i nätverket.
+  add_node(artificial);
+
+  // Se till att alla minflödeskrav är uppfyllda och spara ursprungliga
+  // värden.
+  for (auto it : edges_)
+    {
+      original_cost.push_back((*it).cost());
+      original_lb.push_back((*it).minflow());
+      original_ub.push_back((*it).maxflow());
+      if ((*it).minflow() > 0)
+	{
+	  (*it).from_node()->change_flow((*it).from_node()->flow() +
+					 (*it).minflow());
+	  (*it).to_node()->change_flow((*it).to_node()->flow() -
+				       (*it).minflow());
+	  (*it).change_maxflow((*it).maxflow() - (*it).minflow());
+	  (*it).change_minflow(0);
+	}
+    }
+
+  // Lägg till kanter från/till alla noder till/från den artificiella noden.
+  for (auto it : nodes_)
+    {
+      if ((*it).flow() < 0)
+	{
+	  // Lägg till bågar från alla källor till den artificiella
+	  // noden.
+	  Edge* new_edge = new Edge(&(*it), artificial);
+	  add_edge(new_edge);
+	  artificial_edges.add_member(new_edge);
+	  new_edge->change_flow(abs((*it).flow()));
+	}
+      else if ((*it).flow() > 0)
+	{
+	  // Lägg till bågar från den artificiella noden till alla
+	  // sänkor.
+	  Edge* new_edge = new Edge(artificial, &(*it));
+	  add_edge(new_edge);
+	  artificial_edges.add_member(new_edge);
+	  new_edge->change_flow(abs((*it).flow()));
+	}
+      else if (&(*it) != artificial)
+	{
+	  // Lägg till bågar från den artificiella noden till alla andra
+	  // mellannoder.
+	  Edge* new_edge = new Edge(artificial, &(*it));
+	  add_edge(new_edge);
+	  artificial_edges.add_member(new_edge);
+	}
+    }
+  
+  for (auto it : edges_)
+    {
+      (*it).change_cost(0);
+    }
+  for (auto it : artificial_edges)
+    {
+      (*it).change_cost(1);
+    }
+  
+
+  // Bestäm ursprungliga basbågar och icke-basbågar för fas 1.
+  Set<Edge*> base_edges;
+  Set<Edge*> non_base_edges;
+
+  find_base_and_non_base_edges(base_edges, non_base_edges);
+  
+  // Lös Fas 1-problemet.
+  double phase1_target_val = min_cost_flow_phase2(base_edges,
+						  non_base_edges);
+
+  // Om målfunktionsvärdet inte är 0, så har vi ingen tillåten lösning.
+  if (phase1_target_val != 0)
+    {
+      throw network_error("Det finns ingen tillåten lösning.");
+    }
+
+  // Återställ allt till det normala och kör fas 2 på den funna
+  // tillåtna lösningen.
+
+  for (auto it : artificial_edges)
+    {
+      remove_edge(&(*it));
+    }
+  remove_node(artificial);
+
+  for (auto it : edges_)
+    {
+      (*it).change_minflow(original_lb.front());
+      original_lb.pop_front();
+      (*it).change_maxflow(original_ub.front());
+      original_ub.pop_front();
+      (*it).change_cost(original_cost.front());
+      original_cost.pop_front();
+      if ((*it).minflow() > 0)
+	{
+	  (*it).from_node()->change_flow((*it).from_node()->flow() +
+					 (*it).minflow());
+	  (*it).to_node()->change_flow((*it).to_node()->flow() -
+				       (*it).minflow());
+	  (*it).change_flow((*it).flow() + (*it).minflow());
+	}
+    }
+
+  /*****************************
+   * Allt återställt. Kör Fas 2.
+   *****************************/
+  find_base_and_non_base_edges(base_edges, non_base_edges);
+
+  min_cost_flow_phase2(base_edges,
+		       non_base_edges);
+  return;
+}
+
+/**********************************************************
+ * find_base_and_non_base_edges(Set<Edge*>&, Set<Edge*>&)
+ * Finner bas- och icke-basbågar i ett tillåtet flöde.
+ * Förutsätter tillåtet flöde.
+ **********************************************************/
+void
+Network::find_base_and_non_base_edges(Set<Edge*>& base_edges,
+				      Set<Edge*>& non_base_edges)
+{
+  base_edges.clear();
+  non_base_edges.clear();
+  // Lägg till de bågar som måste vara basbågar. Sätt alla andra till
+  // icke-basbågar.
+  for (auto it : edges_)
+    {
+      if ((*it).flow() > (*it).minflow() && (*it).flow() < (*it).maxflow())
+	{
+	  base_edges.add_member(&(*it));
+	}
+      else
+	{
+	  non_base_edges.add_member(&(*it));
+	}
+    }
+  
+  for (auto it : nodes_)
+    {
+      (*it).set_connected(false);
+    }
+ 
+  for (auto it : base_edges)
+    {
+      (*it).from_node()->set_connected(true);
+      (*it).to_node()->set_connected(true);
+    }
+  
+  // Om det finns icke-kopplade noder, så läggs så många
+  // icke-basbågar som behövs över i mängden av basbågar.
+  // Samtidigt bibehålls trädstrukturen.
+  vector<Node*>::iterator itN = nodes_.begin();
+  while (base_edges.size() < nodes_.size() - 1)
+    {
+      if (!(*itN)->connected())
+	{
+	  for (auto it : (*itN)->all_edges())
+	    {
+	      if ((*it).to_node()->connected() ||
+		  (*it).from_node()->connected())
+		{
+		  base_edges.add_member(&(*it));
+		  non_base_edges.remove_member(&(*it));
+		  (*itN)->set_connected(true);
+		  break;
+		}
+	    }
+	}
+      
+      if (itN == nodes_.end())
+	{
+	  itN = nodes_.begin();
+	}
+      else
+	{
+	  itN++;
+	}
+    }
+
+  return;
+}
+
+/*******************************************************************************
+ * min_cost_flow_phase2(): Löser fas 2-problem och förutsätter att nätverket har
+ * ett tillåtet flöde och kräver att ursprungsfunktionen tillhandahåller bas- och
+ * icke-basbågar i utgångsläget.
+ *******************************************************************************/
+double
+Network::min_cost_flow_phase2(Set<Edge*> base_edges,
+			      Set<Edge*> non_base_edges)
+{
+  // Sätt alla noder till icke-kopplade.
+  for (auto it : nodes_)
+    {
+      (*it).set_connected(false);
+    }
+  // Uppdatera alla nodpriser. start_node har nodpris 0.
+  for (auto it : nodes_)
+    {
+      (*it).change_node_price(0);
+    }
+  Node* start_node = (*nodes_.begin());
+  update_node_prices(start_node, base_edges);
+
+  // Beräkna de reducerade kostnaderna för icke-basbågar.
+  for (auto it : non_base_edges)
+    {
+      (*it).change_reduced_cost((*it).cost() +
+				(*it).from_node()->node_price() -
+				(*it).to_node()->node_price());
+    }
+
+  // Kontrollera avbrottskriterium och se till att de bågar som inte
+  // uppfyller kriterierna sparas i en mängd.
+  bool optimal = true;
+  Set<Edge*> unfulfilling_edges;
+  for (auto it : non_base_edges)
+    {
+      if ((*it).reduced_cost() == 0 &&
+	  (*it).flow() <= (*it).maxflow() &&
+	  (*it).flow() >= (*it).minflow())
+	{
+	  optimal = optimal && true;
+	}
+      else if ((*it).reduced_cost() < 0 &&
+	       (*it).flow() == (*it).maxflow())
+	{
+	  optimal = optimal && true;
+	}
+      else if ((*it).reduced_cost() > 0 &&
+	       (*it).flow() == (*it).minflow())
+	{
+	  optimal = optimal && true;
+	}
+      else
+	{
+	  unfulfilling_edges.add_member(&(*it));
+	  optimal = false;
+	}
+    }
+
+  // Om flödet är optimalt, upphör med rekursionen.
+  if (optimal)
+    {
+      double target_value = 0;
+      for (auto it : edges_)
+	{
+	  target_value += (*it).flow() * (*it).cost();
+	}
+      return target_value;
+    }
+
+  // Flödet är icke-optimalt. Bestäm en inkommande basbåge.
+  double max_reduced_cost = 0;
+  Edge* incoming_edge = nullptr;
+  for (auto it : unfulfilling_edges)
+    {
+      if (abs((*it).reduced_cost()) > max_reduced_cost)
+	{
+	  incoming_edge = &(*it);
+	  max_reduced_cost = abs((*it).reduced_cost());
+	}
+    }
+
+  // Bestäm sökriktning och den cykel som uppkommer.
+  deque<Edge*> cycle;
+  Node* x_node = nullptr; // Noden som är start- och slutnod i cykeln.
+  cycle.push_back(incoming_edge);
+
+  // Om flödet ligger på undre gränsen ska flödet ökas längs den inkommande
+  // bågen.
+  if (incoming_edge->reduced_cost() < 0)
+    {
+      x_node = incoming_edge->from_node();
+      cycle = find_cycle(cycle,
+			 base_edges,
+			 x_node,
+			 incoming_edge->to_node());
+    }
+  // Om flödet ligger på övre gränsen ska flödet minskas längs den inkommande
+  // bågen (cykeln går "baklänges" längs den inkommande bågen).
+  else if (incoming_edge->reduced_cost() > 0)
+    {
+      x_node = incoming_edge->to_node();
+      cycle = find_cycle(cycle,
+			 base_edges,
+			 x_node,
+			 incoming_edge->from_node());
+    }
+
+  // Cykeln får/kan inte vara tom...
+  if (cycle.empty())
+    {
+      throw network_error("Något allvarligt fel har inträffat.");
+    }
+
+  double theta = pow(10,380); // Största tillåtna flödesändring.
+  Edge* outgoing_edge = nullptr;
+  // Bestäm den utgående basbågen i cykeln. x_node används här för
+  // att avgöra om vi har en framåt- eller bakåtbåge i cykeln.
+  for (auto it : cycle)
+    {
+      if ((*it).from_node() == x_node)
+	{
+	  if ((*it).maxflow() - (*it).flow() < theta)
+	    {
+	      theta = (*it).maxflow() - (*it).flow();
+	      outgoing_edge = &(*it);
+	    }
+	  x_node = (*it).to_node();
+	}
+      else if ((*it).to_node() == x_node)
+	{
+	  if ((*it).flow() - (*it).minflow() < theta)
+	    {
+	      theta = (*it).flow() - (*it).minflow();
+	      outgoing_edge = &(*it);
+	    }
+	  x_node = (*it).from_node();
+	}
+    }
+
+  // Se till att x_node ställs rätt igen.
+  if (incoming_edge->reduced_cost() < 0)
+    {
+      x_node = incoming_edge->from_node();
+    }
+  else if (incoming_edge->reduced_cost() > 0)
+    {
+      x_node = incoming_edge->to_node();
+    }
+  
+  // Ändra flödena i cykeln.
+  for (auto it : cycle)
+    {
+      if ((*it).from_node() == x_node)
+	{
+	  (*it).change_flow((*it).flow() + theta);
+	  x_node = (*it).to_node();
+	}
+      else if ((*it).to_node() == x_node)
+	{
+	  (*it).change_flow((*it).flow() - theta);
+	  x_node = (*it).from_node();
+	}
+    }
+
+  // Byt plats på inkommande och utgående båge.
+  non_base_edges.remove_member(incoming_edge);
+  base_edges.add_member(incoming_edge);
+  base_edges.remove_member(outgoing_edge);
+  non_base_edges.add_member(outgoing_edge);
+  
+  // Rekursivt steg.
+  return min_cost_flow_phase2(base_edges, non_base_edges);
+}
+
+// exists(deque<Edge*>, Edge*): Sant omm e finns i dq
+bool
+Network::exists(deque<Edge*> dq,
+		Edge* e)
+{
+  bool retval = false;
+  for (auto it : dq)
+    {
+      if (&(*it) == e)
+	retval = true;
+    }
+  return retval;
+}
+
+/**************************************************************
+ * find_cycle(deque<Edge*>, Set<Edge*>, Node*, Node*)
+ * Tar en ordnad mängd kanter (cycle) och ser till att returnera en
+ * cykel av basbågar, som börjar och slutar i search_node.
+ * present_node är den nod som för närvarande avsöks.
+ **************************************************************/
+deque<Edge*>
+Network::find_cycle(deque<Edge*> cycle,
+		    Set<Edge*> base_edges,
+		    Node* search_node,
+		    Node* present_node)
+{
+  // Om vi hittat tillbaka så har vi en cykel.
+  if (present_node == search_node)
+    {
+      return cycle;
+    }
+
+  // Annars ser vi om vi kan hitta en cykel antingen på nodens
+  // utkanter eller inkanter.
+  for (auto it : present_node->out_edges())
+    {
+      deque<Edge*> retval = cycle;
+      if (base_edges.exists(&(*it)) &&
+	  !exists(cycle, &(*it)))
+	{
+	  retval.push_back(&(*it));
+	  retval = find_cycle(retval,
+			      base_edges,
+			      search_node,
+			      (*it).to_node());
+	  if (!retval.empty())
+	    {
+	      return retval;
+	    }
+	}
+    }
+  for (auto it : present_node->in_edges())
+    {
+      deque<Edge*> retval = cycle;
+      if (base_edges.exists(&(*it)) &&
+	  !exists(cycle, &(*it)))
+	{
+	  retval.push_back(&(*it));
+	  retval = find_cycle(retval,
+			      base_edges,
+			      search_node,
+			      (*it).from_node());
+	  if (!retval.empty())
+	    {
+	      return retval;
+	    }
+	}
+    }
+  // Om vi inte hittat något så returnerar vi en tom deque.
+  return deque<Edge*>();
+}
+
+/********************************************************************
+ * update_node_prices(Node*, Set<Edge*>)
+ * Tar en första nod, med nodpris 0 och beräknar alla övriga noders
+ * nodpriser utifrån denna och trädet av basbågar.
+ ********************************************************************/
+void
+Network::update_node_prices(Node* active_node, Set<Edge*> base_edges)
+{
+  active_node->set_connected(true);
+  for (auto it : active_node->out_edges())
+    {
+      if (base_edges.exists(&(*it)) &&
+	  !(*it).to_node()->connected())
+	{
+	  (*it).to_node()->change_node_price(active_node->node_price() + (*it).cost());
+	  update_node_prices((*it).to_node(),
+			     base_edges);
+	}
+    }
+  for (auto it : active_node->in_edges())
+    {
+      if (base_edges.exists(&(*it)) &&
+	  !(*it).from_node()->connected())
+	{
+	  (*it).from_node()->change_node_price(active_node->node_price() - (*it).cost());
+	  update_node_prices((*it).from_node(),
+			     base_edges);
+	}
+    }
+  return;
 }
 
 // Genererar maxkostnadsflöde
@@ -182,3 +660,204 @@ Network::max_flow()
   //Din kod här
 }
 
+void
+Network::fwrite(const string filename)
+{
+  ofstream xmlwrite;
+  xmlwrite.open(filename);
+
+  xmlwrite << "<network>" << endl;
+  xmlwrite << "  <nodes>" << endl;
+  for (auto it : nodes_)
+    {
+      xmlwrite << "    <node "
+	       << "id=\"" << it << "\" "
+	       << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
+	       << "xpos=\"" << (*it).position().xpos() << "\" "
+	       << "ypos=\"" << (*it).position().ypos() << "\" "
+	       << "flow=\"" << (*it).flow() << "\" "
+	       << "node_price=\"" << (*it).node_price() << "\" "
+	       << "/>" << endl;
+    }
+  xmlwrite << "  </nodes>" << endl;
+  xmlwrite << "  <edges>" << endl;
+  for (auto it : edges_)
+    {
+      xmlwrite << "    <edge "
+	       << "flow=\"" << (*it).flow() << "\" "
+	       << "reduced_cost=\"" << (*it).reduced_cost() << "\" "
+	       << "cost=\"" << (*it).cost() << "\" "
+	       << "maxflow=\"" << (*it).maxflow() << "\" "
+	       << "minflow=\"" << (*it).minflow() << "\" "
+	       << "from_node=\"" << (*it).from_node() << "\" "
+	       << "to_node=\"" << (*it).to_node() << "\" "
+	       << "/>" << endl;
+    }
+  xmlwrite << "  </edges>" << endl;
+  xmlwrite << "</network>";
+ 
+  xmlwrite.close();
+}
+
+void
+Network::fopen(const string filename)
+{
+  ifstream xmlread;
+  xmlread.open(filename);
+  
+  string word;
+  string tagname;
+  string label;
+  bool in_tag = false;
+  bool in_word = false;
+  bool in_arg = false;
+  bool end_expected = false;
+  bool arg_expected = false;
+  bool making_tagname = false;
+  char next_char = ' ';
+  while (xmlread.good())
+    {
+      xmlread >> next_char;
+
+      if (isspace(next_char)) // Space - klar
+	{
+	  if ((making_tagname and !in_word) or
+	      (in_word and !making_tagname and !in_arg))
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad space" << endl;
+	    }
+	  else if (making_tagname)
+	    {
+	      tagname = word;
+	      word = "";
+	      in_word = false;
+	      making_tagname = false;
+	      // Kolla om bra tagname
+	    }
+	  else if (in_arg)
+	    {
+	      word.push_back(next_char);
+	    }
+	  else
+	    {
+	      continue;
+	    }
+	}
+      else if (next_char == '<') // Start tag - klar
+	{
+	  if (in_tag)
+	    {
+	      // ERROR
+	      cout << "Inläsningsfel - felplacerad <" << endl;
+	    }
+	  else
+	    {
+	      in_tag = true;
+	      making_tagname = true;
+	    }
+	}
+      else if (next_char == '/') // Endtag - klar
+	{
+	  if (!in_tag or
+	      (in_word and !making_tagname) or
+	      arg_expected or
+	      in_arg or
+	      end_expected)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad /" << endl;
+	    }
+	  else
+	    {
+	      end_expected = true;
+	      in_word = false;
+	      // det blir inge bra om typ <tagname/> - inte bra
+	    }
+	}
+      else if (isalnum(next_char) or
+	       next_char == '_') // Alph or Num - klar
+	{
+	  if (!in_tag or
+	      arg_expected or
+	      (end_expected and !making_tagname))
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerat tecken" << endl;
+	    }
+	  else if (in_word)
+	    {
+	      word.push_back(next_char);
+	    }
+	  else
+	    {
+	      in_word = true;
+	      word = next_char;
+	    }
+	}
+      else if (next_char == '=') // Equal
+	{
+	  if (!in_word or
+	      making_tagname or
+	      in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad =" << endl;
+	    }
+	  else
+	    {
+	      in_word = false;
+	      label = word;
+	      word = "";
+	      arg_expected = true;
+	      // Kolla redan här om bra label
+	    }
+	}
+      else if (next_char == '\"') // Quote
+	{
+	  if (!arg_expected and !in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad \"" << endl;
+	    }
+	  else
+	    {
+	      if (arg_expected)
+		{
+		  in_arg = true;
+		  arg_expected = false;
+		}
+	      else
+		{
+		  in_arg = false;
+		  in_word = false;
+		  // fixa grejer
+		}
+	    }
+	}
+      else if (next_char == '>') // end of tag
+	{
+	  if (!in_tag or
+	      (!in_word and making_tagname) or
+	      (in_word and !making_tagname) or
+	      arg_expected or
+	      in_arg)
+	    {
+	      // Error
+	      cout << "Inläsningsfel - felplacerad >" << endl;
+	    }
+	  else
+	    {
+	      in_tag = false;
+	      // gör det som ska göras, iaf om endtag
+	    }
+	}
+      else // Unknown character - klar
+	{
+	  // Error eller bara skippa
+	  cout << "Kanske inläsningsfel - okänt tecken: " << next_char << endl;
+	}
+    }
+  
+  xmlread.close();
+}
