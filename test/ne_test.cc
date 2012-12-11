@@ -318,6 +318,18 @@ int main()
 	   << (*it).to_node()->name() << " ("
 	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
     }
-
+  cout << "Solving net4 cheapest_path from " << NN->name() << " to "
+       << NT->name() << "." << endl;
+  net4.reset_network();
+  net4.cheapest_path(NN,NT);
+  cout << "Edges in cheapest path: " << endl;
+  for (auto it : net4.edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  cout << (*it).from_node()->name() << "->"
+	       << (*it).to_node()->name() << endl;
+	}
+    }
   return 0;
 }

@@ -45,6 +45,9 @@ class Node
   bool connected() const;
   void flip_connected();
   void set_connected(bool);
+  
+  void backup_data();
+  void restore_data();
 
  private:
   Position graphic_pos_;
@@ -55,6 +58,8 @@ class Node
   Set<Edge*> all_edges_;
   std::string name_;
   bool connected_;
+
+  double backup_flow_;
 };
 
 #endif

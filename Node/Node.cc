@@ -137,3 +137,17 @@ Node::remove_out_edge(Edge* old_out_edge)
   all_edges_.add_member(old_out_edge);
   return;
 }
+
+void
+Node::backup_data()
+{
+  backup_flow_ = flow_;
+  return;
+}
+
+void
+Node::restore_data()
+{
+  flow_ = backup_flow_;
+  return;
+}
