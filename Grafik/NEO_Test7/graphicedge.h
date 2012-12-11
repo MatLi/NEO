@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          graphicedge.h
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicEdge är den grafiska representationen av Edge.
+*/
 #ifndef EDGE_H
 #define EDGE_H
 
@@ -6,7 +15,6 @@
 
 class GraphicNode;
 
-//! [0]
 class GraphicEdge : public QGraphicsItem
 {
 public:
@@ -32,4 +40,4 @@ private:
     qreal arrowSize;
 };
 
-#endif // EDGE_H
+#endif // GRAPHICEDGE_H

@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          graphicnode.h
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicNode är den grafiska representationen av Node.
+*/
 #ifndef NODE_H
 #define NODE_H
 
@@ -31,7 +40,7 @@ public:
     void MovabilityF();
     void MovabilityT();
 
-    void calculateForces();
+    void moveHelper();
     bool advance();
 
     QRectF boundingRect() const;
@@ -43,7 +52,6 @@ protected:
 
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-    //void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 
 private:
     QList<GraphicEdge *> edgeList;
@@ -53,5 +61,4 @@ private:
 };
 
 
-
-#endif // NODE_H
+#endif // GRAPHICNODE_H

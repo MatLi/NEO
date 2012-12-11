@@ -1,4 +1,13 @@
-//Mari
+/*
+ * FILNAMN:          datawidget.cpp
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * Datawidget är ett fönster som kommer fram vid speciella tillfällen.
+*/
 #include "datawidget.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
@@ -7,20 +16,12 @@
 #include <math.h>
 
 DataWidget::DataWidget(GraphWidget *main_Graph, QWidget *parent)
-    : QGraphicsView(parent)//, timerId(0)
+    : QGraphicsView(parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     scene->setSceneRect(0, 0, 250, 500);
     setScene(scene);
-
-    //setCacheMode(CacheBackground);
-    //setViewportUpdateMode(BoundingRectViewportUpdate);
-    //setRenderHint(QPainter::Antialiasing);
-    //setTransformationAnchor(AnchorUnderMouse);
-    //scale(0.8, qreal(0.8));
-    //setMinimumSize(400, 400);
-    //setWindowTitle(tr("Elastic Nodes"));
 
     mainGraph = main_Graph;
 
@@ -60,94 +61,8 @@ void DataWidget::on_add_edge_clicked()
     mainGraph->addEdge(start->text(),end->text());
 }
 
-/*void DataWidget::itemMoved()
-{
-    if (!timerId)
-        timerId = startTimer(1000/25);
-}
-*/
-
-//void DataWidget::keyPressEvent(QKeyEvent *event)
-//{
-
-  //  switch (event->key()) {
-    /*case Qt::Key_Up:
-        node10->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        scene()->addItem(node10);
-        scene()->addItem(node);
-        scene()->addItem(edge);
-        break;
-    case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
-        break;
-    case Qt::Key_Plus:
-        zoomIn();
-        break;
-    case Qt::Key_Minus:
-        zoomOut();
-        break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        shuffle();
-        break;*/
-   /* case Qt::Key_E:
-        foreach (GraphicNode *node, nodes)
-        {
-            node->MovabilityF();
-
-        }
-        break;
-    case Qt::Key_N:
-        foreach (GraphicNode *node, nodes)
-        {
-            node->MovabilityT();
-        }
-        break;
-    default:
-        QGraphicsView::keyPressEvent(event);
-    }*/
-//}
-
-/*void DataWidget::timerEvent(QTimerEvent *event)
-{
-    //Q_UNUSED(event);
-
-    QList<GraphicNode *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
-            nodes << node;
-    }
-
-    foreach (GraphicNode *node, nodes)
-        node->calculateForces(); //Byt namn :)
-
-    bool itemsMoved = false;
-    foreach (GraphicNode *node, nodes) {
-        if (node->advance())
-            itemsMoved = true;
-    }
-
-    if (!itemsMoved) {
-        killTimer(timerId);
-        timerId = 0;
-    }
-}
-
-/*void GraphWidget::wheelEvent(QWheelEvent *event)
-{
-    scaleView(pow((double)2, -event->delta() / 240.0));
-}*/
-
-
 void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    //Q_UNUSED(rect);
-
     // Shadow
     QRectF sceneRect = this->sceneRect();
     QRectF rightShadow(sceneRect.right(), sceneRect.top() + 5, 5, sceneRect.height());
@@ -165,11 +80,10 @@ void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(Qt::NoBrush);
     painter->drawRect(sceneRect);
 
-//#if !defined(Q_OS_SYMBIAN) && !defined(Q_WS_MAEMO_5)
     // Text
     QRectF textRect(sceneRect.left() + 4, sceneRect.top() + 4,
                     sceneRect.width() - 4, sceneRect.height() - 4);
-    QString message(tr("Hi and welcome to NEO! If this is your first time or if you need help click on the Help-button"));
+    QString message(tr("Add your edges here"));
 
     QFont font = painter->font();
     font.setBold(true);
@@ -179,35 +93,5 @@ void DataWidget::drawBackground(QPainter *painter, const QRectF &rect)
     painter->drawText(textRect.translated(2, 2), message);
     painter->setPen(Qt::black);
     painter->drawText(textRect, message);
-//#endif
+
 }
-
-
-/*void GraphWidget::scaleView(qreal scaleFactor)
-{
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
-        return;
-
-    scale(scaleFactor, scaleFactor);
-}*/
-//! [7]
-
-/*void GraphWidget::shuffle()
-{
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (qgraphicsitem_cast<Node *>(item))
-            item->setPos(-150 + qrand() % 300, -150 + qrand() % 300);
-    }
-}*/
-
-/*void GraphWidget::zoomIn()
-{
-    scaleView(qreal(1.2));
-}
-
-void GraphWidget::zoomOut()
-{
-    scaleView(1 / qreal(1.2));
-}*/
-
