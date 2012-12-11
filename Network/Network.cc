@@ -289,6 +289,9 @@ Network::min_cost_flow()
     {
       remove_edge(&(*it));
     }
+  artificial_edges.clear();
+  base_edges.clear();
+  non_base_edges.clear();
   remove_node(artificial);
 
   for (auto it : edges_)
@@ -557,7 +560,7 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
   // Cykeln får/kan inte vara tom...
   if (cycle.empty())
     {
-      throw network_error("Något allvarligt fel har inträffat.");
+      throw network_error("Något allvarligt fel har inträffat: kan inte finna cykel.");
     }
   
   // Bestäm utgående båge och största tillåtna flödesändring.
@@ -718,14 +721,76 @@ Network::update_node_prices(Node* active_node, Set<Edge*> base_edges)
 void
 Network::max_cost_flow()
 {
-  //Din kod här
+  for (auto it : edges_)
+    {
+      (*it).backup_data();
+      (*it).change_cost(-abs((*it).cost()));
+    }
+
+  min_cost_flow();
+
+  for (auto it : edges_)
+    {
+      (*it).restore_data();
+    }
 }
 
 // Genererar maxflöde
 void
 Network::max_flow()
 {
-  //Din kod här
+  for (auto it : edges_)
+    {
+      (*it).backup_data();
+      (*it).change_cost(0);
+    }
+  Node* super_source = new Node("SSo");
+  Node* super_sink = new Node("SSi");
+  Set<Edge*> added_edges;
+  super_source->change_flow(-1);
+  super_sink->change_flow(1);
+  for (auto it : nodes_)
+    {
+      (*it).backup_data();
+      if ((*it).flow() < 0)
+	{
+	  Edge* so_edge = new Edge(super_source, &(*it));
+	  added_edges.add_member(so_edge);
+	  add_edge(so_edge);
+	}
+      if ((*it).flow() > 0)
+	{
+	  Edge* si_edge = new Edge(&(*it), super_sink);
+	  added_edges.add_member(si_edge);
+	  add_edge(si_edge);
+	}
+      (*it).change_flow(0);
+    }
+  add_node(super_source);
+  add_node(super_sink);
+
+  Edge* back_edge = new Edge(super_sink, super_source);
+  back_edge->change_cost(-1);
+
+  added_edges.add_member(back_edge);
+  add_edge(back_edge);
+
+  min_cost_flow();
+
+  for (auto it : added_edges)
+    {
+      remove_edge(&(*it));
+    }
+  added_edges.clear();
+  remove_node(super_source);
+  remove_node(super_sink);
+
+  for (auto it : edges_)
+    {
+      (*it).restore_data();
+    }
+
+  return;
 }
 
 void
