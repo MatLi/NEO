@@ -1,8 +1,14 @@
 #include <QtGui>
+#include <string>
 #include "solution_dialog.h"
 #include "graphicnode.h"
 #include "graphwidget.h"
 #include "mainwindow.h"
+#include "Network.h"
+#include "Edge.h"
+#include "Set.h"
+#include "Node.h"
+using namespace std;
 
 SolutionDialog::SolutionDialog(Solution sol, QWidget *parent) :
   QDialog(parent)
@@ -88,30 +94,154 @@ SolutionDialog::save()
 void
 SolutionDialog::min_cost_flow(QString& text)
 {
-  
+  MainWindow* mw = dynamic_cast<MainWindow*>(parent());
+  QString qsFlowCost;
+  qsFlowCost.setNum(mw->net->flowcost());
+  text.append(tr("Minimum cost flow solution\n"));
+  text.append(tr("==========================\n\n"));
+  text.append(tr("Flow cost: "));
+  text.append(qsFlowCost);
+  text.append("\n\n");
+  text.append(tr("Nodes with their flow\n"));
+  for (auto it : mw->net->node_set())
+    {
+      QString qsFlow;
+      string sNode = "Node " + (*it).name() + ": ";
+      QString qsNode(sNode.c_str());
+      qsFlow.setNum((*it).flow());
+      text.append(qsNode);
+      text.append(qsFlow);
+      text.append("\n");
+    }
+	text.append(tr("\n\n\n"));
+  text.append(tr("Edges with flow > 0\n"));
+  for (auto it : mw->net->edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  QString qsFlow;
+	  string sEdge = (*it).from_node()->name() + "->" + (*it).to_node()->name() + ": ";
+	  QString qsEdge(sEdge.c_str());
+	  qsFlow.setNum((*it).flow());
+	  text.append(qsEdge);
+	  text.append(qsFlow);
+	  text.append("\n");
+	}
+    }
   return;
 }
 
 void
 SolutionDialog::max_cost_flow(QString& text)
 {
+  MainWindow* mw = dynamic_cast<MainWindow*>(parent());
+  QString qsFlowCost;
+  qsFlowCost.setNum(mw->net->flowcost());
+  text.append(tr("Maximum cost flow solution\n"));
+  text.append(tr("==========================\n\n"));
+  text.append(tr("Flow cost: "));
+  text.append(qsFlowCost);
+  text.append("\n\n");
+  text.append(tr("Nodes with their flow\n"));
+  for (auto it : mw->net->node_set())
+    {
+      QString qsFlow;
+      string sNode = "Node " + (*it).name() + ": ";
+      QString qsNode(sNode.c_str());
+      qsFlow.setNum((*it).flow());
+      text.append(qsNode);
+      text.append(qsFlow);
+      text.append("\n");
+    }
+	text.append(tr("\n\n\n"));
+  text.append(tr("Edges with flow > 0\n"));
+  for (auto it : mw->net->edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  QString qsFlow;
+	  string sEdge = (*it).from_node()->name() + "->" + (*it).to_node()->name() + ": ";
+	  QString qsEdge(sEdge.c_str());
+	  qsFlow.setNum((*it).flow());
+	  text.append(qsEdge);
+	  text.append(qsFlow);
+	  text.append("\n");
+	}
+    }
   return;
 }
 
 void
 SolutionDialog::max_flow(QString& text)
 {
+  MainWindow* mw = dynamic_cast<MainWindow*>(parent());
+  text.append(tr("Maximum flow solution\n"));
+  text.append(tr("=====================\n\n"));
+  text.append(tr("Nodes with their flow\n"));
+  for (auto it : mw->net->node_set())
+    {
+      QString qsFlow;
+      string sNode = "Node " + (*it).name() + ": ";
+      QString qsNode(sNode.c_str());
+      qsFlow.setNum((*it).flow());
+      text.append(qsNode);
+      text.append(qsFlow);
+      text.append("\n");
+    }
+	text.append(tr("\n\n\n"));
+  text.append(tr("Edges with flow > 0\n"));
+  for (auto it : mw->net->edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  QString qsFlow;
+	  string sEdge = (*it).from_node()->name() + "->" + (*it).to_node()->name() + ": ";
+	  QString qsEdge(sEdge.c_str());
+	  qsFlow.setNum((*it).flow());
+	  text.append(qsEdge);
+	  text.append(qsFlow);
+	  text.append("\n");
+	}
+    }
   return;
 }
 
 void
 SolutionDialog::cheapest_tree(QString& text)
 {
+  MainWindow* mw = dynamic_cast<MainWindow*>(parent());
+  text.append(tr("Cheapest tree solution\n"));
+  text.append(tr("==========================\n\n"));
+  text.append(tr("Edges in tree\n"));
+  for (auto it : mw->net->edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  string sEdge = (*it).from_node()->name() + "->" + (*it).to_node()->name();
+	  QString qsEdge(sEdge.c_str());
+	  text.append(qsEdge);
+	}
+    }
   return;
 }
 
 void
 SolutionDialog::cheapest_path(QString& text)
 {
+  MainWindow* mw = dynamic_cast<MainWindow*>(parent());
+  text.append(tr("Cheapest path solution\n"));
+  text.append(tr("======================\n\n"));
+
+  text.append(tr("Edges in path\n"));
+  for (auto it : mw->net->edge_set())
+    {
+      if ((*it).flow() > 0)
+	{
+	  string sEdge = (*it).from_node()->name() + "->" + (*it).to_node()->name();
+	  QString qsEdge(sEdge.c_str());
+	  text.append(qsEdge);
+	  text.append("\n");
+	}
+    }
   return;
 }
