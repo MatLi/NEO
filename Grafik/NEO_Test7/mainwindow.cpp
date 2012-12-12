@@ -11,6 +11,7 @@
 #include "Edge.h"
 #include "datadock.h"
 #include "addedgedock.h"
+#include "solution_dialog.h"
 #include <QDockWidget>
 #include <QDialog>
 
@@ -124,6 +125,7 @@ MainWindow::saveProj()
 void
 MainWindow::min_cost_flow()
 {
+  Solution sol_dialog = min_cf;
   try
     {
       net->min_cost_flow();
@@ -135,13 +137,14 @@ MainWindow::min_cost_flow()
       QMessageBox::warning(this, tr("Error"), msg);
       return;
     }
-
-  // Visa någon dialogruta med lösningen.
+  SolutionDialog sd(sol_dialog, this);
+  sd.show();
 }
 
 void
 MainWindow::max_cost_flow()
 {
+  Solution sol_dialog = max_cf;
   try
     {
       net->max_cost_flow();
@@ -154,12 +157,14 @@ MainWindow::max_cost_flow()
       return;
     }
 
-  // Visa någon dialogruta med lösningen.
+  SolutionDialog sd(sol_dialog, this);
+  sd.show();
 }
 
 void
 MainWindow::max_flow()
 {
+  Solution sol_dialog = max_f;
   try
     {
       net->max_flow();
@@ -171,13 +176,14 @@ MainWindow::max_flow()
       QMessageBox::warning(this, tr("Error"), msg);
       return;
     }
-
-  // Visa någon dialogruta med lösningen.
+  SolutionDialog sd(sol_dialog, this);
+  sd.show();
 }
 
 void
 MainWindow::cheapest_tree()
 {
+  Solution sol_dialog = c_tree;
   try
     {
       net->cheapest_tree();
@@ -189,8 +195,8 @@ MainWindow::cheapest_tree()
       QMessageBox::warning(this, tr("Error"), msg);
       return;
     }
-
-  // Visa någon dialogruta med lösningen.
+  SolutionDialog sd(sol_dialog, this);
+  sd.show();
 }
 
 void
