@@ -13,23 +13,23 @@ DataDock::DataDock(QWidget *parent) :
 
     QGridLayout *layout = new QGridLayout();
     //Noddata
-    QLabel *name = new QLabel("Nodnamn: ");
-    QLabel *price = new QLabel("Nodpris: ");
-    QLabel *flow = new QLabel("Nodflöde: ");
+    QLabel *name = new QLabel("Node name: ");
+    QLabel *price = new QLabel("Node prize: ");
+    QLabel *flow = new QLabel("Node flow: ");
     neoPushButton *change = new neoPushButton(this);
     nodeName_ = new QLineEdit();
     nodeFlow_ = new QLineEdit();
     nodePrice_ = new QLineEdit();
 
     nodePrice_->setReadOnly(true);
-    change->setText("Ändra noddata");
+    change->setText("Change node data");
 
     //Bågdata
-    QLabel *cost = new QLabel("Bågkostnad: ");
-    QLabel *reducedCost = new QLabel("Reducerad kostnad: ");
-    QLabel *edge_flow = new QLabel("Bågflöde: ");
-    QLabel *max_flow = new QLabel("Maxflöde: ");
-    QLabel *min_flow = new QLabel("Minflöde: ");
+    QLabel *cost = new QLabel("Egde cost: ");
+    QLabel *reducedCost = new QLabel("Reduced cost: ");
+    QLabel *edge_flow = new QLabel("Edge flow: ");
+    QLabel *max_flow = new QLabel("Max flow: ");
+    QLabel *min_flow = new QLabel("Min flow: ");
     neoPushButton *edgechange = new neoPushButton(this);
     edgeCost_ = new QLineEdit();
     edgeReducedCost_ = new QLineEdit();
@@ -39,7 +39,7 @@ DataDock::DataDock(QWidget *parent) :
 
     edgeReducedCost_->setReadOnly(true);
     edgeFlow_->setReadOnly(true);
-    edgechange->setText("Ändra bågdata");
+    edgechange->setText("Change edge data");
 
 
     layout->addWidget(nodeName_,0,1);
