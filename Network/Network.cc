@@ -17,6 +17,7 @@
 #include <fstream>
 #include <cctype>
 #include <stack>
+#include <string>
 
 using namespace std;
 
@@ -122,7 +123,7 @@ Network::cheapest_tree()
   //Väljer första jobbnoden och justerar nodmängderna
   do
     {
-      double min_cost = pow(10,380); //Maxvärde för double i C++
+      double min_cost = pow(10,308); //Maxvärde för double i C++
       Edge* cheapest_current_edge = nullptr;
       for (auto it : edges_)
 	{
@@ -174,7 +175,7 @@ Network::cheapest_path(Node* start_node, Node* end_node)
     {
       (*it).backup_data();
       (*it).change_minflow(0);
-      (*it).change_maxflow(pow(10,380));
+      (*it).change_maxflow(pow(10,308));
     }
 
   min_cost_flow();
@@ -462,7 +463,7 @@ Network::find_flow_change_outgoing_edge(deque<Edge*> cycle,
 {
   // Bestäm den utgående basbågen i cykeln. x_node används här för
   // att avgöra om vi har en framåt- eller bakåtbåge i cykeln.
-  double theta = pow(10,380);
+  double theta = pow(10,308);
   for (auto it : cycle)
     {
       if ((*it).from_node() == x_node)
@@ -821,6 +822,7 @@ Network::fwrite(const string filename)
     {
       ofstream xmlwrite;
       xmlwrite.open(filename);
+      xmlwrite.precision(17);
       unsigned int i=0; // Indexeras från 1
       
       xmlwrite << "<network number_of_nodes=\"" << nodes_.size() << "\">" << endl;
@@ -916,7 +918,7 @@ private:
   double edge_flow = 0;
   double edge_reduced_cost = 0;
   double edge_cost = 0;
-  double edge_max_flow = pow(10,380);
+  double edge_max_flow = pow(10,308);
   double edge_min_flow = 0;
   unsigned int edge_from_node = 0; // Indexeras från 1, 0 = ej satt
   unsigned int edge_to_node = 0; // Indexeras från 1, 0 = ej satt
@@ -960,7 +962,7 @@ private:
 	  {
 	    throw network_error("malplaced node tag");
 	  }
-	else {} // Unknown tag, sätt flagga?
+	else {} // Unknown tag, sätta flagga behövs ej
       }
   }
 
@@ -981,10 +983,7 @@ private:
       {
 	word.push_back(next_char); // ska alla spaces tillåtas?
       }
-    else
-      {
-	// Här behöver inget göras
-      }
+    else {}
   }
 
   void
@@ -1200,7 +1199,7 @@ private:
 	      {
 		throw network_error("id missing");
 	      }
-	    else if (nodes[node_id] != nullptr)
+	    else if (nodes[node_id-1] != nullptr)
 	      {
 		throw network_error("duplicate id");
 	      }
@@ -1211,10 +1210,16 @@ private:
 	    nd->change_position(Position(node_xpos,node_ypos));
 	    nd->change_flow(node_flow);
 	    nd->change_node_price(node_price);
-	    nodes[node_id] = nd;
+	    nodes[node_id-1] = nd;
 	    network_nodes->add_member(nd);
 
 	    in_node = false;
+	    node_id = 0;
+	    node_name = "";
+	    node_xpos = 0;
+	    node_ypos = 0;
+	    node_flow = 0;
+	    node_price = 0;
 	  }
 	else if (tagname == "edge")
 	  {
@@ -1223,7 +1228,7 @@ private:
 		throw network_error("connected node missing");
 	      }
 	    
-	    Edge* ed = new Edge(nodes[edge_from_node],nodes[edge_to_node]);
+	    Edge* ed = new Edge(nodes[edge_from_node-1],nodes[edge_to_node-1]);
 	    ed->change_flow(edge_flow);
 	    ed->change_reduced_cost(edge_reduced_cost);
 	    ed->change_cost(edge_cost);
@@ -1232,6 +1237,13 @@ private:
 	    network_edges->add_member(ed);
 
 	    in_edge = false;
+	    edge_from_node = 0;
+	    edge_to_node = 0;
+	    edge_flow = 0;
+	    edge_reduced_cost = 0;
+	    edge_cost = 0;
+	    edge_max_flow = pow(10,308);
+	    edge_min_flow = 0;
 	  }
 	
 	closing_tag = false;
@@ -1333,8 +1345,8 @@ public:
 bool
 Network::fopen(const string filename)
 {
-  // try
-  //   {
+  try
+    {
       ifstream xmlread;
       xmlread.open(filename);
       readstate state(&edges_,&nodes_);
@@ -1367,12 +1379,12 @@ Network::fopen(const string filename)
 	    }
 	}
       
-      //Fixa kommentarer i filen och andra taggar/text utanför taggar
+      //Fixa kommentarer i filen
       xmlread.close();
-    // }
-  // catch(...)
-  //   {
-  //     return false;
-  //   }
+    }
+  catch(...)
+    {
+      return false;
+    }
   return true;
 }

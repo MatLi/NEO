@@ -31,8 +31,8 @@ class GraphicNode : public QGraphicsItem
 public:
     GraphicNode(GraphWidget *graphWidget);
 
-
     void addEdge(GraphicEdge *edge);
+    void removeEdge(GraphicEdge *edge);
     QList<GraphicEdge *> edges() const;
 
     QString return_name() const;
@@ -42,6 +42,7 @@ public:
 
     void moveHelper();
     bool advance();
+    GraphicEdge* getEdge(GraphicNode *end_node);
 
     QRectF boundingRect() const;
     QPainterPath shape() const;

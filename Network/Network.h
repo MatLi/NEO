@@ -59,7 +59,6 @@ class Network
   void max_flow();
   double flowcost();
 
-  // Eventuellt?
   bool fwrite(const std::string);
   bool fopen(const std::string);
   
