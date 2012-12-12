@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <cctype>
+#include <stack>
 
 using namespace std;
 
@@ -188,69 +189,155 @@ Network::max_flow()
 // --------------------------
 
 
-void
+bool
 Network::fwrite(const string filename)
 {
-  ofstream xmlwrite;
-  xmlwrite.open(filename);
-  unsigned int i=0;
-
-  xmlwrite << "<network number_of_nodes=\"" << nodes_.size() << "\">" << endl;
-  xmlwrite << "  <nodes>" << endl;
-  for (auto it : nodes_)
+  try
     {
-      (*it).change_id(i++);
-      xmlwrite << "    <node "
-	       << "id=\"" << (*it).id() << "\" "
-	       << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
-	       << "xpos=\"" << (*it).position().xpos() << "\" "
-	       << "ypos=\"" << (*it).position().ypos() << "\" "
-	       << "flow=\"" << (*it).flow() << "\" "
-	       << "node_price=\"" << (*it).node_price() << "\" "
-	       << "/>" << endl;
+      ofstream xmlwrite;
+      xmlwrite.open(filename);
+      unsigned int i=0; // Indexeras från 1
+      
+      xmlwrite << "<network number_of_nodes=\"" << nodes_.size() << "\">" << endl;
+      xmlwrite << "  <nodes>" << endl;
+      for (auto it : nodes_)
+	{
+	  (*it).change_id(++i);
+	  xmlwrite << "    <node "
+		   << "id=\"" << (*it).id() << "\" "
+		   << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
+		   << "xpos=\"" << (*it).position().xpos() << "\" "
+		   << "ypos=\"" << (*it).position().ypos() << "\" "
+		   << "flow=\"" << (*it).flow() << "\" "
+		   << "node_price=\"" << (*it).node_price() << "\" "
+		   << "/>" << endl;
+	}
+      xmlwrite << "  </nodes>" << endl;
+      xmlwrite << "  <edges>" << endl;
+      for (auto it : edges_)
+	{
+	  xmlwrite << "    <edge "
+		   << "flow=\"" << (*it).flow() << "\" "
+		   << "reduced_cost=\"" << (*it).reduced_cost() << "\" "
+		   << "cost=\"" << (*it).cost() << "\" "
+		   << "maxflow=\"" << (*it).maxflow() << "\" "
+		   << "minflow=\"" << (*it).minflow() << "\" "
+		   << "from_node=\"" << (*it).from_node()->id() << "\" "
+		   << "to_node=\"" << (*it).to_node()->id() << "\" "
+		   << "/>" << endl;
+	}
+      xmlwrite << "  </edges>" << endl;
+      xmlwrite << "</network>";
+      
+      xmlwrite.close();
     }
-  xmlwrite << "  </nodes>" << endl;
-  xmlwrite << "  <edges>" << endl;
-  for (auto it : edges_)
+  catch(...)
     {
-      xmlwrite << "    <edge "
-	       << "flow=\"" << (*it).flow() << "\" "
-	       << "reduced_cost=\"" << (*it).reduced_cost() << "\" "
-	       << "cost=\"" << (*it).cost() << "\" "
-	       << "maxflow=\"" << (*it).maxflow() << "\" "
-	       << "minflow=\"" << (*it).minflow() << "\" "
-	       << "from_node=\"" << (*it).from_node()->id() << "\" "
-	       << "to_node=\"" << (*it).to_node()->id() << "\" "
-	       << "/>" << endl;
+      return false;
     }
-  xmlwrite << "  </edges>" << endl;
-  xmlwrite << "</network>";
- 
-  xmlwrite.close();
+  return true;
 }
 
 class readstate
 {
+public:
+
+  readstate(Set<Edge*>* edges_,Set<Node*>* nodes_)
+    :network_edges(edges_),network_nodes(nodes_) {}
+
+private:
+
+  // active data
   string word;
   string tagname;
+  stack<string> tag;
   string label;
-  int int_val = 0;
+  char next_char = ' ';
+  unsigned int int_val = 0;
   double double_val = 0;
+
+  // flags
   bool in_tag = false;
   bool in_word = false;
   bool in_arg = false;
-  bool end_expected = false;
+  bool closing_tag = false;
+  bool close_tag = false;
   bool arg_expected = false;
   bool arg_ended = false;
   bool making_tagname = false;
   bool in_network = false;
   bool in_nodes = false;
+  bool in_node = false;
   bool in_edges = false;
-  bool making_node = false;
-  bool making_edge = false;
+  bool in_edge = false;
   bool after_nodes = false;
   bool after_edges = false;
-  char next_char = ' ';
+  
+  // data of network
+  int number_of_nodes = -1;
+  vector<Node*> nodes;
+  Set<Edge*>* network_edges;
+  Set<Node*>* network_nodes;
+
+  // data of nodes
+  unsigned int node_id = 0; // Indexeras från 1, 0 = ej satt
+  string node_name = "";
+  double node_xpos = 0;
+  double node_ypos = 0;
+  double node_flow = 0;
+  double node_price = 0; // // could be named node_node_price
+
+  // data of edges
+  double edge_flow = 0;
+  double edge_reduced_cost = 0;
+  double edge_cost = 0;
+  double edge_max_flow = pow(10,380);
+  double edge_min_flow = 0;
+  unsigned int edge_from_node = 0; // Indexeras från 1, 0 = ej satt
+  unsigned int edge_to_node = 0; // Indexeras från 1, 0 = ej satt
+
+  // functions
+  void make_tagname() // klar
+  {
+    if (!in_word)
+      {
+	throw network_error("empty tagname");
+      }
+
+    tagname = word;
+    word = "";
+    in_word = false;
+    making_tagname = false;
+    
+    if (!close_tag) // om close_tag så kollas i end_tag()
+      {
+	if ((tagname == "network") and in_network)
+	  {
+	    throw network_error("malplaced network tag");
+	  }
+	else if ((tagname == "nodes") and
+		 (in_nodes or after_nodes or !in_network))
+	  {
+	    throw network_error("malplaced nodes tag");
+	  }
+	else if ((tagname == "node") and
+		 (in_node or !in_nodes))
+	  {
+	    throw network_error("malplaced node tag");
+	  }
+	else if ((tagname == "edges") and
+		 (in_edges or after_edges or !after_nodes or !in_network))
+	  {
+	    throw network_error("malplaced edges tag");
+	  }
+	else if ((tagname == "edge") and
+		 (in_edge or !in_edges))
+	  {
+	    throw network_error("malplaced node tag");
+	  }
+	else {} // Unknown tag, sätt flagga?
+      }
+  }
 
   void
   space() // "klar"
@@ -263,66 +350,7 @@ class readstate
 
     if (making_tagname)
       {
-	tagname = word;
-	word = "";
-	in_word = false;
-	making_tagname = false;
-	if (tagname == "network")
-	  {
-	    if (in_network)
-	      {
-		throw network_error("can't place network in network");
-	      }
-
-	    in_network = true; // sätta detta här eller i endtag?
-	  }
-	else if (tagname == "nodes")
-	  {
-	    if (!in_network or
-		in_nodes or
-		after_nodes)
-	      {
-		throw network_error("malplaced nodes tag");
-	      }
-
-	    in_nodes = true; // sätta detta här eller i endtag?
-	  }
-	else if (tagname == "node")
-	  {
-	    if (!in_nodes)
-	      {
-		throw network_error("malplaced node tag");
-	      }
-
-	    making_node = true;
-	  }
-	else if (tagname == "edges")
-	  {
-	    if (!in_network or
-		!after_nodes or
-		in_edges or 
-		after_edges)
-	      {
-		throw network_error("malplaced edges tag");
-	      }
-
-	    in_edges = true; // sätta detta här eller i endtag?
-	  }
-	else if (tagname == "edge")
-	  {
-	    if (!in_edges)
-	      {
-		throw network_error("malplaced edge tag");
-	      }
-
-	    making_edge = true;
-	  }
-	else
-	  {
-	    // Error?
-	    // tillåt okända tags, inte fel?
-	    //    flagga in_unknown_tag?
-	  }
+	make_tagname();
       }
     else if (in_arg)
       {
@@ -339,7 +367,7 @@ class readstate
   {
     if (in_tag)
       {
-	throw network_error("can't start a tag in a tag");
+	throw network_error("malplaced opening bracket");
       }
 
     in_tag = true;
@@ -347,33 +375,33 @@ class readstate
   }
 
   void
-  slash() // "klar"
+  slash() // klar
   {
     if (!in_tag or
 	(in_word and !making_tagname) or
 	arg_expected or
 	in_arg or
-	end_expected)
+	closing_tag)
       {
 	throw network_error("malplaced slash");
       }
 
-    end_expected = true;
+    closing_tag = true;
     if (in_word)
       {
-	in_word = false;
-	making_tagname = false;
-	tagname = word;
-	word = "";
+	make_tagname();
+      }
+    else if (tagname == "")
+      {
+	close_tag = true;
       }
   }
 
   void
   alnum() // klar
   {
-    if (!in_tag or
-	arg_expected or
-	(end_expected and !making_tagname))
+    if (arg_expected or
+	(closing_tag and !making_tagname))
       {
 	throw network_error("malplaced letter, numeral or underscore");
       }
@@ -390,11 +418,9 @@ class readstate
   }
 
   void
-  equal()
+  equal() // klar
   {
-    if (!in_word or
-	making_tagname or
-	in_arg)
+    if (!in_word or making_tagname or in_arg)
       {
 	throw network_error("malplaced equality sign");
       }
@@ -403,59 +429,20 @@ class readstate
     label = word;
     word = "";
     arg_expected = true;
-    if (making_node)
-      {
-	if (label == "id") {}
-	else if (label == "name") {}
-	else if (label == "xpos") {}
-	else if (label == "ypos") {}
-	else if (label == "flow") {}
-	else if (label == "node_price") {}
-	else
-	  {
-	    throw network_error("label \"" + label + "\" not allowed in node");
-	  }
-      }
-    else if (making_edge)
-      {
-	if (label == "flow") {}
-	else if (label == "reduced_cost") {}
-	else if (label == "cost") {}
-	else if (label == "maxflow") {}
-	else if (label == "minflow") {}
-	else if (label == "from_node") {}
-	else if (label == "to_node") {}
-	else
-	  {
-	    throw network_error("label \"" + label + "\" not allowed in edge");
-	  }
-      }
-    else if (tagname == "network")
-      {
-	if (label == "number_of_nodes") {}
-	else
-	  {
-	    throw network_error("label \""+label+"\" not allowed in network");
-	  }
-      }
-    else
-      {
-	throw network_error("malplaced equality sign");
-      }
   }
   
   void
-  quote()
+  quote() // klar
   {
     if (!arg_expected and !in_arg)
       {
 	throw network_error("malplaced quotation sign");
       }
-
+    
     if (arg_expected)
       {
-	in_arg = true;
 	arg_expected = false;
+	in_arg = true;
       }
     else
       {
@@ -467,7 +454,75 @@ class readstate
 	in_arg = false;
 	arg_ended = false;
 	in_word = false;
-	// fixa grejer
+
+	if (tagname == "network")
+	  {
+	    if (label == "number_of_nodes")
+	      {
+		if (number_of_nodes >=0)
+		  {
+		    throw network_error("number of nodes can only be set once");
+		  }
+		
+		number_of_nodes = int_val;
+	      }
+	    else
+	      {
+		throw network_error("label \""+label+"\" not allowed in network");
+	      }
+	  }
+	else if (tagname == "node")
+	  {
+	    if (label == "id")
+	      {
+		if (int_val == 0)
+		  {
+		    throw network_error("id must be greater than zero");
+		  }
+
+		node_id = int_val;
+	      }
+	    else if (label == "name") {node_name = word;}
+	    else if (label == "xpos") {node_xpos = double_val;}
+	    else if (label == "ypos") {node_ypos = double_val;}
+	    else if (label == "flow") {node_flow = double_val;}
+	    else if (label == "node_price") {node_price = double_val;}
+	    else
+	      {
+		throw network_error("label \""+label+"\" not allowed in node");
+	      }
+	  }
+	else if (tagname == "edge")
+	  {
+	    if (label == "flow") {edge_flow = double_val;}
+	    else if (label == "reduced_cost") {edge_reduced_cost = double_val;}
+	    else if (label == "cost"){edge_cost = double_val;}
+	    else if (label == "maxflow") {edge_max_flow = double_val;}
+	    else if (label == "minflow") {edge_min_flow = double_val;}
+	    else if (label == "from_node")
+	      {
+		if (int_val == 0)
+		  {
+		    throw network_error("id must be greater than zero");
+		  }
+
+		edge_from_node = int_val;
+	      }
+	    else if (label == "to_node")
+	      {
+		if (int_val == 0)
+		  {
+		    throw network_error("id must be greater than zero");
+		  }
+
+		edge_to_node = int_val;
+	      }
+	    else
+	      {
+		throw network_error("label \""+label+"\" not allowed in edge");
+	      }
+	  }
+	else {} // Inget händer, främmande tag
       }
   }
 
@@ -480,102 +535,116 @@ class readstate
 	arg_expected or
 	in_arg)
       {
-	throw network_error("malplaced \">\"");
+	throw network_error("malplaced closing bracket");
       }
 
-    in_tag = false;
-    if (making_tagname)
+    if (making_tagname) {make_tagname();}
+
+    if (closing_tag)
       {
-	tagname = word;
-	word = "";
-	in_word = false;
-	making_tagname = false;
-	if (tagname == "network")
+	if (close_tag)
 	  {
-	    if (!end_expected)
+	    if (tagname != tag.top())
 	      {
-		throw network_error("must state number of nodes in network");
-	      }
-	    else if (!in_network)
-	      {
-		throw network_error("can't end network unless in network");
+		throw network_error("unmatched tag");
 	      }
 	    
-	    in_network = false;
-	    end_expected = false;
+	    tag.pop();
+	    close_tag = false;
+	  }
+	
+	if (tagname == "network")
+	  {
+	    // kolla om number_of_nodes == 0, isf ok tomt nätverk, gör saker
+	    // avsluta inläsningen
 	  }
 	else if (tagname == "nodes")
 	  {
-	    if (!in_network or
-		in_nodes == !end_expected or
-		after_nodes)
-	      {
-		throw network_error("malplaced nodes tag");
-	      }
-	    
-	    if (!end_expected)
-	      {
-		in_nodes = true;
-	      }
-	    else
-	      {
-		in_nodes = false;
-		after_nodes = true;
-	      }
-	  }
-	else if (tagname == "node")
-	  {     
-	    throw network_error("node requires data");
+	    // kolla om alla noder är gjorda
+	    in_nodes = false;
+	    after_nodes = true;
 	  }
 	else if (tagname == "edges")
 	  {
-	    if (!in_network or
-		!after_nodes or
-		in_edges == !end_expected or 
-		after_edges)
+	    in_edges = false;
+	    after_edges = true;
+	  }
+	else if (tagname == "node")
+	  {
+	    if (node_id == 0)
 	      {
-		throw network_error("malplaced edges tag");
+		throw network_error("id missing");
+	      }
+	    else if (nodes[node_id] != nullptr)
+	      {
+		throw network_error("duplicate id");
 	      }
 	    
-	    if (!end_expected)
-	      {
-		in_edges = true;
-	      }
-	    else
-	      {
-		in_edges = false;
-		after_edges = true;
-	      }
+	    Node* nd = new Node();
+	    nd->change_id(node_id);
+	    nd->change_name(node_name); // generera standardnamn om tom?
+	    nd->change_position(Position(node_xpos,node_ypos));
+	    nd->change_flow(node_flow);
+	    nd->change_node_price(node_price);
+	    nodes[node_id] = nd;
+	    network_nodes->add_member(nd);
+
+	    in_node = false;
 	  }
 	else if (tagname == "edge")
 	  {
-	    throw network_error("edge requires data");
+	    if (edge_from_node == 0 or edge_to_node == 0)
+	      {
+		throw network_error("connected node missing");
+	      }
+	    
+	    Edge* ed = new Edge(nodes[edge_from_node],nodes[edge_to_node]);
+	    ed->change_flow(edge_flow);
+	    ed->change_reduced_cost(edge_reduced_cost);
+	    ed->change_cost(edge_cost);
+	    ed->change_maxflow(edge_max_flow);
+	    ed->change_minflow(edge_min_flow);
+	    network_edges->add_member(ed);
+
+	    in_edge = false;
 	  }
-	else
-	  {
-	    // Error?
-	    // tillåt okända tags, inte fel?
-	    //    flagga in_unknown_tag?
-	  }
-      }
-    else if (end_expected)
-      {
-	// gör saker
-	making_node = false;
-	making_edge = false;
+	
+	closing_tag = false;
       }
     else
       {
-	// networkdeklaration och ev. oavslutad tag
+	if (tagname == "network")
+	  {
+	    if (number_of_nodes < 0)
+	      {
+		throw network_error("number of nodes missing");
+	      }
+	    
+	    in_network = true;
+	    nodes.resize(number_of_nodes,nullptr);
+	  }
+	else if (tagname == "nodes")
+	  {
+	    in_nodes = true;
+	  }
+	else if (tagname == "edges")
+	  {
+	    in_edges = true;
+	  }
+	else if (tagname == "node")
+	  {
+	    in_node = true;
+	  }
+	else if (tagname == "edge")
+	  {
+	    in_edge = true;
+	  }
+	else {} // okänd tag
+	
+	tag.push(tagname);
       }
     in_tag = false;
-    word = "";
-    in_word = false;
-    end_expected = false;
-    // gör det som ska göras, iaf om endtag
-    // om making_tagname - starta in_nånting
-    //     samma koll som space isf
-    // om end_expected - avsluta in_nånting
+    tagname = "";
   }
 
 public:
@@ -585,38 +654,17 @@ public:
   {
     next_char = next;
     
-    if (isspace(next_char)) // Space
+    if (next_char == '<') {start_tag();}
+    else if (in_tag)
       {
-	space();
-      }
-    else if (next_char == '<') // Start tag
-      {
-	start_tag();
-      }
-    else if (next_char == '/') // Slash
-      {
-	slash();
-      }
-    else if (isalnum(next_char) or
-	     next_char == '_') // Alph or Num
-      {
-	alnum();
-      }
-    else if (next_char == '=') // Equal
-      {
-	equal();
-      }
-    else if (next_char == '\"') // Quote
-      {
-	quote();
-      }
-    else if (next_char == '>') // end of tag
-      {
-	end_tag();
-      }
-    else // Unknown character
-      {
-	// Error eller bara skippa
+	if (isspace(next_char)) {space();}
+	else if (next_char == '<') {start_tag();}
+	else if (next_char == '/') {slash();}
+	else if (isalnum(next_char) or next_char == '_') {alnum();}
+	else if (next_char == '=') {equal();}
+	else if (next_char == '\"') {quote();}
+	else if (next_char == '>') {end_tag();}
+	else {} // Unknown character
       }
   }
   void
@@ -655,69 +703,51 @@ public:
 	     label == "maxflow" or
 	     label == "minflow"));
   }
-
-  // bara för testning
-  void
-  print()
-  {
-    cout //<< endl
-      << " - word: " << word //<< endl
-      << " - tagname: " << tagname //<< endl
-      << " - label: " << label //<< endl
-      << " - in_tag: " << in_tag //<< endl
-      << " - in_word: " << in_word //<< endl
-      << " - in_arg: " << in_arg //<< endl
-      << " - end_exp: " << end_expected //<< endl
-      << " - arg_exp: " << arg_expected //<< endl
-      << " - mk_tagname: " << making_tagname //<< endl
-      << " - in_network: " << in_network //<< endl
-      << " - in_nodes: " << in_nodes //<< endl
-      << " - in_edges: " << in_edges //<< endl
-      << " - mk_node: " << making_node //<< endl
-      << " - mk_edge: " << making_edge //<< endl
-      << " - after_nodes: " << after_nodes //<< endl
-      << " - after_edges: " << after_edges //<< endl
-      << " - next_char: " << next_char << endl;
-  }
 };
 
-void
+bool
 Network::fopen(const string filename)
 {
-  ifstream xmlread;
-  xmlread.open(filename);
-  readstate state;
-  char next_char;
-  int int_val;
-  double double_val;
-  
-  
-  while (xmlread.good())
-    {
-      if (state.read_int())
+  // try
+  //   {
+      ifstream xmlread;
+      xmlread.open(filename);
+      readstate state(&edges_,&nodes_);
+      char next_char;
+      int int_val;
+      double double_val;
+      
+      remove_all_edges();
+      remove_all_nodes();
+      while (xmlread.good())
 	{
-	  xmlread >> int_val; // testa xmlread.good()?
-	  cout << int_val; // för testning
-	  state.step(int_val);
-	}
-      else if (state.read_double())
-	{
-	  xmlread >> double_val; // testa xmlread.good()?
-	  cout << double_val; // för testning
-	  state.step(double_val);
-	}
-      else
-	{
-	  xmlread.get(next_char);
-	  if (!xmlread.good())
+	  if (state.read_int())
 	    {
-	      break;
+	      xmlread >> int_val; // testa xmlread.good()?
+	      state.step(int_val);
 	    }
-	  cout << next_char; // för testning
-	  state.step(next_char);
+	  else if (state.read_double())
+	    {
+	      xmlread >> double_val; // testa xmlread.good()?
+	      state.step(double_val);
+	    }
+	  else
+	    {
+	      xmlread.get(next_char);
+	      if (!xmlread.good())
+		{
+		  break;
+		}
+	      state.step(next_char);
+	    }
 	}
-    }
-
-  //Fixa kommentarer i filen och andra taggar
-  xmlread.close();
+      
+      //Fixa kommentarer i filen och andra taggar/text utanför taggar
+      xmlread.close();
+    // }
+  // catch(...)
+  //   {
+  //     return false;
+  //   }
+  return true;
 }
