@@ -17,6 +17,7 @@
 #include <fstream>
 #include <cctype>
 #include <stack>
+#include <string>
 
 using namespace std;
 
@@ -961,7 +962,7 @@ private:
 	  {
 	    throw network_error("malplaced node tag");
 	  }
-	else {} // Unknown tag, sätt flagga?
+	else {} // Unknown tag, sätta flagga behövs ej
       }
   }
 
@@ -982,10 +983,7 @@ private:
       {
 	word.push_back(next_char); // ska alla spaces tillåtas?
       }
-    else
-      {
-	// Här behöver inget göras
-      }
+    else {}
   }
 
   void
@@ -1347,8 +1345,8 @@ public:
 bool
 Network::fopen(const string filename)
 {
-  // try
-  //   {
+  try
+    {
       ifstream xmlread;
       xmlread.open(filename);
       readstate state(&edges_,&nodes_);
@@ -1383,10 +1381,10 @@ Network::fopen(const string filename)
       
       //Fixa kommentarer i filen
       xmlread.close();
-    // }
-  // catch(...)
-  //   {
-  //     return false;
-  //   }
+    }
+  catch(...)
+    {
+      return false;
+    }
   return true;
 }
