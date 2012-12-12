@@ -6,6 +6,7 @@ HEADERS += \
     ../neopushbutton.h \
     ../datadock.h \
     ../addedgedock.h \
+    ../cheapest_path_dialog.h \
     ../../Edge/Edge.h \
     ../../Node/Node.h \
     ../../Node/Position.h \
@@ -21,6 +22,7 @@ SOURCES += \
     ../graphicnode.cpp \
     ../graphicedge.cpp \
     ../neopushbutton.cpp \
+    ../cheapest_path_dialog.cpp \
     ../../Edge/Edge.cc \
     ../../Node/Node.cc \
     ../../Node/Position.cc \

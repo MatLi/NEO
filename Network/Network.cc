@@ -201,6 +201,10 @@ Network::cheapest_path(Node* start_node, Node* end_node)
 void
 Network::min_cost_flow()
 {
+  if (nodes_.empty() || edges_.empty())
+    {
+      throw network_error("Nätverket kan inte ge något flöde.");
+    }
   /****** 
    *Fas 1
    ******/
