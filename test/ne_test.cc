@@ -408,6 +408,11 @@ int main()
   E7t->change_maxflow(1);
   net5.max_flow();
 
+  for (auto it : net5.node_set())
+    {
+      cout << (*it).name() << ": "
+	   << (*it).flow() << endl;
+    }
   for (auto it : net5.edge_set())
     {
       cout << (*it).from_node()->name() << "->"
