@@ -24,6 +24,11 @@ public:
 
 public slots:
     void saveProj();
+    void min_cost_flow();
+    void max_cost_flow();
+    void max_flow();
+    void cheapest_tree();
+    void cheapest_path();
 
 private:
     Ui::MainWindow *ui;
