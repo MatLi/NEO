@@ -1,5 +1,6 @@
 #include <QtGui>
 #include "cheapest_path_dialog.h"
+#include "solution_dialog.h"
 #include "graphicnode.h"
 #include "graphwidget.h"
 #include "mainwindow.h"
@@ -31,6 +32,7 @@ CheapestPathDialog::CheapestPathDialog(QWidget *parent) :
 void
 CheapestPathDialog::run()
 {
+  Solution sol_dialog = c_path;
   GraphicNode *startn = nullptr;
   GraphicNode *endn = nullptr;
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
@@ -71,6 +73,8 @@ CheapestPathDialog::run()
       QMessageBox::warning(this, tr("Error"), msg);
       return;
     }
-	 // Visa någon dialogruta med lösningen.
+
+  SolutionDialog sd(sol_dialog, this);
+  sd.show();
 
 }
