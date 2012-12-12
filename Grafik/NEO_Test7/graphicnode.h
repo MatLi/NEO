@@ -37,9 +37,6 @@ public:
     enum { Type = UserType + 1 };
     int type() const { return Type; }
 
-    void MovabilityF();
-    void MovabilityT();
-
     void moveHelper();
     bool advance();
 

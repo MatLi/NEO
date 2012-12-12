@@ -22,7 +22,7 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     : graph(graphWidget)
 {
     setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
+    //setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     name.setNum(graph->return_nodeList().size());
@@ -61,16 +61,6 @@ bool GraphicNode::advance()
 
     setPos(newPos);
     return true;
-}
-
-void GraphicNode::MovabilityF()
-{
-    setFlag(ItemIsMovable, false);
-}
-
-void GraphicNode::MovabilityT()
-{
-    setFlag(ItemIsMovable, true);
 }
 
 QRectF GraphicNode::boundingRect() const
