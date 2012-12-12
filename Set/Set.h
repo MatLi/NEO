@@ -25,12 +25,30 @@ class Set
   virtual void clear();
   bool empty() const;
   unsigned int size() const;
+  bool exists(T) const;
       
   typename std::vector<T>::iterator begin();
   typename std::vector<T>::iterator end();
  private:
   std::vector<T> members_;
 };
+
+/* Set<T>::exists(T)
+ * Returnerar sant omm elementet T finns i mängden.
+ */
+template <class T>
+bool Set<T>::exists(T search_element) const
+{
+  bool exists = false;
+  for (auto it : members_)
+    {
+      if (&(*it) == search_element)
+	{
+	  exists = true;
+	}
+    }
+  return exists;
+}
 
 /*
  * Set<T>::add_member()

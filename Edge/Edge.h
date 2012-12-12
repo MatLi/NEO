@@ -3,7 +3,7 @@
  * PROJEKT:          NEO
  * PROGRAMMERARE:    Li och Linda
  *
- * DATUM:            2012-11-21
+ * DATUM:            2012-11-28
  *
  * BESKRIVNING:
  * Edge �r ett objekt som motsvarar b�gar/kanter i ett n�tverksproblem.   
@@ -13,6 +13,7 @@
 #define EDGE_HH
 
 #include "Node.h"
+#include <stack>
 
 class Node;
 
@@ -25,7 +26,7 @@ class Edge
   
   // Vill vi ha fler konstruktorer? 
 
- ~Edge() = default; // Vi vill inte ta bort noderna som pekas p�, deafult kan anv�ndas.
+  ~Edge();
 
   Node* from_node() const;
   Node* to_node() const;
@@ -43,6 +44,9 @@ class Edge
   void change_to(Node*);
   void change_flow(double);
 
+  void backup_data();
+  void restore_data();
+
  private:
   //Datamedlemmar
   Node* from_;
@@ -52,6 +56,10 @@ class Edge
   double maxflow_;
   double minflow_;
   double cost_;
+
+  std::stack<double> backup_maxflow_;
+  std::stack<double> backup_minflow_;
+  std::stack<double> backup_cost_;
 };
 
 #endif
