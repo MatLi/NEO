@@ -137,7 +137,7 @@ MainWindow::min_cost_flow()
       QMessageBox::warning(this, tr("Error"), msg);
       return;
     }
-  SolutionDialog sd(sol_dialog, this);
+  SolutionDialog sd(sol_dialog,this);
   sd.show();
 }
 
