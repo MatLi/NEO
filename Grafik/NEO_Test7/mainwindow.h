@@ -22,10 +22,13 @@ public:
     //void paintEvent (QPaintEvent *event);
     Network *net;
 
+public slots:
+    void saveProj();
 
 private:
     Ui::MainWindow *ui;
 
+    void setupMenuBar();
 };
 
 #endif // MAINWINDOW_H
