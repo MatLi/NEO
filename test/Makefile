@@ -22,7 +22,7 @@ CPPFLAGS += -I$(NODE) -I$(SET) -I$(EDGE) -I$(NETWORK)
 LDFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
 
 # Objektkodsmoduler som ingår i den kompletta kalkylatorn.
-OBJECTS = $(EDGE)/Edge.o $(NODE)/Node.o $(NODE)/Position.o $(NETWORK)/Network.o ne_test.o
+OBJECTS = $(EDGE)/Edge.o $(NODE)/Node.o $(NETWORK)/Network.o ne_test.o
 
 # Huvudmål - skapas med kommandot 'make' eller 'make kalkylator'.
 ne_test: $(OBJECTS) node edge network Makefile
