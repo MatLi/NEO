@@ -25,6 +25,8 @@ class GraphicEdge : public QGraphicsItem
 public:
   GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWidget *graphWidget);
 
+  ~GraphicEdge();
+
     GraphicNode *sourceNode() const;
     GraphicNode *destNode() const;
 
