@@ -11,7 +11,7 @@ neoPushButton::neoPushButton(QWidget *parent) :
 
 void neoPushButton::mousePressEvent(QMouseEvent *event)
 {
-    if(text()=="Lägg till båge")
+    if(text()=="Add edge")
     {
         QString start, end;
 
@@ -23,7 +23,7 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
 
         graph_->addEdge(start,end);
     }
-    else if(text()=="Ta bort båge")
+    else if(text()=="Remove edge")
     {
         QString start, end;
 
@@ -35,7 +35,7 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
 
         graph_->removeEdge(start,end);
     }
-    else if(text()=="Ändra noddata")
+    else if(text()=="Change node data")
     {
 
       MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
@@ -46,7 +46,7 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
       QString qstr = QString::fromStdString(dataw->nodeName());
       dataw->return_current_node()->set_name(qstr);
     } 
-    else if(text()=="Ändra bågdata")
+    else if(text()=="Change edge data")
     {
       MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
       DataDock *dataw = dynamic_cast<DataDock*>(mainwindow_->return_DataDock());
@@ -55,7 +55,7 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
       dataw->return_current_edge()->net_edge->change_maxflow(dataw->edgemaxFlow());
       dataw->return_current_edge()->net_edge->change_minflow(dataw->edgeminFlow());
     }
-    else if(text() == "Ta bort nod")
+    else if(text() == "Remove node")
       {
 	QString node;
 
