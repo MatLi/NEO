@@ -12,6 +12,8 @@
 
 #include "graphicedge.h"
 #include "graphicnode.h"
+#include "graphwidget.h"
+#include "mainwindow.h"
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
@@ -21,9 +23,10 @@
 static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
-GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode)
+GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWidget *graphWidget)
   : arrowSize(10),
-    net_edge(new Edge(sourceNode->net_node, destNode->net_node))
+    net_edge(new Edge(sourceNode->net_node, destNode->net_node)),
+    graph(graphWidget)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -31,6 +34,8 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode)
     source->addEdge(this);
     dest->addEdge(this);
     adjust();
+    MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
+    mw->net->add_edge(net_edge);
 }
 
 

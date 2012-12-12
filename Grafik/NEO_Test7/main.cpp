@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     MainWindow w;//mainWindow;
     QWidget* qww = dynamic_cast<QWidget*>(&w);
     GraphWidget *widget = new GraphWidget(qww);
-
+    
     w.setCentralWidget(widget);
 
     //w.net->min_cost_flow();
