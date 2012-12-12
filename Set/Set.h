@@ -1,15 +1,18 @@
 /*
- * Fil: Set.h
- * Programmerare: David Larsson <davla210@student.liu.se>
- * Datum: 2012-11-19
+ * FILENAME:      Set.h
+ * PROJECT:       NEO
+ * PROGRAMMER:    David
  *
- * En mall för en mängd. Skall användas för att representera och
- * arbeta på de huvudsakliga mängderna som används dels för att
- * representera nätverket och i några av algoritmerna för att
- * lösa optimeringsproblem.
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * A template for a set. Is used to store and work on sets of
+ * edges and sets of nodes in the Network and the algorithms.
  */
+
 #ifndef SET_HH
 #define SET_HH
+
 #include <vector>
 #include <iostream>
 
@@ -29,6 +32,7 @@ class Set
       
   typename std::vector<T>::iterator begin();
   typename std::vector<T>::iterator end();
+
  private:
   std::vector<T> members_;
 };

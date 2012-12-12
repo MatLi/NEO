@@ -1,13 +1,13 @@
 /* 
- * FILNAMN:          Network.cc
- * PROJEKT:          NEO
- * PROGRAMMERARE:    Li, David, Linda och Jonas
+ * FILENAME:      Network.cc
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Li, David, Linda and Jonas
  *
- * DATUM:            2012-11-21
+ * DATE:          2012-12-12
  *
- * BESKRIVNING:
- * Network representerar ett helt nätverk av noder och bågar. 
- * Lösningarna till de olika problemen kommer att vara ett Network.    
+ * DESCRIPTION:
+ * Network represents a network of nodes and edges.
+ * The solution to a problem will be a Network.   
  */
 
 #include "Network.h"
@@ -18,8 +18,19 @@
 #include <cctype>
 #include <stack>
 #include <string>
-
 using namespace std;
+
+Network::Network()
+  : nodes_(),
+    edges_() {}
+
+Network::Network(Set<Node*> in_nodes, Set<Edge*> in_edges)
+  : nodes_(in_nodes),
+    edges_(in_edges) {}
+
+Network::Network(Set<Node*> in_nodes)
+  : nodes_(in_nodes),
+    edges_() {}
 
 //  Returnerar alla bågar/kanter
 Set<Edge*>

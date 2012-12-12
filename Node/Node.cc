@@ -1,12 +1,12 @@
 /*
- * Fil: Node.cc
- * Programmerare: David Larsson <davla210>
- * Datum: 2012-11-21
+ * FILENAME:      Node.cc
+ * PROJECT:       NEO
+ * PROGRAMMER:    David
  *
- * Definitioner för klassen Node, som representerar noder i nätverket.
- * Varje nod kan nå sina bågar (såväl in som ut) och kan ha ett flöde (vara
- * källa, sänka eller genomfartsnod). Den har också en grafisk position, som
- * används för export till svg-fil (???).
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Node is an object that corresponds to a node in a network problem.
  */
 
 #include "Edge.h"
@@ -15,6 +15,18 @@
 #include <stack>
 #include <string>
 using namespace std;
+
+Node::Node(string in_name)
+  : name_(in_name),
+    xpos_(0),
+    ypos_(0),
+    flow_(0),
+    node_price_(0),
+    in_edges_(),
+    out_edges_(),
+    all_edges_(),
+    connected_(false),
+    backup_flow_() {}
 
 bool
 Node::connected() const
