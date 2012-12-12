@@ -1,3 +1,7 @@
+QMAKE_LFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
+QMAKE_INCDIR += -I../../Node -I../../Edge -I../../Set -I../../Network
+QMAKE_CXXFLAGS += -std=c++11 -Wextra -pedantic
+
 HEADERS += \
     ../mainwindow.h \
     ../graphwidget.h \
