@@ -41,7 +41,8 @@ class Set
  * Returnerar sant omm elementet T finns i mängden.
  */
 template <class T>
-bool Set<T>::exists(T search_element) const
+bool
+Set<T>::exists(T search_element) const
 {
   bool exists = false;
   for (auto it : members_)
@@ -59,7 +60,8 @@ bool Set<T>::exists(T search_element) const
  * Lägg till medlemmen new_member i mängden.
  */
 template <class T>
-void Set<T>::add_member(T new_member)
+void
+Set<T>::add_member(T new_member)
 {
   for (auto it : members_)
     {
@@ -78,7 +80,8 @@ void Set<T>::add_member(T new_member)
  * Ta bort medlemmen old_member ur mängden.
  */
 template <class T>
-void Set<T>::remove_member(T old_member)
+void
+Set<T>::remove_member(T old_member)
 {
   typename std::vector<T>::iterator temp = members_.begin();
   int i_it = 0;
@@ -101,14 +104,16 @@ void Set<T>::remove_member(T old_member)
  * eftersom det kan vara medlem i andra mängder.
  */
 template <class T>
-void Set<T>::clear()
+void
+Set<T>::clear()
 {
   members_.clear();
   return;
 }
 
 template <class T>
-bool Set<T>::empty() const
+bool
+Set<T>::empty() const
 {
   return members_.empty();
 }
@@ -119,19 +124,22 @@ bool Set<T>::empty() const
  * Mängdens kardinalitet.
  */
 template <class T>
-unsigned int Set<T>::size() const
+unsigned int
+Set<T>::size() const
 {
   return members_.size();
 }
 
 template <class T>
-typename std::vector<T>::iterator Set<T>::begin()
+typename std::vector<T>::iterator
+Set<T>::begin()
 {
   return members_.begin();
 }
 
 template <class T>
-typename std::vector<T>::iterator Set<T>::end()
+typename std::vector<T>::iterator
+Set<T>::end()
 {
   return members_.end();
 }
