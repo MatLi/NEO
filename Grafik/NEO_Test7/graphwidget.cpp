@@ -104,8 +104,19 @@ void GraphWidget::addNode(GraphicNode *new_node)
     w->net->add_node(new_node->net_node);
 }
 
-void GraphWidget::removeNode(GraphicNode *rem_node)
+void GraphWidget::removeNode(QString rem_node_name)
 {
+
+  GraphicNode* rem_node; 
+
+  for (int i=0;i<this->nodeList.size();i++)
+    {
+      if(this->nodeList.at(i)->return_name()==rem_node_name)
+        {
+	  rem_node=this->nodeList.at(i);
+        }
+    }
+
   scene()->removeItem(rem_node);
 
   QList<GraphicEdge *> edges_;
@@ -124,7 +135,7 @@ void GraphWidget::clear_network()
 { 
   foreach (GraphicNode *node, nodeList)
     {
-      removeNode(node);
+      removeNode(node->return_name());
     }
 }
 
@@ -153,12 +164,6 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
 {   
     switch (event->key()) 
       {
-      case Qt::Key_R:
-	{
-	  GraphicNode *rem_node = nodeList[0];
-	  removeNode(rem_node);
-	}
-	break;
       case Qt::Key_C:
 	{
 	  clear_network();

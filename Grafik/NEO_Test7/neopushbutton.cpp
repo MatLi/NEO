@@ -43,6 +43,8 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
       
       dataw->return_current_node()->net_node->change_flow(dataw->nodeFlow());
       dataw->return_current_node()->net_node->change_name(dataw->nodeName());
+      QString qstr = QString::fromStdString(dataw->nodeName());
+      dataw->return_current_node()->set_name(qstr);
     } 
     else if(text()=="Ändra bågdata")
     {
@@ -53,4 +55,16 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
       dataw->return_current_edge()->net_edge->change_maxflow(dataw->edgemaxFlow());
       dataw->return_current_edge()->net_edge->change_minflow(dataw->edgeminFlow());
     }
+    else if(text() == "Ta bort nod")
+      {
+	QString node;
+
+	MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
+	GraphWidget *graph_ = dynamic_cast<GraphWidget *>(mainwindow_->centralWidget());
+	
+	node = mainwindow_->return_AddEdgeDock()->node_text();
+
+	graph_->removeNode(node);
+	
+      }
 }
