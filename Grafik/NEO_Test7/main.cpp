@@ -4,7 +4,7 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "graphwidget.h"
-#include "datawidget.h"
+#include "datadock.h"
 
 int main(int argc, char **argv)
 {

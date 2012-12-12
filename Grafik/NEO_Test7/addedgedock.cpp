@@ -29,6 +29,11 @@ AddEdgeDock::AddEdgeDock(QWidget *parent) :
     add_edge_->setText("Lägg till båge");
     layout->addWidget(add_edge_);
 
+    remove_edge_ = new neoPushButton(this);
+    remove_edge_->setGeometry(100,200,100,20);
+    remove_edge_->setText("Ta bort båge");
+    layout->addWidget(remove_edge_);
+
     //Nodinfo-ruta
 /*
     QLabel *nodePrice1 = new QLabel("Test");

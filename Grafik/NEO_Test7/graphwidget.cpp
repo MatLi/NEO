@@ -9,7 +9,7 @@
  * GraphicWidget är rutan i MainWindow som innehåller noder och bågar och hanterar alla händelser.
 */
 #include "graphwidget.h"
-#include "datawidget.h"
+#include "datadock.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
 
@@ -93,6 +93,11 @@ QList<GraphicNode *> GraphWidget::return_nodeList()
     return nodeList;
 }
 
+void GraphWidget::removeEdge(QString start, QString end)
+{
+    changeTextItem("Tar bort nod..");
+}
+
 void GraphWidget::addEdge(QString start, QString end)
 {
     GraphicNode *startn = new GraphicNode(this);;
@@ -133,12 +138,6 @@ void GraphWidget::itemMoved()
         timerId = startTimer(1000/25);
 }
 
-DataWidget* GraphWidget::makeDataWidget()
-{
-    DataWidget *dwidget = new DataWidget(this);
-    widget_one = dwidget;
-    return dwidget;
-}
 
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
@@ -156,14 +155,13 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
             nodes << node;
     }
-    DataWidget* dwidget;
 
     switch (event->key()) {
     case Qt::Key_A:
         {
-	  dwidget = makeDataWidget();
-	  dwidget->show();
+
         }
+        break;
     case Qt::Key_E:
         foreach (GraphicNode *node, nodes)
         {

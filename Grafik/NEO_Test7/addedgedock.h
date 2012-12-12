@@ -16,7 +16,7 @@ public:
 
 private:
     QLineEdit *start, *end;
-    QPushButton *add_edge_;
+    QPushButton *add_edge_, *remove_edge_;
 
 };
 

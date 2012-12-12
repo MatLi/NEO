@@ -3,7 +3,6 @@
 
 #include <QPushButton>
 #include <QString>
-#include "datawidget.h"
 
 class neoPushButton : public QPushButton
 {
