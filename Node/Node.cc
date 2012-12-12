@@ -11,7 +11,6 @@
 
 #include "Edge.h"
 #include "Node.h"
-#include "Position.h"
 #include "Set.h"
 #include <stack>
 #include <string>
@@ -37,16 +36,29 @@ Node::set_connected(bool new_c)
   return;
 }
 
-Position
-Node::position() const
+double
+Node::xpos() const
 {
-  return graphic_pos_;
+  return xpos_;
+}
+
+double
+Node::ypos() const
+{
+  return ypos_;
 }
 
 void
-Node::change_position(Position new_pos)
+Node::change_xpos(double new_xpos)
 {
-  graphic_pos_.move_to(new_pos);
+  xpos_ = new_xpos;
+  return;
+}
+
+void
+Node::change_ypos(double new_ypos)
+{
+  ypos_ = new_ypos;
   return;
 }
 

@@ -13,7 +13,6 @@
 #define NODE_HH
 
 #include "Edge.h"
-#include "Position.h"
 #include "Set.h"
 #include <stack>
 #include <string>
@@ -24,11 +23,13 @@ class Node
 {
  public:
   Node() = default;
- Node(std::string in_name) : graphic_pos_(), flow_(0), node_price_(0), in_edges_(), out_edges_(), all_edges_(), name_(in_name), connected_(false), backup_flow_() { }
+ Node(std::string in_name) : xpos_(0), ypos_(0), flow_(0), node_price_(0), in_edges_(), out_edges_(), all_edges_(), name_(in_name), connected_(false), backup_flow_() { }
   ~Node() = default;
 
-  Position position() const;
-  void change_position(Position);
+  double xpos() const;
+  double ypos() const;
+  void change_xpos(double);
+  void change_ypos(double);
   double flow() const;
   void change_flow(double);
   double node_price() const;
@@ -54,7 +55,8 @@ class Node
   void change_id(unsigned int);
 
  private:
-  Position graphic_pos_;
+  double xpos_;
+  double ypos_;
   double flow_;
   double node_price_;
   Set<Edge*> in_edges_;
