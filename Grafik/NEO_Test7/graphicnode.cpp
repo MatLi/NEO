@@ -20,6 +20,8 @@
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
+#include "mainwindow.h"
+#include "datadock.h"
 
 GraphicNode::GraphicNode(GraphWidget *graphWidget)
   : graph(graphWidget),
@@ -124,8 +126,21 @@ void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
 
+    QString node_flow_, node_price;
+
     //Ändrar textrutan i Widget
     graph->changeTextItem(return_name());
+    
+    MainWindow *mwindow = dynamic_cast<MainWindow*>(graph->parent());
+    DataDock *ddock = dynamic_cast<DataDock*>(mwindow->return_DataDock());
+
+    ddock->change_currentnode(this);
+    node_flow_.setNum(net_node->flow());
+    node_price.setNum(net_node->node_price());
+
+    ddock->editnodeName(return_name());
+    ddock->editnodeFlow(node_flow_);
+    ddock->editnodePrice(node_price);
 
     QGraphicsItem::mousePressEvent(event);
 }
