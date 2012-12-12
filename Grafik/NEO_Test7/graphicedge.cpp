@@ -44,8 +44,8 @@ GraphicEdge::~GraphicEdge()
   MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
   mw->net->remove_edge(net_edge);
 
-  //sourceNode->removeEdge(this);
-  //destNode->removeEdge(this);
+  sourceNode()->removeEdge(this);
+  destNode()->removeEdge(this);
 }
 
 void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
