@@ -829,8 +829,8 @@ Network::fwrite(const string filename)
 	  xmlwrite << "    <node "
 		   << "id=\"" << (*it).id() << "\" "
 		   << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
-		   << "xpos=\"" << (*it).position().xpos() << "\" "
-		   << "ypos=\"" << (*it).position().ypos() << "\" "
+		   << "xpos=\"" << (*it).xpos() << "\" "
+		   << "ypos=\"" << (*it).ypos() << "\" "
 		   << "flow=\"" << (*it).flow() << "\" "
 		   << "node_price=\"" << (*it).node_price() << "\" "
 		   << "/>" << endl;
@@ -1203,7 +1203,8 @@ private:
 	    Node* nd = new Node();
 	    nd->change_id(node_id);
 	    nd->change_name(node_name); // generera standardnamn om tom?
-	    nd->change_position(Position(node_xpos,node_ypos));
+	    nd->change_xpos(node_xpos);
+	    nd->change_ypos(node_ypos);
 	    nd->change_flow(node_flow);
 	    nd->change_node_price(node_price);
 	    nodes[node_id-1] = nd;
