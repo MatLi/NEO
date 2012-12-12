@@ -16,6 +16,8 @@ int main(int argc, char **argv)
 
     w.setCentralWidget(widget);
 
+    //w.net->min_cost_flow();
+
     w.show();
 
     return a.exec();

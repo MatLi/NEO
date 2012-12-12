@@ -13,6 +13,10 @@
 
 #include <QGraphicsItem>
 
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
+
 class GraphicNode;
 
 class GraphicEdge : public QGraphicsItem
@@ -27,6 +31,8 @@ public:
 
     enum { Type = UserType + 2 };
     int type() const { return Type; }
+
+    Edge* net_edge;
 
 protected:
     QRectF boundingRect() const;
