@@ -1,7 +1,6 @@
 #include "Node.h"
 #include "Edge.h"
 #include "Set.h"
-#include "Path.h"
 #include "Network.h"
 #include <string>
 #include <iostream>
@@ -234,10 +233,6 @@ int main()
   NL->change_flow(-1400);
   NH->change_flow(3500);
   NT->change_flow(2100);
-
-  net4.fwrite("testfil.txt");
-  net4.fopen("testfil.txt");
-
   
   Edge* ESM = new Edge(NS,NM);
   Edge* ESN = new Edge(NS,NN);
