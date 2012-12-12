@@ -58,6 +58,11 @@ QString GraphicNode::return_name() const
     return name;
 }
 
+void GraphicNode::set_name(QString new_name)
+{
+  name = new_name;
+}
+
 QList<GraphicEdge *> GraphicNode::edges() const
 {
     return edgeList;
