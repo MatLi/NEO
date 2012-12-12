@@ -13,10 +13,12 @@ public:
     explicit AddEdgeDock(QWidget *parent = 0);
     QString start_text();
     QString end_text();
+    QString node_text();
+
 
 private:
-    QLineEdit *start, *end;
-    QPushButton *add_edge_, *remove_edge_;
+    QLineEdit *start, *end, *node;
+    QPushButton *add_edge_, *remove_edge_, *remove_node;
 
 };
 
