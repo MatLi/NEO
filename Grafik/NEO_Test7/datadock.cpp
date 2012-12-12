@@ -1,29 +1,38 @@
 #include "datadock.h"
-#include <QGridLayout>
 #include <QtGui>
 #include <QDialog>
+#include "neopushbutton.h"
 
 DataDock::DataDock(QWidget *parent) :
     QDockWidget(parent)
 {
 
+
+
     QWidget *wi = new QWidget;
 
-    QVBoxLayout *layout = new QVBoxLayout;
+    QGridLayout *layout = new QGridLayout();
 
-    start = new QLineEdit();
-    end = new QLineEdit();
+    QLabel *name = new QLabel("Nodnamn: ");
+    QLabel *price = new QLabel("Nodpris: ");
+    QLabel *flow = new QLabel("Nodflöde: ");
+    neoPushButton *change = new neoPushButton(this);
+    nodeName_ = new QLineEdit();
+    nodeFlow_ = new QLineEdit();
+    nodePrice_ = new QLineEdit();
 
-    start->setText("Startnod");
-    start->setGeometry(100,80,50,30);
+    nodePrice_->setReadOnly(true);
+    change->setText("Ändra noddata");
 
+    layout->addWidget(nodeName_,0,1);
+    layout->addWidget(nodeFlow_,1,1);
+    layout->addWidget(nodePrice_,2,1);
+    layout->addWidget(name,0,0);
+    layout->addWidget(price,2,0);
+    layout->addWidget(flow,1,0);
+    layout->addWidget(change,4,0);
+    
 
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
-
-    layout->addWidget(buttonBox);
-
-    layout->addWidget(start);
     setAllowedAreas(Qt::LeftDockWidgetArea |
                                 Qt::RightDockWidgetArea);
 
@@ -34,3 +43,36 @@ DataDock::DataDock(QWidget *parent) :
     setWidget(wi);
 }
 
+void DataDock::editnodeName(QString newName_)
+{
+  nodeName_->setText(newName_);
+}
+void DataDock::editnodeFlow(QString newFlow_)
+{
+  nodeFlow_->setText(newFlow_);
+}
+
+void DataDock::editnodePrice(QString newPrice_)
+{
+  nodePrice_->setText(newPrice_);
+}
+
+double DataDock::nodeFlow()
+{
+  return nodeFlow_->text().toDouble();
+}
+
+std::string DataDock::nodeName()
+{
+  return nodeName_->text().toUtf8().constData();
+}
+
+void DataDock::change_currentnode(GraphicNode* new_current)
+{
+  current_node=new_current;
+}
+
+GraphicNode* DataDock::return_current_node()
+{
+  return current_node;
+}
