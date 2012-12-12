@@ -50,6 +50,9 @@ class Node
   void backup_data();
   void restore_data();
 
+  unsigned int id() const;
+  void change_id(unsigned int);
+
  private:
   Position graphic_pos_;
   double flow_;
@@ -61,6 +64,8 @@ class Node
   bool connected_;
 
   std::stack<double> backup_flow_;
+
+  unsigned int id_=0;
 };
 
 #endif

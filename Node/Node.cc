@@ -153,3 +153,16 @@ Node::restore_data()
   backup_flow_.pop();
   return;
 }
+
+unsigned int
+Node::id() const
+{
+  return id_;
+}
+
+void
+Node::change_id(unsigned int new_id)
+{
+  id_=new_id;
+  return;
+}
