@@ -4,7 +4,7 @@
 #include <QtGui/QApplication>
 #include "mainwindow.h"
 #include "graphwidget.h"
-#include "datawidget.h"
+#include "datadock.h"
 
 int main(int argc, char **argv)
 {
@@ -15,8 +15,6 @@ int main(int argc, char **argv)
     GraphWidget *widget = new GraphWidget(qww);
     
     w.setCentralWidget(widget);
-
-    //w.net->min_cost_flow();
 
     w.show();
 

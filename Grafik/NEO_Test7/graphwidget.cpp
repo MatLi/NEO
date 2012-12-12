@@ -9,7 +9,7 @@
  * GraphicWidget är rutan i MainWindow som innehåller noder och bågar och hanterar alla händelser.
 */
 #include "graphwidget.h"
-#include "datawidget.h"
+#include "datadock.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
 #include "mainwindow.h"
@@ -37,14 +37,16 @@ GraphWidget::GraphWidget(QWidget *parent)
     myTextItem->setPos(100,100);
 
     scene->addItem(myTextItem);
-
-    DataWidget *dwidget = new DataWidget(this);
-    widget_one = dwidget;
 }
 
 QList<GraphicNode *> GraphWidget::return_nodeList()
 {
     return nodeList;
+}
+
+void GraphWidget::removeEdge(QString start, QString end)
+{
+    changeTextItem("Tar bort nod..");
 }
 
 void GraphWidget::addEdge(QString start, QString end)
@@ -80,7 +82,7 @@ void GraphWidget::addGraphicNode(GraphicNode *new_node)
 void GraphWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
-    widget_one->changeTextItem(new_text);
+   // widget_one->changeTextItem(new_text);
 }
 
 void GraphWidget::itemMoved()
@@ -89,12 +91,6 @@ void GraphWidget::itemMoved()
         timerId = startTimer(1000/25);
 }
 
-DataWidget* GraphWidget::makeDataWidget()
-{
-    DataWidget *dwidget = new DataWidget(this);
-    widget_one = dwidget;
-    return dwidget;
-}
 
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
@@ -111,15 +107,8 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
             nodes << node;
     }
-    DataWidget* dwidget;
 
     switch (event->key()) {
-    case Qt::Key_A:
-        {
-	  dwidget = makeDataWidget();
-	  dwidget->show();
-        }
-	break;
     default:
         QGraphicsView::keyPressEvent(event);
     }

@@ -17,6 +17,7 @@
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
+#include <QGraphicsSceneMouseEvent>
 
 #include <math.h>
 
@@ -28,7 +29,7 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWi
     net_edge(new Edge(sourceNode->net_node, destNode->net_node)),
     graph(graphWidget)
 {
-    setAcceptedMouseButtons(0);
+  //  setAcceptedMouseButtons(1);
     source = sourceNode;
     dest = destNode;
     source->addEdge(this);
@@ -38,6 +39,10 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWi
     mw->net->add_edge(net_edge);
 }
 
+void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    sourceNode()->setPos(100,100);
+}
 
 GraphicNode *GraphicEdge::sourceNode() const
 {

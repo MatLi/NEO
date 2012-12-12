@@ -26,6 +26,7 @@ public:
     void addGraphicNode(GraphicNode *new_node);
     void changeTextItem(QString new_text);
     void addEdge(QString start, QString end);
+    void removeEdge(QString start, QString end);
     //void newNode(Node *node);
 
 public slots:
@@ -34,7 +35,6 @@ public slots:
   //  void zoomOut();
 
 protected:
-    DataWidget* makeDataWidget();
     void mouseDoubleClickEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);
@@ -46,13 +46,10 @@ protected:
 private:
     int timerId;
     GraphicNode *centerNode;
-    //GraphicNode *node10;
     QGraphicsSimpleTextItem *myTextItem;
 
     //Lista med alla noder i interfacet
     QList<GraphicNode *> nodeList;
-    DataWidget *widget_one;
-    
 };
 //! [0]
 
