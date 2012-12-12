@@ -6,6 +6,10 @@
 #include <QtGui>
 #include <QList>
 
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
+
 class GraphicNode;
 class DataWidget;
 
@@ -48,6 +52,7 @@ private:
     //Lista med alla noder i interfacet
     QList<GraphicNode *> nodeList;
     DataWidget *widget_one;
+    
 };
 //! [0]
 

@@ -12,6 +12,9 @@
 
 #include "graphicedge.h"
 #include "graphicnode.h"
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
 
 #include <math.h>
 
@@ -19,7 +22,8 @@ static const double Pi = 3.14159265358979323846264338327950288419717;
 static double TwoPi = 2.0 * Pi;
 
 GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode)
-    : arrowSize(10)
+  : arrowSize(10),
+    net_edge(new Edge(sourceNode->net_node, destNode->net_node))
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;

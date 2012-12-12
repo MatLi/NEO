@@ -2,10 +2,14 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    net(new Network)
 {
     ui->setupUi(this);
 }
