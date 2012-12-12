@@ -29,7 +29,6 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWi
     net_edge(new Edge(sourceNode->net_node, destNode->net_node)),
     graph(graphWidget)
 {
-  setAcceptedMouseButtons(0);
   source = sourceNode;
   dest = destNode;
   source->addEdge(this);
@@ -69,6 +68,7 @@ void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
   ddock->editedgemaxFlow(max_flow);
   ddock->editedgeReducedCost(edge_reducedCost);
   ddock->editedgeFlow(edge_flow_);
+  QGraphicsItem::mousePressEvent(event);
 }
 
 GraphicNode *GraphicEdge::sourceNode() const
