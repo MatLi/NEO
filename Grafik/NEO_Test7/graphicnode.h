@@ -32,7 +32,7 @@ public:
     GraphicNode(GraphWidget *graphWidget);
 
     void addEdge(GraphicEdge *edge);
-    //void removeEdge(GraphicEdge *edge);
+    void removeEdge(GraphicEdge *edge);
     QList<GraphicEdge *> edges() const;
 
     QString return_name() const;

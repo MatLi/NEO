@@ -39,10 +39,10 @@ void GraphicNode::addEdge(GraphicEdge *edge)
     edge->adjust();
 }
 
-// void GraphicNode::removeEdge(GraphicEdge *edge)
-// {
-//   // edgeList >> edge;
-// }
+void GraphicNode::removeEdge(GraphicEdge *edge)
+{
+  edgeList.removeOne(edge);
+ }
 
 QString GraphicNode::return_name() const
 {
