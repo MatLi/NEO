@@ -24,13 +24,13 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->setSceneRect(-340, -340, 680, 680);
     setScene(scene);
 
-    //setCacheMode(CacheBackground);
-    //setViewportUpdateMode(BoundingRectViewportUpdate);
-    //setRenderHint(QPainter::Antialiasing);
-    //setTransformationAnchor(AnchorUnderMouse);
-    //scale(0.8, qreal(0.8));
-    //setMinimumSize(400, 400);
-    //setWindowTitle(tr("Elastic Nodes"));
+    setCacheMode(CacheBackground);
+    setViewportUpdateMode(BoundingRectViewportUpdate);
+    setRenderHint(QPainter::Antialiasing);
+    setTransformationAnchor(AnchorUnderMouse);
+    scale(0.8, qreal(0.8));
+    setMinimumSize(400, 400);
+    setWindowTitle(tr("Elastic Nodes"));
 
 
     GraphicNode *node1 = new GraphicNode(this);
@@ -146,9 +146,8 @@ DataWidget* GraphWidget::makeDataWidget()
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
     GraphicNode *node = new GraphicNode(this);
-    QPoint eventPos = event->pos();
-    QPointF mappedEventPos = mapToScene(eventPos);
-    node->setPos(mappedEventPos);
+    QPointF eventPos = mapToScene(event->pos());
+    node->setPos(eventPos);
     scene()->addItem(node);
 }
 
