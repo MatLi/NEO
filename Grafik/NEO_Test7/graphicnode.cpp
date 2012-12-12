@@ -17,9 +17,13 @@
 #include "graphicedge.h"
 #include "graphicnode.h"
 #include "graphwidget.h"
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
 
 GraphicNode::GraphicNode(GraphWidget *graphWidget)
-    : graph(graphWidget)
+  : graph(graphWidget),
+    net_node(new Node)
 {
     setFlag(ItemIsMovable);
     //setFlag(ItemSendsGeometryChanges);

@@ -15,6 +15,9 @@
 #include <QList>
 #include <QString>
 
+#include "Network.h"
+#include "Node.h"
+#include "Edge.h"
 
 class GraphicEdge;
 class GraphWidget;
@@ -43,6 +46,9 @@ public:
     QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+
+    Node* net_node;
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);

@@ -12,6 +12,8 @@
 #include "datawidget.h"
 #include "graphicedge.h"
 #include "graphicnode.h"
+#include "mainwindow.h"
+
 
 #include <QtGui>
 #include <math.h>
@@ -71,6 +73,8 @@ void GraphWidget::addEdge(QString start, QString end)
 void GraphWidget::addGraphicNode(GraphicNode *new_node)
 {
     nodeList << new_node;
+    MainWindow* w = dynamic_cast<MainWindow*>(parent());
+    w->net->add_node(new_node->net_node);
 }
 
 void GraphWidget::changeTextItem(QString new_text)
