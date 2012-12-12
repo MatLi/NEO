@@ -49,25 +49,25 @@ QList<GraphicNode *> GraphWidget::return_nodeList()
 
 void GraphWidget::addEdge(QString start, QString end)
 {
-    GraphicNode *startn = new GraphicNode(this);;
-    GraphicNode *endn = new GraphicNode(this);;
-    for (int i=0;i<this->nodeList.size();i++)
+  GraphicNode *startn = nullptr;
+  GraphicNode *endn = nullptr;
+  for (int i=0;i<this->nodeList.size();i++)
     {
-        if(this->nodeList.at(i)->return_name()==start)
+      if(this->nodeList.at(i)->return_name()==start)
         {
-            startn=this->nodeList.at(i);
+	  startn=this->nodeList.at(i);
         }
     }
 
-    for (int j=0;j<this->nodeList.size();j++)
+  for (int j=0;j<this->nodeList.size();j++)
     {
-        if(this->nodeList.at(j)->return_name()==end)
+      if(this->nodeList.at(j)->return_name()==end)
         {
-            endn=this->nodeList.at(j);
+	  endn=this->nodeList.at(j);
         }
     }
 
-    scene()->addItem(new GraphicEdge(startn,endn));
+  scene()->addItem(new GraphicEdge(startn,endn,this));
 }
 
 void GraphWidget::addGraphicNode(GraphicNode *new_node)

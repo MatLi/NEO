@@ -16,13 +16,14 @@
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
+#include "graphwidget.h"
 
 class GraphicNode;
 
 class GraphicEdge : public QGraphicsItem
 {
 public:
-    GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode);
+  GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWidget *graphWidget);
 
     GraphicNode *sourceNode() const;
     GraphicNode *destNode() const;
@@ -40,6 +41,8 @@ protected:
 
 private:
     GraphicNode *source, *dest;
+
+    GraphWidget *graph;
 
     QPointF sourcePoint;
     QPointF destPoint;
