@@ -39,6 +39,15 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWi
     mw->net->add_edge(net_edge);
 }
 
+GraphicEdge::~GraphicEdge()
+{
+  MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
+  mw->net->remove_edge(net_edge);
+
+  //sourceNode->removeEdge(this);
+  //destNode->removeEdge(this);
+}
+
 void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     sourceNode()->setPos(100,100);

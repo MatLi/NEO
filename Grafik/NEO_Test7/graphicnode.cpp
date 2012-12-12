@@ -39,6 +39,11 @@ void GraphicNode::addEdge(GraphicEdge *edge)
     edge->adjust();
 }
 
+// void GraphicNode::removeEdge(GraphicEdge *edge)
+// {
+//   // edgeList >> edge;
+// }
+
 QString GraphicNode::return_name() const
 {
     return name;
@@ -134,3 +139,18 @@ void GraphicNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     update();
     QGraphicsItem::mouseReleaseEvent(event);
 }
+
+GraphicEdge* GraphicNode::getEdge(GraphicNode *end_node)
+{
+  GraphicEdge *edge;
+  for (int i=0; i < this->edgeList.size(); i++)
+    {
+      if(edgeList.at(i)->destNode() == end_node)
+	{
+	  edge = this->edgeList.at(i);
+	  return edge;
+	}
+    }
+}
+
+

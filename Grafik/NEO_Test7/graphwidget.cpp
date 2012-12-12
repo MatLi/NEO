@@ -14,7 +14,6 @@
 #include "graphicnode.h"
 #include "mainwindow.h"
 
-
 #include <QtGui>
 #include <math.h>
 
@@ -45,8 +44,34 @@ QList<GraphicNode *> GraphWidget::return_nodeList()
 }
 
 void GraphWidget::removeEdge(QString start, QString end)
-{
-    changeTextItem("Tar bort nod..");
+{ 
+  GraphicNode *startn = nullptr;
+  GraphicNode *endn = nullptr;
+  GraphicEdge *edge = nullptr;
+  QList<GraphicEdge *> edges_;
+
+  for (int i=0; i < this->nodeList.size(); i++)
+    {
+      if(this->nodeList.at(i)->return_name()==start)
+        {
+	  startn=this->nodeList.at(i);
+        }
+    }
+
+  for (int j=0;j<this->nodeList.size();j++)
+    {
+      if(this->nodeList.at(j)->return_name()==end)
+        {
+	  endn=this->nodeList.at(j);
+        }
+    }
+
+  edge = startn->getEdge(endn);
+
+  scene()->removeItem(edge);
+
+  delete edge;
+
 }
 
 void GraphWidget::addEdge(QString start, QString end)
@@ -78,6 +103,12 @@ void GraphWidget::addGraphicNode(GraphicNode *new_node)
     MainWindow* w = dynamic_cast<MainWindow*>(parent());
     w->net->add_node(new_node->net_node);
 }
+
+// void GraphWidget::removeGraphicNode(GraphicNode *rem_node)
+// {
+//   scene
+//   nodeList.removeOne(
+// }
 
 void GraphWidget::changeTextItem(QString new_text)
 {
