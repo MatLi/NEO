@@ -97,18 +97,36 @@ void GraphWidget::addEdge(QString start, QString end)
   scene()->addItem(new GraphicEdge(startn,endn,this));
 }
 
-void GraphWidget::addGraphicNode(GraphicNode *new_node)
+void GraphWidget::addNode(GraphicNode *new_node)
 {
     nodeList << new_node;
     MainWindow* w = dynamic_cast<MainWindow*>(parent());
     w->net->add_node(new_node->net_node);
 }
 
-// void GraphWidget::removeGraphicNode(GraphicNode *rem_node)
-// {
-//   scene
-//   nodeList.removeOne(
-// }
+void GraphWidget::removeNode(GraphicNode *rem_node)
+{
+  scene()->removeItem(rem_node);
+
+  QList<GraphicEdge *> edges_;
+  edges_ = rem_node->edges();
+
+  foreach (GraphicEdge *edge, edges_)
+    {
+      scene()->removeItem(edge);
+      delete edge;
+    }
+  delete rem_node;
+  
+}
+
+void GraphWidget::clear_network()
+{ 
+  foreach (GraphicNode *node, nodeList)
+    {
+      removeNode(node);
+    }
+}
 
 void GraphWidget::changeTextItem(QString new_text)
 {
@@ -132,17 +150,23 @@ void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
-{
-    QList<GraphicNode *> nodes;
-    foreach (QGraphicsItem *item, scene()->items()) {
-        if (GraphicNode *node = qgraphicsitem_cast<GraphicNode *>(item))
-            nodes << node;
-    }
-
-    switch (event->key()) {
-    default:
+{   
+    switch (event->key()) 
+      {
+      case Qt::Key_R:
+	{
+	  GraphicNode *rem_node = nodeList[0];
+	  removeNode(rem_node);
+	}
+	break;
+      case Qt::Key_C:
+	{
+	  clear_network();
+	}
+	break;
+      default:
         QGraphicsView::keyPressEvent(event);
-    }
+      }
 }
 
 void GraphWidget::timerEvent(QTimerEvent *event)
