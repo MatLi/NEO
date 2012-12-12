@@ -31,6 +31,8 @@ class GraphicNode : public QGraphicsItem
 public:
     GraphicNode(GraphWidget *graphWidget);
 
+    ~GraphicNode();
+
     void addEdge(GraphicEdge *edge);
     void removeEdge(GraphicEdge *edge);
     QList<GraphicEdge *> edges() const;

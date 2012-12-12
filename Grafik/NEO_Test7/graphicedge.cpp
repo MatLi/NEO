@@ -29,14 +29,14 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode, GraphWi
     net_edge(new Edge(sourceNode->net_node, destNode->net_node)),
     graph(graphWidget)
 {
-  //  setAcceptedMouseButtons(1);
-    source = sourceNode;
-    dest = destNode;
-    source->addEdge(this);
-    dest->addEdge(this);
-    adjust();
-    MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
-    mw->net->add_edge(net_edge);
+  setAcceptedMouseButtons(0);
+  source = sourceNode;
+  dest = destNode;
+  source->addEdge(this);
+  dest->addEdge(this);
+  adjust();
+  MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
+  mw->net->add_edge(net_edge);
 }
 
 GraphicEdge::~GraphicEdge()
@@ -48,10 +48,10 @@ GraphicEdge::~GraphicEdge()
   destNode()->removeEdge(this);
 }
 
-void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    sourceNode()->setPos(100,100);
-}
+// void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+// {
+//     sourceNode()->setPos(100,100);
+// }
 
 GraphicNode *GraphicEdge::sourceNode() const
 {

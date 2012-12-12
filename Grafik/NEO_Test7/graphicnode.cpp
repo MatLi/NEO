@@ -17,6 +17,7 @@
 #include "graphicedge.h"
 #include "graphicnode.h"
 #include "graphwidget.h"
+#include "mainwindow.h"
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
@@ -32,7 +33,13 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
     name.setNum(graph->return_nodeList().size());
-    graph->addGraphicNode(this);
+    graph->addNode(this);
+}
+
+GraphicNode::~GraphicNode()
+{
+  MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
+  mw->net->remove_node(net_node);
 }
 
 void GraphicNode::addEdge(GraphicEdge *edge)
