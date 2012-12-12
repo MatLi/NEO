@@ -11,14 +11,23 @@ class CheapestPathDialog : public QDialog
     Q_OBJECT
     
 public:
-  CheapestPathDialog(QString &start_node, QString &end_node, QWidget *parent = 0);
+  CheapestPathDialog(QWidget *parent = 0);
   ~CheapestPathDialog() = default;
 
 public slots:
 
 private slots:
-
+  void run();
 private:
+  QLabel *labelStartNode;
+  QLabel *labelEndNode;
+  QLineEdit *leStartNode;
+  QLineEdit *leEndNode;
+  QDialogButtonBox *buttonBox;
+  QGridLayout *ctDialogLayout;
+  QErrorMessage *errorMessageDialog;
+  QString start;
+  QString end;
 };
 
 #endif // MAINWINDOW_H

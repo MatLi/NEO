@@ -9,6 +9,8 @@
 #include "Network.h"
 #include "Node.h"
 #include "Edge.h"
+#include <typeinfo>
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -60,13 +62,13 @@ MainWindow::setupMenuBar()
   QAction *max_cost_flow = new QAction("Max cost flow",qsolve);
   QAction *max_flow = new QAction("Max flow",qsolve);
   QAction *cheapest_tree = new QAction("Cheapest tree", qsolve);
-  QAction *shortest_path = new QAction("Shortest path...",qsolve);
+  QAction *cheapest_path = new QAction("Cheapest path...",qsolve);
 
   solve->addAction(min_cost_flow);
   solve->addAction(max_cost_flow);
   solve->addAction(max_flow);
   solve->addAction(cheapest_tree);
-  solve->addAction(shortest_path);
+  solve->addAction(cheapest_path);
 
   QMenu *help = new QMenu("Help", qwmb);
   menubar->addMenu(file);
@@ -79,7 +81,9 @@ MainWindow::setupMenuBar()
   connect(save_proj, SIGNAL(triggered()), this, SLOT(saveProj()));
   connect(min_cost_flow, SIGNAL(triggered()), this, SLOT(min_cost_flow()));
   connect(max_cost_flow, SIGNAL(triggered()), this, SLOT(max_cost_flow()));
-
+  connect(max_flow,SIGNAL(triggered()), this, SLOT(max_flow()));
+  connect(cheapest_tree, SIGNAL(triggered()), this, SLOT(cheapest_tree()));
+  connect(cheapest_path, SIGNAL(triggered()), this, SLOT(cheapest_path()));
   return;
 }
 
@@ -183,42 +187,8 @@ MainWindow::cheapest_tree()
 void
 MainWindow::cheapest_path()
 {
-  QString start;
-  QString end;
-  CheapestPathDialog *dialog = new CheapestPathDialog(start,end,this);
-  GraphicNode *startn = nullptr;
-  GraphicNode *endn = nullptr;
-  GraphWidget* graph = dynamic_cast<GraphWidget*>(centralWidget());
-  QList<GraphicNode*> nodeList = graph->return_nodeList();
-  for (int i=0; i < nodeList.size(); i++)
-    {
-      if(nodeList.at(i)->return_name()==start)
-        {
-	  startn = nodeList.at(i);
-        }
-    }
-
-  for (int j=0; j < nodeList.size(); j++)
-    {
-      if(nodeList.at(j)->return_name()==end)
-        {
-	  endn=nodeList.at(j);
-        }
-    }
-	 dialog->show();
-
-  try
-    {
-      net->cheapest_path(startn->net_node,endn->net_node);
-    }
-  catch (network_error &e)
-    {
-      QString msg = tr("Error calculating cheapest tree\n%1")
-	.arg(e.what());
-      QMessageBox::warning(this, tr("Error"), msg);
-      return;
-    }
-  // Visa någon dialogruta med lösningen.
+  CheapestPathDialog *dialog = new CheapestPathDialog(this);
+  dialog->exec();
 }
 /*void MainWindow::paintEvent(QPaintEvent *event)
 {
