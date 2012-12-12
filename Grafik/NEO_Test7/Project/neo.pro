@@ -3,8 +3,9 @@ HEADERS += \
     ../graphwidget.h \
     ../graphicnode.h \
     ../graphicedge.h \
-    ../datawidget.h \
     ../neopushbutton.h \
+    ../datadock.h \
+    ../addedgedock.h \
     ../../Edge/Edge.h \
     ../../Node/Node.h \
     ../../Node/Position.h \
@@ -14,10 +15,11 @@ HEADERS += \
 SOURCES += \
     ../mainwindow.cpp \
     ../main.cpp \
+    ../datadock.cpp \
+    ../addedgedock.cpp \
     ../graphwidget.cpp \
     ../graphicnode.cpp \
     ../graphicedge.cpp \
-    ../datawidget.cpp \
     ../neopushbutton.cpp \
     ../../Edge/Edge.cc \
     ../../Node/Node.cc \
