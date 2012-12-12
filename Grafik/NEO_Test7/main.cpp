@@ -10,13 +10,11 @@ int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
 
-    GraphWidget *widget = new GraphWidget;
-    //DataWidget *dwidget = new DataWidget;
-
     MainWindow w;//mainWindow;
-    w.setCentralWidget(widget);
+    QWidget* qww = dynamic_cast<QWidget*>(&w);
+    GraphWidget *widget = new GraphWidget(qww);
 
-    //dwidget->show();
+    w.setCentralWidget(widget);
 
     w.show();
 
