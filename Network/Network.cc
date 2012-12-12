@@ -779,6 +779,16 @@ Network::max_flow()
 
   for (auto it : added_edges)
     {
+      if ((*it).flow() > 0 &&
+	  (*it).from_node() == super_source)
+	{
+	  (*it).to_node()->change_flow(-(*it).flow());
+	}
+      else if ((*it).flow() > 0 &&
+	       (*it).to_node() == super_sink)
+	{
+	  (*it).from_node()->change_flow((*it).flow());
+	}
       remove_edge(&(*it));
     }
   added_edges.clear();
