@@ -12,6 +12,7 @@
 
 #include "graphicedge.h"
 #include "graphicnode.h"
+#include <QGraphicsSceneMouseEvent>
 
 #include <math.h>
 
@@ -21,7 +22,7 @@ static double TwoPi = 2.0 * Pi;
 GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode)
     : arrowSize(10)
 {
-    setAcceptedMouseButtons(0);
+  //  setAcceptedMouseButtons(1);
     source = sourceNode;
     dest = destNode;
     source->addEdge(this);
@@ -29,6 +30,10 @@ GraphicEdge::GraphicEdge(GraphicNode *sourceNode, GraphicNode *destNode)
     adjust();
 }
 
+void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    sourceNode()->setPos(100,100);
+}
 
 GraphicNode *GraphicEdge::sourceNode() const
 {

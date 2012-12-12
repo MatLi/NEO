@@ -63,16 +63,6 @@ bool GraphicNode::advance()
     return true;
 }
 
-void GraphicNode::MovabilityF()
-{
-    setFlag(ItemIsMovable, false);
-}
-
-void GraphicNode::MovabilityT()
-{
-    setFlag(ItemIsMovable, true);
-}
-
 QRectF GraphicNode::boundingRect() const
 {
     qreal adjust = 2;

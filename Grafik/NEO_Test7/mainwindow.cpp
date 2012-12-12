@@ -2,12 +2,26 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "datadock.h"
+#include "addedgedock.h"
+#include <QDockWidget>
+#include <QDialog>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    setWindowTitle("NEO - Elegant Optimization");
+
+    dock = new DataDock(this);
+    addDockWidget(Qt::RightDockWidgetArea, dock);
+
+    dock2 = new AddEdgeDock(this);
+    addDockWidget(Qt::LeftDockWidgetArea,dock2);
+
 }
 
 MainWindow::~MainWindow()
@@ -15,21 +29,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*void MainWindow::paintEvent(QPaintEvent *event)
+AddEdgeDock* MainWindow::return_AddEdgeDock()
 {
-    QPainter painter(this);
+    return dock2;
+}
 
-    painter.drawEllipse(100, 100, 10, 10);
-
-}*/
-
-/*void MainWindow::on_pushButton_clicked()
+DataDock* MainWindow::return_DataDock()
 {
-    ui->label->setText("Hej hopp");
-
-}*/
-
-/*void MainWindow::on_actionOpen_activated()
-{
-    ui->setupUi(this);
-}*/
+    return dock;
+}

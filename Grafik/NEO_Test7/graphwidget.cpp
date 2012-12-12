@@ -86,9 +86,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     myTextItem->setPos(100,100);
 
     scene->addItem(myTextItem);
-
-    DataWidget *dwidget = new DataWidget(this);
-    widget_one = dwidget;
 }
 
 QList<GraphicNode *> GraphWidget::return_nodeList()
@@ -127,7 +124,7 @@ void GraphWidget::addGraphicNode(GraphicNode *new_node)
 void GraphWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
-    widget_one->changeTextItem(new_text);
+   // widget_one->changeTextItem(new_text);
 }
 
 void GraphWidget::itemMoved()
@@ -170,13 +167,11 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_E:
         foreach (GraphicNode *node, nodes)
         {
-	  node->MovabilityF();
         }
         break;
     case Qt::Key_N:
         foreach (GraphicNode *node, nodes)
         {
-            node->MovabilityT();
         }
         break;
     default:

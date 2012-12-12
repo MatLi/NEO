@@ -42,7 +42,6 @@ protected:
 private:
     int timerId;
     GraphicNode *centerNode;
-    //GraphicNode *node10;
     QGraphicsSimpleTextItem *myTextItem;
 
     //Lista med alla noder i interfacet
