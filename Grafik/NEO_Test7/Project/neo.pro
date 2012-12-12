@@ -10,7 +10,6 @@ HEADERS += \
     ../solution_dialog.h \
     ../../Edge/Edge.h \
     ../../Node/Node.h \
-    ../../Node/Position.h \
     ../../Set/Set.h \
     ../../Network/Network.h 
 
@@ -27,7 +26,6 @@ SOURCES += \
     ../solution_dialog.cpp \
     ../../Edge/Edge.cc \
     ../../Node/Node.cc \
-    ../../Node/Position.cc \
     ../../Network/Network.cc 
 
 FORMS += \
