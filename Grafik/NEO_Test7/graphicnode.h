@@ -14,6 +14,7 @@
 #include <QGraphicsItem>
 #include <QList>
 #include <QString>
+#include "graphicedge.h"
 
 #include "Network.h"
 #include "Node.h"

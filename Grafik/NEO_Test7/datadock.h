@@ -19,15 +19,30 @@ public:
     void editnodeFlow(QString);
     void editnodePrice(QString);
 
+    void editedgeCost(QString);
+    void editedgeminFlow(QString);
+    void editedgemaxFlow(QString);
+    void editedgeFlow(QString);
+    void editedgeReducedCost(QString); //Klar
+
     double nodeFlow();
     std::string nodeName();
+
+    double edgeCost(); // Klar
+    double edgeminFlow();
+    double edgemaxFlow();
+
     void change_currentnode(GraphicNode*);
+    void change_currentedge(GraphicEdge*);
+
     GraphicNode* return_current_node();
+    GraphicEdge* return_current_edge();//
 
 private:
-    QLineEdit *nodeName_, *nodeFlow_, *nodePrice_;
-    QPushButton *change_node_info_;
+    QLineEdit *nodeName_, *nodeFlow_, *nodePrice_, *edgeCost_, *edgeReducedCost_, *edgeFlow_, *maxFlow_, *minFlow_;
+    QPushButton *change_node_info_, *change_edge_info;
     GraphicNode *current_node;
+    GraphicEdge *current_edge;
     //Lista med alla noder i interfacet
     //QList<GraphicNode *> nodeList;
     

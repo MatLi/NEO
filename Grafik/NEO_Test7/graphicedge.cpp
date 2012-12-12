@@ -48,10 +48,28 @@ GraphicEdge::~GraphicEdge()
   destNode()->removeEdge(this);
 }
 
-// void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
-// {
-//     sourceNode()->setPos(100,100);
-// }
+void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+  update();
+
+  QString edge_flow_, edge_cost, edge_reducedCost, min_flow,max_flow;
+  
+  MainWindow *mwindow = dynamic_cast<MainWindow*>(graph->parent());
+  DataDock *ddock = dynamic_cast<DataDock*>(mwindow->return_DataDock());
+  
+  ddock->change_currentedge(this);
+  edge_flow_.setNum(net_edge->flow());
+  edge_cost.setNum(net_edge->cost());
+  edge_reducedCost.setNum(net_edge->reduced_cost());
+  max_flow.setNum(net_edge->maxflow());
+  min_flow.setNum(net_edge->minflow());
+  
+  ddock->editedgeCost(edge_cost);
+  ddock->editedgeminFlow(min_flow);
+  ddock->editedgemaxFlow(max_flow);
+  ddock->editedgeReducedCost(edge_reducedCost);
+  ddock->editedgeFlow(edge_flow_);
+}
 
 GraphicNode *GraphicEdge::sourceNode() const
 {
