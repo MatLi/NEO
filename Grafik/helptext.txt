@@ -1,5 +1,10 @@
 Welcome to NEO: Elegant Optimizer!
 
+Installation instructions
+=========================
+1) Expand source archive in a directory.
+2) 
+
 To create a Network start by adding nodes and edges.
 
 Add Nodes:
