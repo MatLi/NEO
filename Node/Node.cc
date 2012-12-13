@@ -140,10 +140,10 @@ Node::add_in_edge(Edge* new_in_edge)
 }
 
 void
-Node::remove_in_edge(Edge* old_in_edge)
+Node::remove_in_edge(Edge* in_edge)
 {
-  in_edges_.remove_member(old_in_edge);
-  all_edges_.remove_member(old_in_edge);
+  in_edges_.remove_member(in_edge);
+  all_edges_.remove_member(in_edge);
   return;
 }
 
@@ -156,10 +156,10 @@ Node::add_out_edge(Edge* new_out_edge)
 }
 
 void
-Node::remove_out_edge(Edge* old_out_edge)
+Node::remove_out_edge(Edge* out_edge)
 {
-  out_edges_.remove_member(old_out_edge);
-  all_edges_.add_member(old_out_edge);
+  out_edges_.remove_member(out_edge);
+  all_edges_.add_member(out_edge);
   return;
 }
 
