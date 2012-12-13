@@ -1,12 +1,12 @@
 /*
  * FILNAMN:          graphicedge.h
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda och Emil
+ * PROGRAMMERARE:    Mari, Linda, Li och Emil
  *
  * DATUM:            2012-12-11
  *
  * BESKRIVNING:
- * GraphicEdge är den grafiska representationen av Edge.
+ * GraphicEdge is the graphical representation of Edge.
 */
 #ifndef EDGE_H
 #define EDGE_H

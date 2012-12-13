@@ -1,12 +1,12 @@
 /*
  * FILNAMN:          graphicedge.cpp
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda och Emil
+ * PROGRAMMERARE:    Mari, Linda, Li och Emil
  *
  * DATUM:            2012-12-11
  *
  * BESKRIVNING:
- * GraphicEdge är den grafiska representationen av Edge.
+ * GraphicEdge is the graphical representation of Edge.
 */
 #include <QPainter>
 
@@ -80,7 +80,6 @@ GraphicNode *GraphicEdge::destNode() const
 {
     return dest;
 }
-
 
 void GraphicEdge::adjust()
 {
