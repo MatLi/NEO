@@ -1,3 +1,14 @@
+/* 
+ * FILENAME:      cheapest_path_dialog.h
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   David
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Dialog window that appears when solving cheapest path problems.
+ */
+
 #ifndef C_P_DIALOG_H
 #define C_P_DIALOG_H
 
