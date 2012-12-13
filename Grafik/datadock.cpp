@@ -1,3 +1,15 @@
+/* 
+ * FILENAME:      datadock.cpp
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Emil
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Dock window to the right. Information about nodes and edges is given
+ * to user. 
+ */
+
 #include "datadock.h"
 #include <QtGui>
 #include <QDialog>
@@ -6,9 +18,6 @@
 DataDock::DataDock(QWidget *parent) :
     QDockWidget(parent)
 {
-
-
-
     QWidget *wi = new QWidget;
 
     QGridLayout *layout = new QGridLayout();
@@ -41,7 +50,6 @@ DataDock::DataDock(QWidget *parent) :
     edgeFlow_->setReadOnly(true);
     edgechange->setText("Change edge data");
 
-
     layout->addWidget(nodeName_,0,1);
     layout->addWidget(nodeFlow_,1,1);
     layout->addWidget(nodePrice_,2,1);
@@ -65,7 +73,6 @@ DataDock::DataDock(QWidget *parent) :
                                 Qt::RightDockWidgetArea);
 
     setWindowTitle("Nod-/Bågdata");
-
 
     wi->setLayout(layout);
     setWidget(wi);
