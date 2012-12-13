@@ -1,3 +1,10 @@
+QMAKE_LFLAGS += -L/sw/gcc-$(GCC4_V)/lib -static-libstdc++
+QMAKE_INCDIR += ../../Node \ 
+  ../../Edge \
+  ../../Set \
+  ../../Network
+QMAKE_CXXFLAGS += -std=c++11 -Wextra -pedantic
+
 HEADERS += \
     ../mainwindow.h \
     ../graphwidget.h \
@@ -10,7 +17,6 @@ HEADERS += \
     ../solution_dialog.h \
     ../../Edge/Edge.h \
     ../../Node/Node.h \
-    ../../Node/Position.h \
     ../../Set/Set.h \
     ../../Network/Network.h 
 
@@ -27,7 +33,6 @@ SOURCES += \
     ../solution_dialog.cpp \
     ../../Edge/Edge.cc \
     ../../Node/Node.cc \
-    ../../Node/Position.cc \
     ../../Network/Network.cc 
 
 FORMS += \

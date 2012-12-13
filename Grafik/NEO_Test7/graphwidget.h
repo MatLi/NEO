@@ -24,7 +24,7 @@ public:
     void itemMoved();
     QList<GraphicNode *> return_nodeList();
     void addNode(GraphicNode *new_node);
-    void removeNode(GraphicNode *rem_node);
+    void removeNode(QString);
     void changeTextItem(QString new_text);
     void addEdge(QString start, QString end);
     void removeEdge(QString start, QString end);
