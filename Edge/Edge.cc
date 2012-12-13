@@ -78,30 +78,30 @@ Edge::minflow() const
 }
 
 void 
-Edge::change_reduced_cost(double new_reduced_cost_)
+Edge::change_reduced_cost(double new_reduced_cost)
 {
-  reduced_cost_ = new_reduced_cost_;
+  reduced_cost_ = new_reduced_cost;
   return;
 }
 
 void 
-Edge::change_cost(double new_cost_)
+Edge::change_cost(double new_cost)
 {
-  cost_ = new_cost_;
+  cost_ = new_cost;
   return;
 }
 
 void 
-Edge::change_maxflow(double new_maxflow_)
+Edge::change_maxflow(double new_maxflow)
 {
-  maxflow_ = new_maxflow_;
+  maxflow_ = new_maxflow;
   return;
 }
 
 void 
-Edge::change_minflow(double new_minflow_)
+Edge::change_minflow(double new_minflow)
 {
-  minflow_ = new_minflow_;
+  minflow_ = new_minflow;
   return;
 }
 
@@ -124,9 +124,9 @@ Edge::change_to(Node* new_to)
 }
 
 void 
-Edge::change_flow(double new_flow_)
+Edge::change_flow(double new_flow)
 {
-  flow_ = new_flow_;
+  flow_ = new_flow;
   return;
 }
 

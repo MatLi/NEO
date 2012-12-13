@@ -8,7 +8,7 @@
  * DESCRIPTION:
  * Network represents a network of nodes and edges.
  * The solution to a problem will be a Network. 
-*/
+ */
 
 #ifndef NETWORK_HH
 #define NETWORK_HH
