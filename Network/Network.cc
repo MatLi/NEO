@@ -594,7 +594,6 @@ Network::min_cost_flow_phase2(Set<Edge*> base_edges,
       throw network_error("A fatal error has occurred: cannot find cycle.");
     }
   
-  // Bestäm utgående båge och största tillåtna flödesändring.
   // Determines exiting edge and greatest allowed change in flow.
   Edge* outgoing_edge = nullptr; // Determined below.
   double theta = find_flow_change_outgoing_edge(cycle,
