@@ -1,4 +1,14 @@
-//Mari
+/*
+ * FILNAMN:          graphwidget.h
+ * PROJEKT:          NEO
+ * PROGRAMMERARE:    Mari, Linda, Li och Emil
+ *
+ * DATUM:            2012-12-11
+ *
+ * BESKRIVNING:
+ * GraphicWidget is the main widget in MainWindow that includes edges and nodes.
+ * It handles everything that happens in the window.
+*/
 
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
@@ -29,12 +39,6 @@ public:
     void addEdge(QString start, QString end);
     void removeEdge(QString start, QString end);
     void clear_network();
-    //void newNode(Node *node);
-
-public slots:
-   // void shuffle();
-    //void zoomIn();
-  //  void zoomOut();
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -43,16 +47,13 @@ protected:
     //void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
 
-    //void scaleView(qreal scaleFactor);
-
 private:
     int timerId;
     GraphicNode *centerNode;
     QGraphicsSimpleTextItem *myTextItem;
 
-    //Lista med alla noder i interfacet
+    //List holding all the nodes in the interface
     QList<GraphicNode *> nodeList;
 };
-//! [0]
 
 #endif //GRAPHWIDGET_H
