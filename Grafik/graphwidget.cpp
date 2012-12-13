@@ -1,12 +1,13 @@
 /*
  * FILNAMN:          graphwidget.cpp
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda och Emil
+ * PROGRAMMERARE:    Mari, Linda, Li och Emil
  *
  * DATUM:            2012-12-11
  *
  * BESKRIVNING:
- * GraphicWidget är rutan i MainWindow som innehåller noder och bågar och hanterar alla händelser.
+ * GraphicWidget is the main widget in MainWindow that includes edges and nodes.
+ * It handles everything that happens in the window.
 */
 #include "graphwidget.h"
 #include "datadock.h"
@@ -30,9 +31,9 @@ GraphWidget::GraphWidget(QWidget *parent)
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
 
-    QString textruta="";
+    QString textbox="";
     myTextItem = new QGraphicsSimpleTextItem();
-    myTextItem->setText(textruta);
+    myTextItem->setText(textbox);
     myTextItem->setPos(100,100);
 
     scene->addItem(myTextItem);
@@ -71,7 +72,6 @@ void GraphWidget::removeEdge(QString start, QString end)
   scene()->removeItem(edge);
 
   delete edge;
-
 }
 
 void GraphWidget::addEdge(QString start, QString end)
@@ -142,7 +142,6 @@ void GraphWidget::clear_network()
 void GraphWidget::changeTextItem(QString new_text)
 {
     myTextItem->setText(new_text);
-   // widget_one->changeTextItem(new_text);
 }
 
 void GraphWidget::itemMoved()
@@ -150,7 +149,6 @@ void GraphWidget::itemMoved()
     if (!timerId)
         timerId = startTimer(1000/25);
 }
-
 
 void GraphWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
