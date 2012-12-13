@@ -1,4 +1,13 @@
-//Mari
+/* 
+ * FILENAME:      mainwindow.cpp
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Mari, Linda, Li, David och Emil
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Code for the mainwindow menubar.
+ */
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -96,7 +105,6 @@ MainWindow::setupMenuBar()
   connect(cheapest_path, SIGNAL(triggered()), this, SLOT(cheapest_path()));
   return;
 }
-
 
 MainWindow::~MainWindow()
 {

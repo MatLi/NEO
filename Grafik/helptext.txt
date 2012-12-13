@@ -1,10 +1,5 @@
 Welcome to NEO: Elegant Optimizer!
 
-Installation instructions
-=========================
-1) Expand source archive in a directory.
-2) 
-
 To create a Network start by adding nodes and edges.
 
 Add Nodes:
@@ -13,7 +8,7 @@ To change node data leftclick once at the node you want to edit and enter new da
 to the right of the main window. 
 
 Add Edges:
-Use the right window to add edges. Enter the name of the startnode and the endnode of the edge and 
+Use the left dock window to add edges. Enter the name of the startnode and the endnode of the edge and 
 press the button "Add Edge". Your edge will appear as an arrow between the nodes, the arrowhead 
 showing the direction. To change edge data leftclick once at the edge you want to edit and enter 
 new data in the table to the left. 
@@ -34,8 +29,8 @@ Save:
 To save your current set-up use the menu on the top. Choose "save model" under "File".
 If you want to save the graphical set-up choose "export graph to svg" under "File". 
 
-Load:
+Load: (command-to-bo-created)
 To load a saved model choose "open model.." in the menu under "File". 
 
-Help:
+Help: (command-to-be-created)
 To display this help-text, choose "Help" in the menu at the top. 
