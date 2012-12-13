@@ -1,3 +1,15 @@
+/* 
+ * FILENAME:      datadock.h
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Emil
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Dock window to the right. Information about nodes and edges is given
+ * to user. 
+ */
+
 #ifndef DATADOCK_H
 #define DATADOCK_H
 
@@ -23,12 +35,12 @@ public:
     void editedgeminFlow(QString);
     void editedgemaxFlow(QString);
     void editedgeFlow(QString);
-    void editedgeReducedCost(QString); //Klar
+    void editedgeReducedCost(QString); 
 
     double nodeFlow();
     std::string nodeName();
 
-    double edgeCost(); // Klar
+    double edgeCost(); 
     double edgeminFlow();
     double edgemaxFlow();
 
@@ -36,16 +48,13 @@ public:
     void change_currentedge(GraphicEdge*);
 
     GraphicNode* return_current_node();
-    GraphicEdge* return_current_edge();//
+    GraphicEdge* return_current_edge();
 
 private:
     QLineEdit *nodeName_, *nodeFlow_, *nodePrice_, *edgeCost_, *edgeReducedCost_, *edgeFlow_, *maxFlow_, *minFlow_;
     QPushButton *change_node_info_, *change_edge_info;
     GraphicNode *current_node;
-    GraphicEdge *current_edge;
-    //Lista med alla noder i interfacet
-    //QList<GraphicNode *> nodeList;
-    
+    GraphicEdge *current_edge;  
     
 };
 
