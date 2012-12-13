@@ -1,41 +1,54 @@
 Welcome to NEO: Elegant Optimizer!
 
+Requirements
+============
+Only tested with Qt 4.4.3
+
 Installation instructions
 =========================
 1) Expand source archive in a directory.
-2) 
+2) Change into the head directory.
+3) cd Grafik
+4) qmake Project/neo.pro
+5) make
+6) Have some coffee while waiting...
+To run:
+7) ./neo &
+
+Broken parts:
+Do not detach the docked widgets with node and edge data or add/remove edge and remove node.
 
 To create a Network start by adding nodes and edges.
 
 Add Nodes:
-Dubbel leftclick on the screen where you want your node to appear. 
-To change node data leftclick once at the node you want to edit and enter new data in the table 
-to the right of the main window. 
+Double leftclick on the screen where you want your node to appear. To change node data leftclick once at the node you want to edit and enter new data in the table to the right of the main window. 
 
 Add Edges:
-Use the right window to add edges. Enter the name of the startnode and the endnode of the edge and 
-press the button "Add Edge". Your edge will appear as an arrow between the nodes, the arrowhead 
-showing the direction. To change edge data leftclick once at the edge you want to edit and enter 
-new data in the table to the left. 
+Use the right window to add edges. Enter the name of the startnode and the endnode of the edge and press the button "Add Edge". Your edge will appear as an arrow between the nodes, the arrowhead showing the direction. To change edge data leftclick once at the edge you want to edit and enter new data in the table to the left. 
 
 Move:
 You can move nodes simply by clicking on them and dragging to the position where you want them to be. 
 
 Remove:
-To remove an edge enter the node names of the nodes between which the edge is placed in the table
-to the left and press the button "Remove Edge". To remove a node enter its name in the table to 
-the left and press the button "Remove Node". To delete the entire netowrk, press "C" on the keybord.
+To remove an edge enter the node names of the nodes between which the edge is placed in the table to the left and press the button "Remove Edge". To remove a node enter its name in the table to the left and press the button "Remove Node". To delete the entire netowrk, press "C" on the keybord.
 
-Solve:
-To solve an optimization problem of the network you created use the menu on the top. Choose which
-type of problem you want to solve in the list under "Solve". 
+(Solve:
+To solve an optimization problem of the network you created use the menu Solve on the top. Currently not functional. See further down for a test of the optimization engine.)
 
 Save:
-To save your current set-up use the menu on the top. Choose "save model" under "File".
-If you want to save the graphical set-up choose "export graph to svg" under "File". 
+To save your current set-up use the menu on the top. Choose File->Save model.
 
-Load:
-To load a saved model choose "open model.." in the menu under "File". 
+Testing the optimization engine
+===============================
 
-Help:
-To display this help-text, choose "Help" in the menu at the top. 
+If you want to test the optimization engine, do the installation instructions above first. Then follow these instructions
+
+1) cd ../test/
+2) make
+3) ./ne_test
+
+which will give you a few example files to work around with. The syntax for solving a problem is then:
+
+4) ./ne_test <filename> <solver>
+
+where <solver> = cheapest_tree | min_cost_flow | max_cost_flow | max_flow.

@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
   // Testar Network
 
@@ -86,14 +86,14 @@ int main()
   // for (auto it : net.edge_set())
   //   {
   //     if ((*it).flow() == 1)
-  // 	{
-  // 	  cout << (*it).from_node()->name() << "->"
-  // 	       << (*it).to_node()->name() << endl;
-  // 	}
-  //   }
+  // // 	{
+  // // 	  cout << (*it).from_node()->name() << "->"
+  // // 	       << (*it).to_node()->name() << endl;
+  // // 	}
+  // //   }
 
-  //  net.fwrite("testfil.txt");
-  //  net.fopen("testfil.txt");
+  // //  net.fwrite("testfil.txt");
+  // //  net.fopen("testfil.txt");
   Network net2;
   Node* W = new Node();
   Node* N = new Node();
@@ -118,18 +118,7 @@ int main()
   WS->change_cost(1);
   SE->change_cost(2);
   
-  cout << "W: " << W << endl;
-  cout << "N: " << N << endl;
-  cout << "S: " << S << endl;
-  cout << "E: " << E << endl;
-  net2.min_cost_flow();
-  cout << net2.flowcost() << endl;
-  cout << "Flow: " << endl;
-  cout << "WN: " << WN->flow() << endl;
-  cout << "NE: " << NE->flow() << endl;
-  cout << "WS: " << WS->flow() << endl;
-  cout << "SE: " << SE->flow() << endl;
-  cout << "Edge set size: " << net2.edge_set().size() << endl;
+  net2.fwrite("min_cost_flow_problem1.xml");
 
   Network net3;
   Node* no1 = new Node("1");
@@ -199,18 +188,7 @@ int main()
   net3.add_edge(e46);
   net3.add_edge(e56);
 
-  cout << "Solving net3 mincostflow..." << endl;
-  net3.min_cost_flow();
-  cout << "Minimum cost: " << net3.flowcost() << endl;
-  cout << "Edge set size: " << net3.edge_set().size() << endl;
-
-  cout << "Edge (flow, cost):" << endl;
-  for (auto it : net3.edge_set())
-    {
-      cout << (*it).from_node()->name() << "->"
-	   << (*it).to_node()->name() << " ("
-	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
-    }
+  net3.fwrite("min_cost_flow_problem2.xml");
 
   Network net4;
   Node* NS = new Node("Siljeåsen");
@@ -288,45 +266,46 @@ int main()
   EMN->change_maxflow(1800);
   EMT->change_cost(9);
   EMT->change_maxflow(1800);
+  net4.fwrite("min_cost_flow_problem3.xml");
 
-  cout << "Solving net4 mincostflow..." << endl;
-  net4.min_cost_flow();
-  cout << "Minimum cost: " << net4.flowcost() << endl;
-  cout << "Edge set size: " << net4.edge_set().size() << endl;
+  // cout << "Solving net4 mincostflow..." << endl;
+  // net4.min_cost_flow();
+  // cout << "Minimum cost: " << net4.flowcost() << endl;
+  // cout << "Edge set size: " << net4.edge_set().size() << endl;
 
-  cout << "Edge (flow, cost):" << endl;
-  for (auto it : net4.edge_set())
-    {
-      cout << (*it).from_node()->name() << "->"
-	   << (*it).to_node()->name() << " ("
-	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
-    }
-  cout << "Solving net4 cheapest_path from " << NN->name() << " to "
-       << NT->name() << "." << endl;
-  net4.reset_network();
-  net4.cheapest_path(NN,NT);
-  cout << "Edges in cheapest path: " << endl;
-  for (auto it : net4.edge_set())
-    {
-      if ((*it).flow() > 0)
-	{
-	  cout << (*it).from_node()->name() << "->"
-	       << (*it).to_node()->name() << endl;
-	}
-    }
-  cout << "Solving net4 maxcostflow..." << endl;
-  net4.reset_network();
-  net4.max_cost_flow();
-  cout << "Maximum cost: " << net4.flowcost() << endl;
-  cout << "Edge set size: " << net4.edge_set().size() << endl;
+  // cout << "Edge (flow, cost):" << endl;
+  // for (auto it : net4.edge_set())
+  //   {
+  //     cout << (*it).from_node()->name() << "->"
+  // 	   << (*it).to_node()->name() << " ("
+  // 	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
+  //   }
+  // cout << "Solving net4 cheapest_path from " << NN->name() << " to "
+  //      << NT->name() << "." << endl;
+  // net4.reset_network();
+  // net4.cheapest_path(NN,NT);
+  // cout << "Edges in cheapest path: " << endl;
+  // for (auto it : net4.edge_set())
+  //   {
+  //     if ((*it).flow() > 0)
+  // 	{
+  // 	  cout << (*it).from_node()->name() << "->"
+  // 	       << (*it).to_node()->name() << endl;
+  // 	}
+  //   }
+  // cout << "Solving net4 maxcostflow..." << endl;
+  // net4.reset_network();
+  // net4.max_cost_flow();
+  // cout << "Maximum cost: " << net4.flowcost() << endl;
+  // cout << "Edge set size: " << net4.edge_set().size() << endl;
 
-  cout << "Edge (flow, cost):" << endl;
-  for (auto it : net4.edge_set())
-    {
-      cout << (*it).from_node()->name() << "->"
-	   << (*it).to_node()->name() << " ("
-	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
-    }
+  // cout << "Edge (flow, cost):" << endl;
+  // for (auto it : net4.edge_set())
+  //   {
+  //     cout << (*it).from_node()->name() << "->"
+  // 	   << (*it).to_node()->name() << " ("
+  // 	   << (*it).flow() << ", " << (*it).cost() << ")" << endl;
+  //   }
 
   Network net5;
   Node* Ns = new Node("s");
@@ -405,18 +384,55 @@ int main()
   E74->change_maxflow(3);
   E76->change_maxflow(3);
   E7t->change_maxflow(1);
-  net5.max_flow();
 
-  for (auto it : net5.node_set())
+  net5.fwrite("max_flow_problem.xml");
+  // net5.max_flow();
+
+  // for (auto it : net5.node_set())
+  //   {
+  //     cout << (*it).name() << ": "
+  // 	   << (*it).flow() << endl;
+  //   }
+  // for (auto it : net5.edge_set())
+  //   {
+  //     cout << (*it).from_node()->name() << "->"
+  // 	   << (*it).to_node()->name() << ": "
+  // 	   << (*it).flow() << endl;
+  //   }
+
+  if (argc < 3)
     {
-      cout << (*it).name() << ": "
-	   << (*it).flow() << endl;
+      cout << argv[0] << ": You now have a few example files for different problems. See your directory. min_cost_flow_problems can be run as max_cost_flow as well, giving a flow with maximal cost." << endl;
+      cout << argv[0] << " <filename> <solver>" << endl;
+      cout << "where <solver> is cheapest_tree min_cost_flow max_cost_flow max_flow" << endl;
+      cout << "cheapest_path needs additional information. If you want to test it, ask us." << endl;
+      return 0;
     }
-  for (auto it : net5.edge_set())
+  Network net_from_file;
+  net_from_file.fopen(argv[1]);
+  net_from_file.reset_network();
+  if (string(argv[2]) == "cheapest_tree")
     {
-      cout << (*it).from_node()->name() << "->"
-	   << (*it).to_node()->name() << ": "
-	   << (*it).flow() << endl;
+      net_from_file.cheapest_tree();
     }
+  else if (string(argv[2]) == "min_cost_flow")
+    {
+      net_from_file.min_cost_flow();
+    }
+  else if (string(argv[2]) == "max_cost_flow")
+    {
+      net_from_file.max_cost_flow();
+    }
+  else if (string(argv[2]) == "max_flow")
+    {
+      net_from_file.max_flow();
+    }
+  else
+    {
+      cout << "Unsupported solver." << endl;
+    }
+
+  cout << "Printing result to result.xml..." << endl;
+  net_from_file.fwrite("result.xml");
   return 0;
 }
