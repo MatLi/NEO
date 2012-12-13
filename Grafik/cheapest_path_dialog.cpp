@@ -1,3 +1,14 @@
+/* 
+ * FILENAME:      cheapest_path_dialog.cpp
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   David
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Dialog window that appears when solving cheapest path problems.
+ */
+
 #include <QtGui>
 #include "cheapest_path_dialog.h"
 #include "solution_dialog.h"
