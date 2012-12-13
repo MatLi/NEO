@@ -1,12 +1,12 @@
 /*
  * FILNAMN:          graphicnode.cpp
  * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda och Emil
+ * PROGRAMMERARE:    Mari, Linda, Li och Emil
  *
- * DATUM:            2012-12-11
+ * DATUM:            2012-12-12
  *
  * BESKRIVNING:
- * GraphicNode är den grafiska representationen av Node.
+ * GraphicNode is the graphic representation of Node
 */
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
@@ -24,6 +24,7 @@
 #include "mainwindow.h"
 #include "datadock.h"
 
+//Constructor
 GraphicNode::GraphicNode(GraphWidget *graphWidget)
   : graph(graphWidget),
     net_node(new Node)
@@ -36,12 +37,14 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     graph->addNode(this);
 }
 
+//Destructor
 GraphicNode::~GraphicNode()
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
   mw->net->remove_node(net_node);
 }
 
+//Functions
 void GraphicNode::addEdge(GraphicEdge *edge)
 {
     edgeList << edge;
@@ -145,7 +148,7 @@ void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
     QString node_flow_, node_price;
 
-    //Ändrar textrutan i Widget
+    //Changes the textbox in Widget
     graph->changeTextItem(return_name());
     
     MainWindow *mwindow = dynamic_cast<MainWindow*>(graph->parent());
