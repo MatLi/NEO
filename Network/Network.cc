@@ -1,13 +1,13 @@
 /* 
- * FILNAMN:          Network.cc
- * PROJEKT:          NEO
- * PROGRAMMERARE:    Li, David, Linda och Jonas
+ * FILENAME:      Network.cc
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Li, David, Linda and Jonas
  *
- * DATUM:            2012-11-21
+ * DATE:          2012-12-12
  *
- * BESKRIVNING:
- * Network representerar ett helt nätverk av noder och bågar. 
- * Lösningarna till de olika problemen kommer att vara ett Network.    
+ * DESCRIPTION:
+ * Network represents a network of nodes and edges.
+ * The solution to a problem will be a Network.   
  */
 
 #include "Network.h"
@@ -18,8 +18,19 @@
 #include <cctype>
 #include <stack>
 #include <string>
-
 using namespace std;
+
+Network::Network()
+  : nodes_(),
+    edges_() {}
+
+Network::Network(Set<Node*> in_nodes, Set<Edge*> in_edges)
+  : nodes_(in_nodes),
+    edges_(in_edges) {}
+
+Network::Network(Set<Node*> in_nodes)
+  : nodes_(in_nodes),
+    edges_() {}
 
 //  Returnerar alla bågar/kanter
 Set<Edge*>
@@ -40,6 +51,7 @@ void
 Network::add_node(Node* new_node)
 {
   nodes_.add_member(new_node);
+  return;
 }
 
 // Lägger till en båge
@@ -47,6 +59,7 @@ void
 Network::add_edge(Edge* new_edge)
 {
   edges_.add_member(new_edge);
+  return;
 }
 
 // Tar bort en nod
@@ -55,6 +68,7 @@ Network::remove_node(Node* del_node)
 {
   nodes_.remove_member(del_node);
   delete del_node;
+  return;
 }
 
 // Tar bort en båge/kant
@@ -63,6 +77,7 @@ Network::remove_edge(Edge* del_edge)
 {
   edges_.remove_member(del_edge);
   delete del_edge;
+  return;
 }
 
 // Tar bort alla bågar/kanter
@@ -70,6 +85,7 @@ void
 Network::remove_all_edges()
 {
   edges_.clear();
+  return;
 }
 
 // Tar bort alla noder
@@ -77,6 +93,7 @@ void
 Network::remove_all_nodes()
 {
   nodes_.clear();
+  return;
 }
 
 /* void reset_network()
@@ -404,6 +421,7 @@ Network::calculate_reduced_costs(Set<Edge*> non_base_edges)
 				(*it).from_node()->node_price() -
 				(*it).to_node()->node_price());
     }
+  return;
 }
 
 bool
@@ -507,6 +525,7 @@ Network::change_flow(deque<Edge*> cycle,
 	  x_node = (*it).from_node();
 	}
     }
+  return;
 }
 
 double
@@ -739,6 +758,7 @@ Network::max_cost_flow()
     {
       (*it).restore_data();
     }
+  return;
 }
 
 // Genererar maxflöde
@@ -868,12 +888,10 @@ Network::fwrite(const string filename)
 class readstate
 {
 public:
-
   readstate(Set<Edge*>* edges_,Set<Node*>* nodes_)
     :network_edges(edges_),network_nodes(nodes_) {}
 
 private:
-
   // active data
   string word;
   string tagname;
@@ -964,6 +982,7 @@ private:
 	  }
 	else {} // Unknown tag, sätta flagga behövs ej
       }
+    return;
   }
 
   void
@@ -984,6 +1003,7 @@ private:
 	word.push_back(next_char); // ska alla spaces tillåtas?
       }
     else {}
+    return;
   }
 
   void
@@ -996,6 +1016,7 @@ private:
 
     in_tag = true;
     making_tagname = true;
+    return;
   }
 
   void
@@ -1019,6 +1040,7 @@ private:
       {
 	close_tag = true;
       }
+    return;
   }
 
   void
@@ -1039,6 +1061,7 @@ private:
 	in_word = true;
 	word = next_char;
       }
+    return;
   }
 
   void
@@ -1053,6 +1076,7 @@ private:
     label = word;
     word = "";
     arg_expected = true;
+    return;
   }
   
   void
@@ -1148,6 +1172,7 @@ private:
 	  }
 	else {} // Inget händer, främmande tag
       }
+    return;
   }
 
   void
@@ -1283,10 +1308,10 @@ private:
       }
     in_tag = false;
     tagname = "";
+    return;
   }
 
 public:
-
   void
   step(const char next)
   {
@@ -1304,18 +1329,21 @@ public:
 	else if (next_char == '>') {end_tag();}
 	else {} // Unknown character
       }
+    return;
   }
   void
   step(const int val)
   {
     int_val = val;
     arg_ended = true;
+    return;
   }
   void
   step(const double val)
   {
     double_val = val;
     arg_ended = true;
+    return;
   }
 
   bool

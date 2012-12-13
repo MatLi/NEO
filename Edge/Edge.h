@@ -1,13 +1,13 @@
 /* 
- * FILNAMN:          Edge.h
- * PROJEKT:          NEO
- * PROGRAMMERARE:    Li och Linda
+ * FILENAME:      Edge.h
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Li and Linda
  *
- * DATUM:            2012-11-28
+ * DATE:          2012-12-12
  *
- * BESKRIVNING:
- * Edge �r ett objekt som motsvarar b�gar/kanter i ett n�tverksproblem.   
-*/
+ * DESCRIPTION:
+ * Edge is an object that corresponds to an edge in a network problem.
+ */
 
 #ifndef EDGE_HH
 #define EDGE_HH
@@ -21,11 +21,7 @@ class Edge
 {
  public:
   Edge() = delete;
-  
-  Edge(Node* in_from_, Node* in_to_ ); //Skrivs i cc-filen
-  
-  // Vill vi ha fler konstruktorer? 
-
+  Edge(Node*, Node*);
   ~Edge();
 
   Node* from_node() const;
@@ -36,19 +32,18 @@ class Edge
   double maxflow() const;
   double minflow() const;
 
+  void change_from(Node*);
+  void change_to(Node*);
+  void change_flow(double);
   void change_reduced_cost(double);
   void change_cost(double);
   void change_maxflow(double);
   void change_minflow(double);
-  void change_from(Node*);
-  void change_to(Node*);
-  void change_flow(double);
 
   void backup_data();
   void restore_data();
 
  private:
-  //Datamedlemmar
   Node* from_;
   Node* to_;
   double flow_;

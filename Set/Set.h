@@ -1,15 +1,18 @@
 /*
- * Fil: Set.h
- * Programmerare: David Larsson <davla210@student.liu.se>
- * Datum: 2012-11-19
+ * FILENAME:      Set.h
+ * PROJECT:       NEO
+ * PROGRAMMER:    David
  *
- * En mall för en mängd. Skall användas för att representera och
- * arbeta på de huvudsakliga mängderna som används dels för att
- * representera nätverket och i några av algoritmerna för att
- * lösa optimeringsproblem.
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * A template for a set. Is used to store and work on sets of
+ * edges and sets of nodes in the Network and the algorithms.
  */
+
 #ifndef SET_HH
 #define SET_HH
+
 #include <vector>
 #include <iostream>
 
@@ -29,6 +32,7 @@ class Set
       
   typename std::vector<T>::iterator begin();
   typename std::vector<T>::iterator end();
+
  private:
   std::vector<T> members_;
 };
@@ -37,7 +41,8 @@ class Set
  * Returnerar sant omm elementet T finns i mängden.
  */
 template <class T>
-bool Set<T>::exists(T search_element) const
+bool
+Set<T>::exists(T search_element) const
 {
   bool exists = false;
   for (auto it : members_)
@@ -55,7 +60,8 @@ bool Set<T>::exists(T search_element) const
  * Lägg till medlemmen new_member i mängden.
  */
 template <class T>
-void Set<T>::add_member(T new_member)
+void
+Set<T>::add_member(T new_member)
 {
   for (auto it : members_)
     {
@@ -74,7 +80,8 @@ void Set<T>::add_member(T new_member)
  * Ta bort medlemmen old_member ur mängden.
  */
 template <class T>
-void Set<T>::remove_member(T old_member)
+void
+Set<T>::remove_member(T old_member)
 {
   typename std::vector<T>::iterator temp = members_.begin();
   int i_it = 0;
@@ -97,14 +104,16 @@ void Set<T>::remove_member(T old_member)
  * eftersom det kan vara medlem i andra mängder.
  */
 template <class T>
-void Set<T>::clear()
+void
+Set<T>::clear()
 {
   members_.clear();
   return;
 }
 
 template <class T>
-bool Set<T>::empty() const
+bool
+Set<T>::empty() const
 {
   return members_.empty();
 }
@@ -115,19 +124,22 @@ bool Set<T>::empty() const
  * Mängdens kardinalitet.
  */
 template <class T>
-unsigned int Set<T>::size() const
+unsigned int
+Set<T>::size() const
 {
   return members_.size();
 }
 
 template <class T>
-typename std::vector<T>::iterator Set<T>::begin()
+typename std::vector<T>::iterator
+Set<T>::begin()
 {
   return members_.begin();
 }
 
 template <class T>
-typename std::vector<T>::iterator Set<T>::end()
+typename std::vector<T>::iterator
+Set<T>::end()
 {
   return members_.end();
 }
