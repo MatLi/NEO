@@ -1,4 +1,14 @@
-//Mari
+/* 
+ * FILENAME:      mainwindow.h
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Mari, Linda, Li, David och Emil
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Code for the mainwindow menubar.
+ */
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

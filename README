@@ -32,7 +32,7 @@ Add Nodes:
 Double leftclick on the screen where you want your node to appear. To change node data leftclick once at the node you want to edit and enter new data in the table to the right of the main window. 
 
 Add Edges:
-Use the right window to add edges. Enter the name of the startnode and the endnode of the edge and press the button "Add Edge". Your edge will appear as an arrow between the nodes, the arrowhead showing the direction. To change edge data leftclick once at the edge you want to edit and enter new data in the table to the left. 
+Use the left dock window to add edges. Enter the name of the startnode and the endnode of the edge and press the button "Add Edge". Your edge will appear as an arrow between the nodes, the arrowhead showing the direction. To change edge data leftclick once at the edge you want to edit and enter new data in the table to the left. 
 
 Move:
 You can move nodes simply by clicking on them and dragging to the position where you want them to be. 

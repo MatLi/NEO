@@ -1,5 +1,13 @@
-
-//Mari
+/* 
+ * FILENAME:      main.cpp
+ * PROJEKT:       NEO
+ * PROGRAMMERS:   Mari
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * Mainfile for the graphics of NEO.
+ */
 
 #include <QtGui/QApplication>
 #include "mainwindow.h"
