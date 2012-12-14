@@ -21,11 +21,12 @@ DataDock::DataDock(QWidget *parent) :
     QWidget *wi = new QWidget;
 
     QGridLayout *layout = new QGridLayout();
-    //Noddata
+
+    //Node data
     QLabel *name = new QLabel("Node name: ");
     QLabel *price = new QLabel("Node prize: ");
     QLabel *flow = new QLabel("Node flow: ");
-    neoPushButton *change = new neoPushButton(this);
+    NeoPushButton *change = new NeoPushButton(this);
     nodeName_ = new QLineEdit();
     nodeFlow_ = new QLineEdit();
     nodePrice_ = new QLineEdit();
@@ -33,13 +34,13 @@ DataDock::DataDock(QWidget *parent) :
     nodePrice_->setReadOnly(true);
     change->setText("Change node data");
 
-    //Bågdata
+    //Edge data
     QLabel *cost = new QLabel("Egde cost: ");
     QLabel *reducedCost = new QLabel("Reduced cost: ");
     QLabel *edge_flow = new QLabel("Edge flow: ");
     QLabel *max_flow = new QLabel("Max flow: ");
     QLabel *min_flow = new QLabel("Min flow: ");
-    neoPushButton *edgechange = new neoPushButton(this);
+    NeoPushButton *edgechange = new NeoPushButton(this);
     edgeCost_ = new QLineEdit();
     edgeReducedCost_ = new QLineEdit();
     edgeFlow_ = new QLineEdit();
@@ -78,35 +79,35 @@ DataDock::DataDock(QWidget *parent) :
     setWidget(wi);
 }
 
-void DataDock::editnodeName(QString newName_)
+void DataDock::editNodeName(QString newName_)
 {
   nodeName_->setText(newName_);
 }
-void DataDock::editnodeFlow(QString newFlow_)
+void DataDock::editNodeFlow(QString newFlow_)
 {
   nodeFlow_->setText(newFlow_);
 }
 
-void DataDock::editnodePrice(QString newPrice_)
+void DataDock::editNodePrice(QString newPrice_)
 {
   nodePrice_->setText(newPrice_);
 }
 
-void DataDock::editedgeCost(QString newCost_)
+void DataDock::editEdgeCost(QString newCost_)
 {
   edgeCost_->setText(newCost_);
 }
-void DataDock::editedgeReducedCost(QString newReducedCost_)
+void DataDock::editEdgeReducedCost(QString newReducedCost_)
 {
   edgeReducedCost_->setText(newReducedCost_);
 }
 
-void DataDock::editedgeminFlow(QString newMinFlow_)
+void DataDock::editEdgeMinFlow(QString newMinFlow_)
 {
   minFlow_->setText(newMinFlow_);
 }
 
-void DataDock::editedgemaxFlow(QString newMaxFlow_)
+void DataDock::editEdgeMaxFlow(QString newMaxFlow_)
 {
   maxFlow_->setText(newMaxFlow_);
 }
@@ -116,12 +117,12 @@ double DataDock::edgeCost()
   return edgeCost_->text().toDouble();
 }
 
-double DataDock::edgeminFlow()
+double DataDock::edgeMinFlow()
 {
   return minFlow_->text().toDouble();
 }
 
-double DataDock::edgemaxFlow()
+double DataDock::edgeMaxFlow()
 {
   return maxFlow_->text().toDouble();
 }
@@ -136,28 +137,28 @@ std::string DataDock::nodeName()
   return nodeName_->text().toUtf8().constData();
 }
 
-void DataDock::change_currentnode(GraphicNode* new_current)
+void DataDock::changeCurrentNode(GraphicNode* new_current)
 {
   current_node=new_current;
 }
 
-void DataDock::change_currentedge(GraphicEdge* new_current)
+void DataDock::changeCurrentEdge(GraphicEdge* new_current)
 {
   current_edge=new_current;
 }
 
-void DataDock::editedgeFlow(QString newFlow)
+void DataDock::editEdgeFlow(QString newFlow)
 {
   edgeFlow_->setText(newFlow);
 }
 
 
-GraphicNode* DataDock::return_current_node()
+GraphicNode* DataDock::returnCurrentNode()
 {
   return current_node;
 }
 
-GraphicEdge* DataDock::return_current_edge()
+GraphicEdge* DataDock::returnCurrentEdge()
 {
   return current_edge;
 }

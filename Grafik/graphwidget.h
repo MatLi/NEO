@@ -32,27 +32,23 @@ public:
     GraphWidget(QWidget *parent = 0);
 
     void itemMoved();
-    QList<GraphicNode *> return_nodeList();
+    QList<GraphicNode *> returnNodeList();
     void addNode(GraphicNode *new_node);
     void removeNode(QString);
     void changeTextItem(QString new_text);
     void addEdge(QString start, QString end);
     void removeEdge(QString start, QString end);
-    void clear_network();
+    void clearNetwork();
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     void timerEvent(QTimerEvent *event);
-    //void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
 
 private:
     int timerId;
-    GraphicNode *centerNode;
     QGraphicsSimpleTextItem *myTextItem;
-
-    //List holding all the nodes in the interface
     QList<GraphicNode *> nodeList;
 };
 

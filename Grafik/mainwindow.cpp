@@ -41,8 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
   addDockWidget(Qt::LeftDockWidgetArea,dock2);
 }
 
-void
-MainWindow::setupMenuBar()
+void MainWindow::setupMenuBar()
 {
   QMenuBar *menubar = new QMenuBar(dynamic_cast<QWidget*>(this));
   QWidget *qwmb = dynamic_cast<QWidget*>(menubar);
@@ -97,7 +96,7 @@ MainWindow::setupMenuBar()
   setMenuBar(menubar);
 
   connect(quit, SIGNAL(triggered()), this, SLOT(close()));
-  connect(save_proj, SIGNAL(triggered()), this, SLOT(saveProj()));
+  connect(save_proj, SIGNAL(triggered()), this, SLOT(saveProject()));
   connect(min_cost_flow, SIGNAL(triggered()), this, SLOT(min_cost_flow()));
   connect(max_cost_flow, SIGNAL(triggered()), this, SLOT(max_cost_flow()));
   connect(max_flow,SIGNAL(triggered()), this, SLOT(max_flow()));
@@ -111,8 +110,7 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void
-MainWindow::saveProj()
+void MainWindow::saveProject()
 {
   QString fileName
     = QFileDialog::getSaveFileName(this, tr("Save model"));
@@ -130,8 +128,7 @@ MainWindow::saveProj()
   return;
 }
 
-void
-MainWindow::min_cost_flow()
+void MainWindow::minCostFlow()
 {
   Solution sol_dialog = min_cf;
   try
@@ -149,8 +146,7 @@ MainWindow::min_cost_flow()
   sd.show();
 }
 
-void
-MainWindow::max_cost_flow()
+void MainWindow::maxCostFlow()
 {
   Solution sol_dialog = max_cf;
   try
@@ -169,8 +165,7 @@ MainWindow::max_cost_flow()
   sd.show();
 }
 
-void
-MainWindow::max_flow()
+void MainWindow::maxFlow()
 {
   Solution sol_dialog = max_f;
   try
@@ -188,8 +183,7 @@ MainWindow::max_flow()
   sd.show();
 }
 
-void
-MainWindow::cheapest_tree()
+void MainWindow::cheapestTree()
 {
   Solution sol_dialog = c_tree;
   try
@@ -207,19 +201,18 @@ MainWindow::cheapest_tree()
   sd.show();
 }
 
-void
-MainWindow::cheapest_path()
+void MainWindow::cheapestPath()
 {
   CheapestPathDialog *dialog = new CheapestPathDialog(this);
   dialog->exec();
 }
 
-AddEdgeDock* MainWindow::return_AddEdgeDock()
+AddEdgeDock* MainWindow::returnAddEdgeDock()
 {
     return dock2;
 }
 
-DataDock* MainWindow::return_DataDock()
+DataDock* MainWindow::returnDataDock()
 {
     return dock;
 }
