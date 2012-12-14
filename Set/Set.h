@@ -37,9 +37,6 @@ class Set
   std::vector<T> members_;
 };
 
-/* Set<T>::exists(T)
- * Returnerar sant omm elementet T finns i mängden.
- */
 template <class T>
 bool
 Set<T>::exists(T search_element) const
@@ -55,10 +52,6 @@ Set<T>::exists(T search_element) const
   return exists;
 }
 
-/*
- * Set<T>::add_member()
- * Lägg till medlemmen new_member i mängden.
- */
 template <class T>
 void
 Set<T>::add_member(T new_member)
@@ -74,10 +67,9 @@ Set<T>::add_member(T new_member)
   return;
 }
 
-/*
- * Set<T>::remove_member()
- *
- * Ta bort medlemmen old_member ur mängden.
+/* void Set<T>::clear()
+ * Removes the element old_member from the set, but does
+ * not delete pointers, since they may be in other sets.
  */
 template <class T>
 void
@@ -97,11 +89,9 @@ Set<T>::remove_member(T old_member)
   return; 
 }
 
-/*
- * Set<T>::clear()
- *
- * Vi vill inte ta bort objekten som pekarna pekar på
- * eftersom det kan vara medlem i andra mängder.
+/* void Set<T>::clear()
+ * Removes the elements of the set, but does not delete pointers,
+ * since they may be in other sets.
  */
 template <class T>
 void
@@ -118,11 +108,6 @@ Set<T>::empty() const
   return members_.empty();
 }
 
-/*
- * Set<T>::size()
- *
- * Mängdens kardinalitet.
- */
 template <class T>
 unsigned int
 Set<T>::size() const

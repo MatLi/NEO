@@ -128,7 +128,7 @@ void MainWindow::saveProject()
   return;
 }
 
-void MainWindow::minCostFlow()
+void MainWindow::min_cost_flow()
 {
   Solution sol_dialog = min_cf;
   try
@@ -146,7 +146,7 @@ void MainWindow::minCostFlow()
   sd.show();
 }
 
-void MainWindow::maxCostFlow()
+void MainWindow::max_cost_flow()
 {
   Solution sol_dialog = max_cf;
   try
@@ -165,7 +165,7 @@ void MainWindow::maxCostFlow()
   sd.show();
 }
 
-void MainWindow::maxFlow()
+void MainWindow::max_flow()
 {
   Solution sol_dialog = max_f;
   try
@@ -183,7 +183,7 @@ void MainWindow::maxFlow()
   sd.show();
 }
 
-void MainWindow::cheapestTree()
+void MainWindow::cheapest_tree()
 {
   Solution sol_dialog = c_tree;
   try
@@ -201,7 +201,7 @@ void MainWindow::cheapestTree()
   sd.show();
 }
 
-void MainWindow::cheapestPath()
+void MainWindow::cheapest_path()
 {
   CheapestPathDialog *dialog = new CheapestPathDialog(this);
   dialog->exec();
