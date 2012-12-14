@@ -1,11 +1,11 @@
 /*
- * FILNAMN:          graphicnode.h
- * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda, Li och Emil
+ * FILENAME:         graphicnode.h
+ * PROCEKT:          NEO
+ * PROGRAMMERS:      Mari, Linda, Li och Emil
  *
- * DATUM:            2012-12-12
+ * DATE:          2012-12-12
  *
- * BESKRIVNING:
+ * DESCRIPTION:
  * GraphicNode is the graphic representation of Node
 */
 #ifndef NODE_H

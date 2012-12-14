@@ -1,11 +1,11 @@
 /*
- * FILNAMN:          graphwidget.cpp
- * PROJEKT:          NEO
- * PROGRAMMERARE:    Mari, Linda, Li och Emil
+ * FILENAME:         graphwidget.cpp
+ * PROJECT:          NEO
+ * PROGRAMMERS:      Mari, Linda, Li och Emil
  *
- * DATUM:            2012-12-11
+ * DATE:          2012-12-12
  *
- * BESKRIVNING:
+ * DESCRIPTION:
  * GraphicWidget is the main widget in MainWindow that includes edges and nodes.
  * It handles everything that happens in the window.
 */
