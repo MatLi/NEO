@@ -36,11 +36,11 @@ public:
 
 public slots:
     void saveProject();
-    void minCostFlow();
-    void maxCostFlow();
-    void maxFlow();
-    void cheapestTree();
-    void cheapestPath();
+    void min_cost_flow();
+    void max_cost_flow();
+    void max_flow();
+    void cheapest_tree();
+    void cheapest_path();
 
     AddEdgeDock* returnAddEdgeDock();
     DataDock* returnDataDock();
