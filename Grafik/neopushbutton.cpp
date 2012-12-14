@@ -4,12 +4,12 @@
 #include "datadock.h"
 #include "graphicedge.h"
 
-neoPushButton::neoPushButton(QWidget *parent) :
+NeoPushButton::NeoPushButton(QWidget *parent) :
     QPushButton(parent)
 {
 }
 
-void neoPushButton::mousePressEvent(QMouseEvent *event)
+void NeoPushButton::mousePressEvent(QMouseEvent *event)
 {
     if(text()=="Add edge")
     {
@@ -18,8 +18,8 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
         MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
         GraphWidget *graph_ = dynamic_cast<GraphWidget *>(mainwindow_->centralWidget());
 
-        start = mainwindow_->return_AddEdgeDock()->start_text();
-        end = mainwindow_->return_AddEdgeDock()->end_text();
+        start = mainwindow_->returnAddEdgeDock()->startText();
+        end = mainwindow_->returnAddEdgeDock()->endText();
 
         graph_->addEdge(start,end);
     }
@@ -30,8 +30,8 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
         MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
         GraphWidget *graph_ = dynamic_cast<GraphWidget *>(mainwindow_->centralWidget());
 
-        start = mainwindow_->return_AddEdgeDock()->start_text();
-        end = mainwindow_->return_AddEdgeDock()->end_text();
+        start = mainwindow_->returnAddEdgeDock()->startText();
+        end = mainwindow_->returnAddEdgeDock()->endText();
 
         graph_->removeEdge(start,end);
     }
@@ -39,21 +39,21 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
     {
 
       MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
-      DataDock *dataw = dynamic_cast<DataDock*>(mainwindow_->return_DataDock());
+      DataDock *dataw = dynamic_cast<DataDock*>(mainwindow_->returnDataDock());
       
-      dataw->return_current_node()->net_node->change_flow(dataw->nodeFlow());
-      dataw->return_current_node()->net_node->change_name(dataw->nodeName());
+      dataw->returnCurrentNode()->net_node->change_flow(dataw->nodeFlow());
+      dataw->returnCurrentNode()->net_node->change_name(dataw->nodeName());
       QString qstr = QString::fromStdString(dataw->nodeName());
-      dataw->return_current_node()->set_name(qstr);
+      dataw->returnCurrentNode()->setName(qstr);
     } 
     else if(text()=="Change edge data")
     {
       MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
-      DataDock *dataw = dynamic_cast<DataDock*>(mainwindow_->return_DataDock());
+      DataDock *dataw = dynamic_cast<DataDock*>(mainwindow_->returnDataDock());
       
-      dataw->return_current_edge()->net_edge->change_cost(dataw->edgeCost());
-      dataw->return_current_edge()->net_edge->change_maxflow(dataw->edgemaxFlow());
-      dataw->return_current_edge()->net_edge->change_minflow(dataw->edgeminFlow());
+      dataw->returnCurrentEdge()->net_edge->change_cost(dataw->edgeCost());
+      dataw->returnCurrentEdge()->net_edge->change_maxflow(dataw->edgeMaxFlow());
+      dataw->returnCurrentEdge()->net_edge->change_minflow(dataw->edgeMinFlow());
     }
     else if(text() == "Remove node")
       {
@@ -62,7 +62,7 @@ void neoPushButton::mousePressEvent(QMouseEvent *event)
 	MainWindow *mainwindow_ = dynamic_cast<MainWindow *>(window());
 	GraphWidget *graph_ = dynamic_cast<GraphWidget *>(mainwindow_->centralWidget());
 	
-	node = mainwindow_->return_AddEdgeDock()->node_text();
+    node = mainwindow_->returnAddEdgeDock()->nodeText();
 
 	graph_->removeNode(node);
 	

@@ -27,28 +27,28 @@ class DataDock : public QDockWidget
     Q_OBJECT
 public:
     explicit DataDock(QWidget *parent = 0);
-    void editnodeName(QString);
-    void editnodeFlow(QString);
-    void editnodePrice(QString);
+    void editNodeName(QString);
+    void editNodeFlow(QString);
+    void editNodePrice(QString);
 
-    void editedgeCost(QString);
-    void editedgeminFlow(QString);
-    void editedgemaxFlow(QString);
-    void editedgeFlow(QString);
-    void editedgeReducedCost(QString); 
+    void editEdgeCost(QString);
+    void editEdgeMinFlow(QString);
+    void editEdgeMaxFlow(QString);
+    void editEdgeFlow(QString);
+    void editEdgeReducedCost(QString);
 
     double nodeFlow();
     std::string nodeName();
 
     double edgeCost(); 
-    double edgeminFlow();
-    double edgemaxFlow();
+    double edgeMinFlow();
+    double edgeMaxFlow();
 
-    void change_currentnode(GraphicNode*);
-    void change_currentedge(GraphicEdge*);
+    void changeCurrentNode(GraphicNode*);
+    void changeCurrentEdge(GraphicEdge*);
 
-    GraphicNode* return_current_node();
-    GraphicEdge* return_current_edge();
+    GraphicNode* returnCurrentNode();
+    GraphicEdge* returnCurrentEdge();
 
 private:
     QLineEdit *nodeName_, *nodeFlow_, *nodePrice_, *edgeCost_, *edgeReducedCost_, *edgeFlow_, *maxFlow_, *minFlow_;

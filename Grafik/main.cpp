@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 {
     QApplication a(argc, argv);
 
-    MainWindow w;//mainWindow;
+    MainWindow w;
     QWidget* qww = dynamic_cast<QWidget*>(&w);
     GraphWidget *widget = new GraphWidget(qww);
     

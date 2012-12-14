@@ -24,7 +24,6 @@
 #include "mainwindow.h"
 #include "datadock.h"
 
-//Constructor
 GraphicNode::GraphicNode(GraphWidget *graphWidget)
   : graph(graphWidget),
     net_node(new Node)
@@ -33,18 +32,16 @@ GraphicNode::GraphicNode(GraphWidget *graphWidget)
     //setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    name.setNum(graph->return_nodeList().size());
+    name.setNum(graph->returnNodeList().size());
     graph->addNode(this);
 }
 
-//Destructor
 GraphicNode::~GraphicNode()
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(graph->parent());
   mw->net->remove_node(net_node);
 }
 
-//Functions
 void GraphicNode::addEdge(GraphicEdge *edge)
 {
     edgeList << edge;
@@ -56,12 +53,12 @@ void GraphicNode::removeEdge(GraphicEdge *edge)
   edgeList.removeOne(edge);
  }
 
-QString GraphicNode::return_name() const
+QString GraphicNode::returnName() const
 {
     return name;
 }
 
-void GraphicNode::set_name(QString new_name)
+void GraphicNode::setName(QString new_name)
 {
   name = new_name;
 }
@@ -71,7 +68,6 @@ QList<GraphicEdge *> GraphicNode::edges() const
     return edgeList;
 }
 
-//Is needed too moove the node
 void GraphicNode::moveHelper()
 {
     QRectF sceneRect = scene()->sceneRect();
@@ -149,18 +145,18 @@ void GraphicNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QString node_flow_, node_price;
 
     //Changes the textbox in Widget
-    graph->changeTextItem(return_name());
+    graph->changeTextItem(returnName());
     
     MainWindow *mwindow = dynamic_cast<MainWindow*>(graph->parent());
-    DataDock *ddock = dynamic_cast<DataDock*>(mwindow->return_DataDock());
+    DataDock *ddock = dynamic_cast<DataDock*>(mwindow->returnDataDock());
 
-    ddock->change_currentnode(this);
+    ddock->changeCurrentNode(this);
     node_flow_.setNum(net_node->flow());
     node_price.setNum(net_node->node_price());
 
-    ddock->editnodeName(return_name());
-    ddock->editnodeFlow(node_flow_);
-    ddock->editnodePrice(node_price);
+    ddock->editNodeName(returnName());
+    ddock->editNodeFlow(node_flow_);
+    ddock->editNodePrice(node_price);
 
     QGraphicsItem::mousePressEvent(event);
 }

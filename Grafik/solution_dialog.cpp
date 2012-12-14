@@ -18,23 +18,23 @@ SolutionDialog::SolutionDialog(Solution sol, QWidget *parent) :
     {
     case min_cf:
       setWindowTitle("Minimum cost flow solution");
-      min_cost_flow(textSolution);
+      minCostFlow(textSolution);
       break;
     case max_cf:
       setWindowTitle("Maximum cost flow solution");
-      max_cost_flow(textSolution);
+      maxCostFlow(textSolution);
       break;
     case max_f:
       setWindowTitle("Maximum flow solution");
-      max_flow(textSolution);
+      maxFlow(textSolution);
       break;
     case c_tree:
       setWindowTitle("Cheapest tree solution");
-      cheapest_tree(textSolution);
+      cheapestTree(textSolution);
       break;
     case c_path:
       setWindowTitle("Cheapest path solution");
-      cheapest_path(textSolution);
+      cheapestPath(textSolution);
       break;
     default:
       setWindowTitle("This never happens...");
@@ -91,8 +91,7 @@ SolutionDialog::save()
   return;
 }
 
-void
-SolutionDialog::min_cost_flow(QString& text)
+void SolutionDialog::minCostFlow(QString& text)
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   QString qsFlowCost;
@@ -131,8 +130,7 @@ SolutionDialog::min_cost_flow(QString& text)
   return;
 }
 
-void
-SolutionDialog::max_cost_flow(QString& text)
+void SolutionDialog::maxCostFlow(QString& text)
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   QString qsFlowCost;
@@ -171,8 +169,7 @@ SolutionDialog::max_cost_flow(QString& text)
   return;
 }
 
-void
-SolutionDialog::max_flow(QString& text)
+void SolutionDialog::maxFlow(QString& text)
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   text.append(tr("Maximum flow solution\n"));
@@ -206,8 +203,7 @@ SolutionDialog::max_flow(QString& text)
   return;
 }
 
-void
-SolutionDialog::cheapest_tree(QString& text)
+void SolutionDialog::cheapestTree(QString& text)
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   text.append(tr("Cheapest tree solution\n"));
@@ -225,8 +221,7 @@ SolutionDialog::cheapest_tree(QString& text)
   return;
 }
 
-void
-SolutionDialog::cheapest_path(QString& text)
+void SolutionDialog::cheapestPath(QString& text)
 {
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   text.append(tr("Cheapest path solution\n"));

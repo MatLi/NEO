@@ -35,22 +35,22 @@ AddEdgeDock::AddEdgeDock(QWidget *parent) :
     end->setText("End node");
     layout->addWidget(end, 1, 0);
 
-    add_edge_ = new neoPushButton(this);
-    add_edge_->setText("Add edge");
-    layout->addWidget(add_edge_, 2, 0);
+    addEdgeButton = new NeoPushButton(this);
+    addEdgeButton->setText("Add edge");
+    layout->addWidget(addEdgeButton, 2, 0);
 
-    remove_edge_ = new neoPushButton(this);
-    remove_edge_->setText("Remove edge");
-    layout->addWidget(remove_edge_, 3, 0);
+    removeEdgeButton = new NeoPushButton(this);
+    removeEdgeButton->setText("Remove edge");
+    layout->addWidget(removeEdgeButton, 3, 0);
 
     //Handle node destruction
     node = new QLineEdit();
     node->setText("Node name");
     layout->addWidget(node, 4, 0);
 
-    remove_node = new neoPushButton(this);
-    remove_node->setText("Remove node");
-    layout->addWidget(remove_node, 5, 0);
+    removeNodeButton = new NeoPushButton(this);
+    removeNodeButton->setText("Remove node");
+    layout->addWidget(removeNodeButton, 5, 0);
     
     //Layout
     layout->addWidget(start);
@@ -64,17 +64,17 @@ AddEdgeDock::AddEdgeDock(QWidget *parent) :
 }
 
 //Ability to change values in a QLineEdit
-QString AddEdgeDock::start_text()
+QString AddEdgeDock::startText()
 {
     return start->text();
 }
 
-QString AddEdgeDock::end_text()
+QString AddEdgeDock::endText()
 {
     return end->text();
 }
 
-QString AddEdgeDock::node_text()
+QString AddEdgeDock::nodeText()
 {
   return node->text();
 }

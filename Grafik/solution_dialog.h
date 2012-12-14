@@ -25,11 +25,11 @@ private slots:
 private:
   QString textSolution;
   QPlainTextEdit* plainText;
-  void min_cost_flow(QString&);
-  void max_cost_flow(QString&);
-  void max_flow(QString&);
-  void cheapest_tree(QString&);
-  void cheapest_path(QString&);
+  void minCostFlow(QString&);
+  void maxCostFlow(QString&);
+  void maxFlow(QString&);
+  void cheapestTree(QString&);
+  void cheapestPath(QString&);
 };
 
 #endif // MAINWINDOW_H
