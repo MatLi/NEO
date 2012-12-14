@@ -39,7 +39,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(myTextItem);
 }
 
-QList<GraphicNode *> GraphWidget::return_nodeList()
+QList<GraphicNode *> GraphWidget::returnNodeList()
 {
     return nodeList;
 }
@@ -53,7 +53,7 @@ void GraphWidget::removeEdge(QString start, QString end)
 
   for (int i=0; i < this->nodeList.size(); i++)
     {
-      if(this->nodeList.at(i)->return_name()==start)
+      if(this->nodeList.at(i)->returnName()==start)
         {
 	  startn=this->nodeList.at(i);
         }
@@ -61,7 +61,7 @@ void GraphWidget::removeEdge(QString start, QString end)
 
   for (int j=0;j<this->nodeList.size();j++)
     {
-      if(this->nodeList.at(j)->return_name()==end)
+      if(this->nodeList.at(j)->returnName()==end)
         {
 	  endn=this->nodeList.at(j);
         }
@@ -80,7 +80,7 @@ void GraphWidget::addEdge(QString start, QString end)
   GraphicNode *endn = nullptr;
   for (int i=0;i<this->nodeList.size();i++)
     {
-      if(this->nodeList.at(i)->return_name()==start)
+      if(this->nodeList.at(i)->returnName()==start)
         {
 	  startn=this->nodeList.at(i);
         }
@@ -88,7 +88,7 @@ void GraphWidget::addEdge(QString start, QString end)
 
   for (int j=0;j<this->nodeList.size();j++)
     {
-      if(this->nodeList.at(j)->return_name()==end)
+      if(this->nodeList.at(j)->returnName()==end)
         {
 	  endn=this->nodeList.at(j);
         }
@@ -111,7 +111,7 @@ void GraphWidget::removeNode(QString rem_node_name)
 
   for (int i=0;i<this->nodeList.size();i++)
     {
-      if(this->nodeList.at(i)->return_name()==rem_node_name)
+      if(this->nodeList.at(i)->returnName()==rem_node_name)
         {
 	  rem_node=this->nodeList.at(i);
         }
@@ -131,11 +131,11 @@ void GraphWidget::removeNode(QString rem_node_name)
   
 }
 
-void GraphWidget::clear_network()
+void GraphWidget::clearNetwork()
 { 
   foreach (GraphicNode *node, nodeList)
     {
-      removeNode(node->return_name());
+      removeNode(node->returnName());
     }
 }
 
@@ -164,7 +164,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
       {
       case Qt::Key_C:
 	{
-	  clear_network();
+      clearNetwork();
 	}
 	break;
       default:

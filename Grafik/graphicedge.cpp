@@ -54,20 +54,20 @@ void GraphicEdge::mousePressEvent(QGraphicsSceneMouseEvent *event)
   QString edge_flow_, edge_cost, edge_reducedCost, min_flow,max_flow;
   
   MainWindow *mwindow = dynamic_cast<MainWindow*>(graph->parent());
-  DataDock *ddock = dynamic_cast<DataDock*>(mwindow->return_DataDock());
+  DataDock *ddock = dynamic_cast<DataDock*>(mwindow->returnDataDock());
   
-  ddock->change_currentedge(this);
+  ddock->changeCurrentEdge(this);
   edge_flow_.setNum(net_edge->flow());
   edge_cost.setNum(net_edge->cost());
   edge_reducedCost.setNum(net_edge->reduced_cost());
   max_flow.setNum(net_edge->maxflow());
   min_flow.setNum(net_edge->minflow());
   
-  ddock->editedgeCost(edge_cost);
-  ddock->editedgeminFlow(min_flow);
-  ddock->editedgemaxFlow(max_flow);
-  ddock->editedgeReducedCost(edge_reducedCost);
-  ddock->editedgeFlow(edge_flow_);
+  ddock->editEdgeCost(edge_cost);
+  ddock->editEdgeMinFlow(min_flow);
+  ddock->editEdgeMaxFlow(max_flow);
+  ddock->editEdgeReducedCost(edge_reducedCost);
+  ddock->editEdgeFlow(edge_flow_);
   QGraphicsItem::mousePressEvent(event);
 }
 
@@ -124,11 +124,9 @@ void GraphicEdge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWi
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
-    // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 
-    // Draw the arrows
     double angle = ::acos(line.dx() / line.length());
     if (line.dy() >= 0)
         angle = TwoPi - angle;

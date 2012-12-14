@@ -38,8 +38,8 @@ public:
     void removeEdge(GraphicEdge *edge);
     QList<GraphicEdge *> edges() const;
 
-    QString return_name() const;
-    void set_name(QString new_name);
+    QString returnName() const;
+    void setName(QString new_name);
 
     enum { Type = UserType + 1 };
     int type() const { return Type; }

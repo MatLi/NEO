@@ -31,20 +31,19 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    //void paintEvent (QPaintEvent *event);
 
     Network *net;
 
 public slots:
-    void saveProj();
-    void min_cost_flow();
-    void max_cost_flow();
-    void max_flow();
-    void cheapest_tree();
-    void cheapest_path();
+    void saveProject();
+    void minCostFlow();
+    void maxCostFlow();
+    void maxFlow();
+    void cheapestTree();
+    void cheapestPath();
 
-    AddEdgeDock* return_AddEdgeDock();
-    DataDock* return_DataDock();
+    AddEdgeDock* returnAddEdgeDock();
+    DataDock* returnDataDock();
 
 private:
     Ui::MainWindow *ui;

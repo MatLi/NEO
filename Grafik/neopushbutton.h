@@ -4,11 +4,11 @@
 #include <QPushButton>
 #include <QString>
 
-class neoPushButton : public QPushButton
+class NeoPushButton : public QPushButton
 {
     Q_OBJECT
 public:
-   explicit neoPushButton(QWidget *parent = 0);
+   explicit NeoPushButton(QWidget *parent = 0);
     
 protected:
     void mousePressEvent(QMouseEvent *event);

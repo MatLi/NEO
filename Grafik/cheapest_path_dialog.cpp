@@ -48,10 +48,10 @@ CheapestPathDialog::run()
   GraphicNode *endn = nullptr;
   MainWindow* mw = dynamic_cast<MainWindow*>(parent());
   GraphWidget* graph = dynamic_cast<GraphWidget*>(mw->centralWidget());
-  QList<GraphicNode*> nodeList = graph->return_nodeList();
+  QList<GraphicNode*> nodeList = graph->returnNodeList();
   for (int i=0; i < nodeList.size(); i++)
     {
-      if(nodeList.at(i)->return_name()==start)
+      if(nodeList.at(i)->returnName()==start)
         {
 	  startn = nodeList.at(i);
         }
@@ -59,7 +59,7 @@ CheapestPathDialog::run()
 
   for (int j=0; j < nodeList.size(); j++)
     {
-      if(nodeList.at(j)->return_name()==end)
+      if(nodeList.at(j)->returnName()==end)
         {
 	  endn=nodeList.at(j);
         }
