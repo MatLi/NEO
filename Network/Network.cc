@@ -858,14 +858,15 @@ Network::fwrite(const string filename)
       xmlwrite.precision(17);
       unsigned int id=0;
       
-      xmlwrite << "<network number_of_nodes=\"" << nodes_.size() << "\">" << endl;
+      xmlwrite << "<network number_of_nodes=\""
+	       << nodes_.size() << "\">" << endl;
       xmlwrite << "  <nodes>" << endl;
       for (auto it : nodes_)
 	{
 	  (*it).change_id(++id);
 	  xmlwrite << "    <node "
 		   << "id=\"" << (*it).id() << "\" "
-		   << "name=\"" << (*it).name() << "\" " // behöver kanske encodas
+		   << "name=\"" << (*it).name() << "\" "
 		   << "xpos=\"" << (*it).xpos() << "\" "
 		   << "ypos=\"" << (*it).ypos() << "\" "
 		   << "flow=\"" << (*it).flow() << "\" "
@@ -938,12 +939,12 @@ private:
   Set<Node*>* network_nodes;
 
   // data of nodes
-  unsigned int node_id = 0; // Indexeras från 1, 0 = ej satt
+  unsigned int node_id = 0; // Indexeed from 1, 0 = not set
   string node_name = "";
   double node_xpos = 0;
   double node_ypos = 0;
   double node_flow = 0;
-  double node_price = 0; // // could be named node_node_price
+  double node_price = 0;
 
   // data of edges
   double edge_flow = 0;
@@ -951,11 +952,11 @@ private:
   double edge_cost = 0;
   double edge_max_flow = pow(10,308);
   double edge_min_flow = 0;
-  unsigned int edge_from_node = 0; // Indexeras från 1, 0 = ej satt
-  unsigned int edge_to_node = 0; // Indexeras från 1, 0 = ej satt
+  unsigned int edge_from_node = 0; // Indexed from 1, 0 = not set
+  unsigned int edge_to_node = 0; // Indexed from 1, 0 = not set
 
   // functions
-  void make_tagname() // klar
+  void make_tagname()
   {
     if (!in_word)
       {
@@ -967,7 +968,7 @@ private:
     in_word = false;
     making_tagname = false;
     
-    if (!close_tag) // om close_tag så kollas i end_tag()
+    if (!close_tag)
       {
 	if ((tagname == "network") and in_network)
 	  {
@@ -993,13 +994,13 @@ private:
 	  {
 	    throw network_error("malplaced node tag");
 	  }
-	else {} // Unknown tag, sätta flagga behövs ej
+	else {}
       }
     return;
   }
 
   void
-  space() // "klar"
+  space()
   {
     if ((making_tagname and !in_word) or
 	(in_word and !making_tagname and !in_arg))
@@ -1013,14 +1014,14 @@ private:
       }
     else if (in_arg)
       {
-	word.push_back(next_char); // ska alla spaces tillåtas?
+	word.push_back(next_char);
       }
     else {}
     return;
   }
 
   void
-  start_tag() // klar
+  start_tag()
   {
     if (in_tag)
       {
@@ -1033,7 +1034,7 @@ private:
   }
 
   void
-  slash() // klar
+  slash()
   {
     if (!in_tag or
 	(in_word and !making_tagname) or
@@ -1057,7 +1058,7 @@ private:
   }
 
   void
-  alnum() // klar
+  alnum()
   {
     if (arg_expected or
 	(closing_tag and !making_tagname))
@@ -1078,7 +1079,7 @@ private:
   }
 
   void
-  equal() // klar
+  equal()
   {
     if (!in_word or making_tagname or in_arg)
       {
@@ -1093,7 +1094,7 @@ private:
   }
   
   void
-  quote() // klar
+  quote()
   {
     if (!arg_expected and !in_arg)
       {
@@ -1183,7 +1184,7 @@ private:
 		throw network_error("label \""+label+"\" not allowed in edge");
 	      }
 	  }
-	else {} // Inget händer, främmande tag
+	else {}
       }
     return;
   }
@@ -1217,12 +1218,10 @@ private:
 	
 	if (tagname == "network")
 	  {
-	    // kolla om number_of_nodes == 0, isf ok tomt nätverk, gör saker
-	    // avsluta inläsningen
+	    done = true;
 	  }
 	else if (tagname == "nodes")
 	  {
-	    // kolla om alla noder är gjorda
 	    in_nodes = false;
 	    after_nodes = true;
 	  }
@@ -1237,14 +1236,15 @@ private:
 	      {
 		throw network_error("id missing");
 	      }
-	    else if (nodes[node_id-1] != nullptr)
+	    else if (node_id >= number_of_nodes or
+		     nodes[node_id-1] != nullptr)
 	      {
-		throw network_error("duplicate id");
+		throw network_error("duplicate id or too many nodes");
 	      }
 	    
 	    Node* nd = new Node();
 	    nd->change_id(node_id);
-	    nd->change_name(node_name); // generera standardnamn om tom?
+	    nd->change_name(node_name);
 	    nd->change_xpos(node_xpos);
 	    nd->change_ypos(node_ypos);
 	    nd->change_flow(node_flow);
@@ -1267,7 +1267,8 @@ private:
 		throw network_error("connected node missing");
 	      }
 	    
-	    Edge* ed = new Edge(nodes[edge_from_node-1],nodes[edge_to_node-1]);
+	    Edge* ed = new Edge(nodes[edge_from_node-1],
+				nodes[edge_to_node-1]);
 	    ed->change_flow(edge_flow);
 	    ed->change_reduced_cost(edge_reduced_cost);
 	    ed->change_cost(edge_cost);
@@ -1315,7 +1316,7 @@ private:
 	  {
 	    in_edge = true;
 	  }
-	else {} // okänd tag
+	else {}
 	
 	tag.push(tagname);
       }
@@ -1340,7 +1341,7 @@ public:
 	else if (next_char == '=') {equal();}
 	else if (next_char == '\"') {quote();}
 	else if (next_char == '>') {end_tag();}
-	else {} // Unknown character
+	else {}
       }
     return;
   }
@@ -1382,32 +1383,34 @@ public:
 	     label == "maxflow" or
 	     label == "minflow"));
   }
+  bool done = false;
 };
 
 bool
 Network::fopen(const string filename)
 {
+  Set<Node*> new_nodes;
+  Set<Edge*> new_edges;
+
   try
     {
       ifstream xmlread;
       xmlread.open(filename);
-      readstate state(&edges_,&nodes_);
+      readstate state(&new_edges,&new_nodes);
       char next_char;
       int int_val;
       double double_val;
       
-      remove_all_edges();
-      remove_all_nodes();
-      while (xmlread.good())
+      while (!state.done and xmlread.good())
 	{
 	  if (state.read_int())
 	    {
-	      xmlread >> int_val; // testa xmlread.good()?
+	      xmlread >> int_val;
 	      state.step(int_val);
 	    }
 	  else if (state.read_double())
 	    {
-	      xmlread >> double_val; // testa xmlread.good()?
+	      xmlread >> double_val;
 	      state.step(double_val);
 	    }
 	  else
@@ -1420,13 +1423,28 @@ Network::fopen(const string filename)
 	      state.step(next_char);
 	    }
 	}
+      if (!state.done)
+	{
+	  throw network_error("file ended before network was finished");
+	}
       
-      //Fixa kommentarer i filen
       xmlread.close();
     }
   catch(...)
     {
       return false;
     }
+
+  remove_all_nodes();
+  remove_all_edges();
+  for (auto it : new_nodes)
+    {
+      nodes_.add_member(&(*it));
+    }
+  for (auto it : new_edges)
+    {
+      edges_.add_member(&(*it));
+    }
+
   return true;
 }
