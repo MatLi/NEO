@@ -1,3 +1,15 @@
+/*
+ * FILENAME:      solution_dialog.h
+ * PROJECT:       NEO
+ * PROGRAMMER:    David
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * SolutionDialog displayes the soutions to the user.
+ */
+
+
 #ifndef SOL_DIALOG_H
 #define SOL_DIALOG_H
 
