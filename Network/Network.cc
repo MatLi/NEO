@@ -430,19 +430,13 @@ Network::optimal_mincostflow(Set<Edge*>& unfulfilling_edges,
       if ((*it).reduced_cost() == 0 and
 	  (*it).flow() <= (*it).maxflow() and
 	  (*it).flow() >= (*it).minflow())
-	{
-	  optimal = optimal && true;
-	}
+	{}
       else if ((*it).reduced_cost() < 0 and
 	       (*it).flow() == (*it).maxflow())
-	{
-	  optimal = optimal && true;
-	}
+	{}
       else if ((*it).reduced_cost() > 0 and
 	       (*it).flow() == (*it).minflow())
-	{
-	  optimal = optimal && true;
-	}
+	{}
       else
 	{
 	  unfulfilling_edges.add_member(&(*it));
@@ -1236,7 +1230,7 @@ private:
 	      {
 		throw network_error("id missing");
 	      }
-	    else if (node_id >= number_of_nodes or
+	    else if (node_id > number_of_nodes or
 		     nodes[node_id-1] != nullptr)
 	      {
 		throw network_error("duplicate id or too many nodes");
