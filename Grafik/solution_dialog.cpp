@@ -1,3 +1,14 @@
+/*
+ * FILENAME:      solution_dialog.cpp
+ * PROJECT:       NEO
+ * PROGRAMMER:    David
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * SolutionDialog displayes the soutions to the user.
+ */
+
 #include <QtGui>
 #include <string>
 #include "solution_dialog.h"

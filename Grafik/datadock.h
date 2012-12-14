@@ -1,7 +1,7 @@
 /* 
  * FILENAME:      datadock.h
- * PROJEKT:       NEO
- * PROGRAMMERS:   Emil
+ * PROJECT:       NEO
+ * PROGRAMMER:    Emil
  *
  * DATE:          2012-12-12
  *

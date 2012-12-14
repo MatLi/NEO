@@ -1,3 +1,14 @@
+/*
+ * FILENAME:      neopushbutton.cpp
+ * PROJECT:       NEO
+ * PROGRAMMER:    Emil
+ *
+ * DATE:          2012-12-12
+ *
+ * DESCRIPTION:
+ * NeoPushButton takes care of the pushbuttons in the dock windows.
+ */
+
 #include "neopushbutton.h"
 #include "mainwindow.h"
 #include "graphwidget.h"

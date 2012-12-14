@@ -1,6 +1,6 @@
 /* 
  * FILENAME:      mainwindow.cpp
- * PROJEKT:       NEO
+ * PROJECT:       NEO
  * PROGRAMMERS:   Mari, Linda, Li, David och Emil
  *
  * DATE:          2012-12-12

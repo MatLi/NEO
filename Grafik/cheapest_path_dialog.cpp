@@ -1,7 +1,7 @@
 /* 
  * FILENAME:      cheapest_path_dialog.cpp
  * PROJEKT:       NEO
- * PROGRAMMERS:   David
+ * PROGRAMMER:    David
  *
  * DATE:          2012-12-12
  *
