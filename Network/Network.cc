@@ -933,7 +933,7 @@ private:
   Set<Node*>* network_nodes;
 
   // data of nodes
-  unsigned int node_id = 0; // Indexeed from 1, 0 = not set
+  unsigned int node_id = 0; // Indexed from 1, 0 = not set
   string node_name = "";
   double node_xpos = 0;
   double node_ypos = 0;
@@ -1426,7 +1426,17 @@ Network::fopen(const string filename)
     }
   catch(...)
     {
-      return false;
+      for (auto it : new_edges)
+	    {
+		  delete it;
+		}
+	  new_edges.clear();
+	  for (auto it : new_nodes)
+	    {
+		  delete it;
+		}
+	  new_nodes.clear();
+	  return false;
     }
 
   remove_all_nodes();
