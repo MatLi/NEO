@@ -62,6 +62,14 @@ void
 Network::remove_node(Node* del_node)
 {
   nodes_.remove_member(del_node);
+  for (auto it : del_node->in_edges())
+    {
+	  remove_edge(it);
+	}
+  for (auto it : del_node->out_edges())
+    {
+	  remove_edge(it);
+	}
   delete del_node;
   return;
 }
@@ -88,6 +96,7 @@ Network::remove_all_edges()
 void
 Network::remove_all_nodes()
 {
+  remove_all_edges();
   for (auto it : nodes_)
     {
 	  delete it;
@@ -1445,7 +1454,6 @@ Network::fopen(const string filename)
 	  return false;
     }
 
-  remove_all_edges();
   remove_all_nodes();
   for (auto it : new_nodes)
     {
