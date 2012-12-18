@@ -1,0 +1,16 @@
+#########################################################################################################
+#                                                                                                       #
+#                                             TODO FOR NEO                                              #
+#                                                                                                       #
+#########################################################################################################
+
+Priority scale: 1-5, where 1 is the highest priority and 5 is the lowest priority.
+
+Unranked
+--------
+
+* Fix graphical user interface. How? Rewrite or development?
+* Overhaul Set-template. Is it necessary or should we use the standard library?
+* Handling unsolvable networks.
+* Debugging.
+* More types of network problems: traveling salesman, mailman, ...
